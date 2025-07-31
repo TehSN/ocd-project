@@ -1,0 +1,88 @@
+/**
+ * 🎨 CATEGORY COLORS - SINGLE SOURCE OF TRUTH
+ * 
+ * Change any category color here and it updates throughout the entire app
+ * Your editor's color picker will work with these values
+ * 
+ * Each category has light and dark mode variants for theme support
+ * 
+ * 📝 CATEGORY NAME → CSS VARIABLE MAPPING:
+ * "Pricing Models"    → --color-pricing-models-*
+ * "Spot ETF"          → --color-spot-etf-*
+ * "TA and Volatility" → --color-ta-and-volatility-*
+ * "Supply Dynamics"   → --color-supply-dynamics-*
+ * (spaces become hyphens, & becomes "and")
+ */
+
+:root {
+  /* ===== PRICING MODELS - Red ===== */
+  --color-pricing-models-light: #dc2626;
+  --color-pricing-models-dark: #f87171;
+  
+  /* ===== SPOT ETF - Purple ===== */
+  --color-spot-etf-light: #7c3aed;
+  --color-spot-etf-dark: #a78bfa;
+  
+  /* ===== DERIVATIVES - Blue ===== */
+  --color-derivatives-light: #2563eb;
+  --color-derivatives-dark: #60a5fa;
+  
+  /* ===== STRATEGY - Green ===== */
+  --color-strategy-light: #059669;
+  --color-strategy-dark: #34d399;
+  
+  /* ===== PROFIT LOSS - Orange ===== */
+  --color-profit-loss-light: #ea580c;
+  --color-profit-loss-dark: #fb923c;
+  
+  /* ===== LIFESPAN - Cyan ===== */
+  --color-lifespan-light: #0891b2;
+  --color-lifespan-dark: #22d3ee;
+  
+  /* ===== NETWORK ADOPTION - Brown/Amber ===== */
+  --color-network-adoption-light: #7c2d12;
+  --color-network-adoption-dark: #fed7aa;
+  
+  /* ===== SUPPLY DYNAMICS - Emerald ===== */
+  --color-supply-dynamics-light: #15803d;
+  --color-supply-dynamics-dark: #4ade80;
+  
+  /* ===== MINING - Gray ===== */
+  --color-mining-light: #374151;
+  --color-mining-dark: #9ca3af;
+  
+  /* ===== TA AND VOLATILITY - Pink ===== */
+  --color-ta-and-volatility-light: #be185d;
+  --color-ta-and-volatility-dark: #f472b6;
+  
+  /* ===== STABLECOINS - Sky Blue ===== */
+  --color-stablecoins-light: #0369a1;
+  --color-stablecoins-dark: #38bdf8;
+  
+  /* ===== TRADFI - Violet ===== */
+  --color-tradfi-light: #581c87;
+  --color-tradfi-dark: #c084fc;
+}
+
+/**
+ * 🎨 HOW TO CHANGE COLORS:
+ * 
+ * 1. Click on any color value above (your editor should show a color picker)
+ * 2. Choose your new color
+ * 3. Save the file
+ * 4. Colors update automatically throughout the entire app!
+ * 
+ * Light colors: Used in light mode for category badges and borders
+ * Dark colors: Used in dark mode for category badges and borders
+ * 
+ * 💡 EXAMPLE: Want to change all "Pricing Models" from red to blue?
+ * Just change these two lines:
+ * --color-pricing-models-light: #2563eb;  (blue)
+ * --color-pricing-models-dark: #60a5fa;   (light blue)
+ * 
+ * 🎯 UPDATES AUTOMATICALLY:
+ * ✅ Thumbnail category badges
+ * ✅ Enlarged tile borders  
+ * ✅ Both light and dark themes
+ * ✅ All existing and future graphs in that category
+ */

@@ -151,24 +151,64 @@
   color: #666666;
 }
 
-/* Green for Wealth and Supply */
-.category-wealth .category,
-.category-supply .category {
-  background: #dcfce7;
-  color: #15803d;
+.category-pricing-models .category {
+  background: color-mix(in srgb, var(--color-pricing-models-light) 20%, transparent);
+  color: var(--color-pricing-models-light);
 }
 
-/* Purple for Volume and ETF */  
-.category-volume .category,
-.category-etf .category {
-  background: #ede9fe;
-  color: #7c3aed;
+.category-spot-etf .category {
+  background: color-mix(in srgb, var(--color-spot-etf-light) 20%, transparent);
+  color: var(--color-spot-etf-light);
 }
 
-/* Orange for HODL */
-.category-hodl .category {
-  background: #fed7aa;
-  color: #ea580c;
+.category-derivatives .category {
+  background: color-mix(in srgb, var(--color-derivatives-light) 20%, transparent);
+  color: var(--color-derivatives-light);
+}
+
+.category-strategy .category {
+  background: color-mix(in srgb, var(--color-strategy-light) 20%, transparent);
+  color: var(--color-strategy-light);
+}
+
+.category-profit-loss .category {
+  background: color-mix(in srgb, var(--color-profit-loss-light) 20%, transparent);
+  color: var(--color-profit-loss-light);
+}
+
+.category-lifespan .category {
+  background: color-mix(in srgb, var(--color-lifespan-light) 20%, transparent);
+  color: var(--color-lifespan-light);
+}
+
+.category-network-adoption .category {
+  background: color-mix(in srgb, var(--color-network-adoption-light) 20%, transparent);
+  color: var(--color-network-adoption-light);
+}
+
+.category-supply-dynamics .category {
+  background: color-mix(in srgb, var(--color-supply-dynamics-light) 20%, transparent);
+  color: var(--color-supply-dynamics-light);
+}
+
+.category-mining .category {
+  background: color-mix(in srgb, var(--color-mining-light) 20%, transparent);
+  color: var(--color-mining-light);
+}
+
+.category-ta-and-volatility .category {
+  background: color-mix(in srgb, var(--color-ta-and-volatility-light) 20%, transparent);
+  color: var(--color-ta-and-volatility-light);
+}
+
+.category-stablecoins .category {
+  background: color-mix(in srgb, var(--color-stablecoins-light) 20%, transparent);
+  color: var(--color-stablecoins-light);
+}
+
+.category-tradfi .category {
+  background: color-mix(in srgb, var(--color-tradfi-light) 20%, transparent);
+  color: var(--color-tradfi-light);
 }
   
   .hover-options {
@@ -239,22 +279,65 @@
   color: #a0a0a0;
 }
 
-/* Dark mode category colors */
-.dark-mode .category-wealth .category,
-.dark-mode .category-supply .category {
-  background: #1a3a2e;
-  color: #4ade80;
+/* Dark Mode Category Colors */
+.dark-mode .category-pricing-models .category {
+  background: color-mix(in srgb, var(--color-pricing-models-dark) 20%, transparent);
+  color: var(--color-pricing-models-dark);
 }
 
-.dark-mode .category-volume .category,
-.dark-mode .category-etf .category {
-  background: #2a1a4e;
-  color: #a78bfa;
+.dark-mode .category-spot-etf .category {
+  background: color-mix(in srgb, var(--color-spot-etf-dark) 20%, transparent);
+  color: var(--color-spot-etf-dark);
 }
 
-.dark-mode .category-hodl .category {
-  background: #4a2a1a;
-  color: #fb923c;
+.dark-mode .category-derivatives .category {
+  background: color-mix(in srgb, var(--color-derivatives-dark) 20%, transparent);
+  color: var(--color-derivatives-dark);
+}
+
+.dark-mode .category-strategy .category {
+  background: color-mix(in srgb, var(--color-strategy-dark) 20%, transparent);
+  color: var(--color-strategy-dark);
+}
+
+.dark-mode .category-profit-loss .category {
+  background: color-mix(in srgb, var(--color-profit-loss-dark) 20%, transparent);
+  color: var(--color-profit-loss-dark);
+}
+
+.dark-mode .category-lifespan .category {
+  background: color-mix(in srgb, var(--color-lifespan-dark) 20%, transparent);
+  color: var(--color-lifespan-dark);
+}
+
+.dark-mode .category-network-adoption .category {
+  background: color-mix(in srgb, var(--color-network-adoption-dark) 20%, transparent);
+  color: var(--color-network-adoption-dark);
+}
+
+.dark-mode .category-supply-dynamics .category {
+  background: color-mix(in srgb, var(--color-supply-dynamics-dark) 20%, transparent);
+  color: var(--color-supply-dynamics-dark);
+}
+
+.dark-mode .category-mining .category {
+  background: color-mix(in srgb, var(--color-mining-dark) 20%, transparent);
+  color: var(--color-mining-dark);
+}
+
+.dark-mode .category-ta-and-volatility .category {
+  background: color-mix(in srgb, var(--color-ta-and-volatility-dark) 20%, transparent);
+  color: var(--color-ta-and-volatility-dark);
+}
+
+.dark-mode .category-stablecoins .category {
+  background: color-mix(in srgb, var(--color-stablecoins-dark) 20%, transparent);
+  color: var(--color-stablecoins-dark);
+}
+
+.dark-mode .category-tradfi .category {
+  background: color-mix(in srgb, var(--color-tradfi-dark) 20%, transparent);
+  color: var(--color-tradfi-dark);
 }
 
 .dark-mode .hover-options button {
@@ -273,10 +356,10 @@
 }
 
 /* Enlarged indicator */
-.graph-thumbnail.is-enlarged {
+/* .graph-thumbnail.is-enlarged {
   border-color: #3b82f6;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
+} */
 
 .graph-thumbnail.is-enlarged::before {
   content: '';
@@ -285,16 +368,16 @@
   left: 8px;
   width: 8px;
   height: 8px;
-  background: #3b82f6;
+  background: #7521fc;
   border-radius: 50%;
   z-index: 15;
 }
 
-.dark-mode .graph-thumbnail.is-enlarged {
+/* .dark-mode .graph-thumbnail.is-enlarged {
   border-color: #60a5fa;
   box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
-}
+} */
 
 .dark-mode .graph-thumbnail.is-enlarged::before {
-  background: #60a5fa;
+  background: #7521fc;
 }

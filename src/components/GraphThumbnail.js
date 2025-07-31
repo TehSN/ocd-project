@@ -20,13 +20,13 @@ const convertUrlForTheme = (url, isDarkMode) => {
   }
 };
 
-function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
+function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, isDarkMode }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   
   // Generate category class for styling
-  const categoryClass = `category-${graph.category.toLowerCase()}`;
+  const categoryClass = `category-${graph.category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`;
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -44,6 +44,10 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
 
   const handleClose = () => {
     onClose(graph.id);
+  };
+
+  const handleShowDetails = () => {
+    onShowDetails(graph);
   };
 
   return (
@@ -92,7 +96,7 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
               ✕
             </button>
           )}
-          <button title="Details">ⓘ</button>
+                           <button title="Details" onClick={handleShowDetails}>ⓘ</button>
         </div>
       )}
     </div>

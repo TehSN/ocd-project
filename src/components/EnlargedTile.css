@@ -7,7 +7,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: 900px;
+  height: 763px;
   min-height: 600px;
   flex-shrink: 0;
   transition: all 0.3s ease;
@@ -16,18 +16,52 @@
 }
 
 /* Category Colors for Enlarged Tile Borders */
-.category-wealth.enlarged-tile,
-.category-supply.enlarged-tile {
-  border-color: #15803d;
+.category-pricing-models.enlarged-tile {
+  border-color: var(--color-pricing-models-light);
 }
 
-.category-volume.enlarged-tile,
-.category-etf.enlarged-tile {
-  border-color: #7c3aed;
+.category-spot-etf.enlarged-tile {
+  border-color: var(--color-spot-etf-light);
 }
 
-.category-hodl.enlarged-tile {
-  border-color: #ea580c;
+.category-derivatives.enlarged-tile {
+  border-color: var(--color-derivatives-light);
+}
+
+.category-strategy.enlarged-tile {
+  border-color: var(--color-strategy-light);
+}
+
+.category-profit-loss.enlarged-tile {
+  border-color: var(--color-profit-loss-light);
+}
+
+.category-lifespan.enlarged-tile {
+  border-color: var(--color-lifespan-light);
+}
+
+.category-network-adoption.enlarged-tile {
+  border-color: var(--color-network-adoption-light);
+}
+
+.category-supply-dynamics.enlarged-tile {
+  border-color: var(--color-supply-dynamics-light);
+}
+
+.category-mining.enlarged-tile {
+  border-color: var(--color-mining-light);
+}
+
+.category-ta-and-volatility.enlarged-tile {
+  border-color: var(--color-ta-and-volatility-light);
+}
+
+.category-stablecoins.enlarged-tile {
+  border-color: var(--color-stablecoins-light);
+}
+
+.category-tradfi.enlarged-tile {
+  border-color: var(--color-tradfi-light);
 }
 
 .close-button {
@@ -66,13 +100,21 @@
   background: #f9f9f9;
 }
 
-.enlarged-iframe {
+.iframe-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: white;
+}
+
+.enlarged-iframe {
   border: none;
   background: white;
   transition: opacity 0.3s ease;
-  max-width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
 }
 
@@ -133,18 +175,52 @@
 }
 
 /* Dark Mode Category Border Colors */
-.dark-mode .category-wealth.enlarged-tile,
-.dark-mode .category-supply.enlarged-tile {
-  border-color: #4ade80;
+.dark-mode .category-pricing-models.enlarged-tile {
+  border-color: var(--color-pricing-models-dark);
 }
 
-.dark-mode .category-volume.enlarged-tile,
-.dark-mode .category-etf.enlarged-tile {
-  border-color: #a78bfa;
+.dark-mode .category-spot-etf.enlarged-tile {
+  border-color: var(--color-spot-etf-dark);
 }
 
-.dark-mode .category-hodl.enlarged-tile {
-  border-color: #fb923c;
+.dark-mode .category-derivatives.enlarged-tile {
+  border-color: var(--color-derivatives-dark);
+}
+
+.dark-mode .category-strategy.enlarged-tile {
+  border-color: var(--color-strategy-dark);
+}
+
+.dark-mode .category-profit-loss.enlarged-tile {
+  border-color: var(--color-profit-loss-dark);
+}
+
+.dark-mode .category-lifespan.enlarged-tile {
+  border-color: var(--color-lifespan-dark);
+}
+
+.dark-mode .category-network-adoption.enlarged-tile {
+  border-color: var(--color-network-adoption-dark);
+}
+
+.dark-mode .category-supply-dynamics.enlarged-tile {
+  border-color: var(--color-supply-dynamics-dark);
+}
+
+.dark-mode .category-mining.enlarged-tile {
+  border-color: var(--color-mining-dark);
+}
+
+.dark-mode .category-ta-and-volatility.enlarged-tile {
+  border-color: var(--color-ta-and-volatility-dark);
+}
+
+.dark-mode .category-stablecoins.enlarged-tile {
+  border-color: var(--color-stablecoins-dark);
+}
+
+.dark-mode .category-tradfi.enlarged-tile {
+  border-color: var(--color-tradfi-dark);
 }
 
 .dark-mode .close-button {
@@ -163,6 +239,10 @@
   background: #0f0f0f;
 }
 
+.dark-mode .iframe-container {
+  background: #1a1a1a;
+}
+
 .dark-mode .loading-indicator {
   background: #1a1a1a;
   color: #a0a0a0;
@@ -171,4 +251,111 @@
 .dark-mode .loading-spinner {
   border-color: #333333;
   border-top-color: #a0a0a0;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+  position: absolute;
+  top: 0.5%;
+  right: 0.5%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  z-index: 15;
+  font-size: 12px;
+}
+
+.zoom-button {
+  background: transparent;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.zoom-button:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.zoom-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.zoom-level {
+  min-width: 35px;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.zoom-level:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #5017ac;
+}
+
+/* Dark Mode Zoom Controls */
+.dark-mode .zoom-controls {
+  background: rgba(17, 17, 17, 0.95);
+  border-color: #444444;
+}
+
+.dark-mode .zoom-button {
+  border-color: #555555;
+  color: #cccccc;
+}
+
+.dark-mode .zoom-button:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #8540f3;
+  color: #8540f3;
+}
+
+.dark-mode .zoom-level {
+  color: #cccccc;
+}
+
+.dark-mode .zoom-level:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: #8540f3;
+}
+
+/* Responsive Zoom Controls */
+@media (max-width: 768px) {
+  .zoom-controls {
+    top: 10px;
+    right: 10px;
+    font-size: 11px;
+  }
+  
+  .zoom-button {
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+  }
+  
+  .zoom-level {
+    min-width: 30px;
+  }
 }

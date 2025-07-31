@@ -1,31 +1,40 @@
 import React, { useState } from 'react';
 import './EnlargedTile.css';
 
-// Utility function to convert URLs based on theme
-const convertUrlForTheme = (url, isDarkMode) => {
+// Utility function to convert URLs based on theme and add zoom
+const convertUrlForTheme = (url, isDarkMode, zoomLevel = 1) => {
+  let processedUrl = url;
+  
   if (isDarkMode) {
     // Keep dark URLs as they are, or convert light to dark
-    return url
+    processedUrl = processedUrl
       .replace('_light.html', '_dark.html')
       .replace('/light/', '/dark/')
       .replace('dark=false', 'dark=true')
       .replace('theme=light', 'theme=dark');
   } else {
     // Convert to light URLs
-    return url
+    processedUrl = processedUrl
       .replace('_dark.html', '_light.html')
       .replace('/dark/', '/light/')
       .replace('dark=true', 'dark=false')
       .replace('theme=dark', 'theme=light');
   }
+  
+  // Try adding zoom parameter to URL (may not be supported by all sites)
+  // CSS transform will handle zoom if URL parameter doesn't work
+  const zoomPercent = Math.round(zoomLevel * 100);
+  const separator = processedUrl.includes('?') ? '&' : '?';
+  return `${processedUrl}${separator}zoom=${zoomPercent}`;
 };
 
 function EnlargedTile({ graph, onClose, isDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100%, 0.5 = 50%, 1.5 = 150%
   
   // Generate category class for styling
-  const categoryClass = `category-${graph.category.toLowerCase()}`;
+  const categoryClass = `category-${graph.category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`;
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -41,6 +50,18 @@ function EnlargedTile({ graph, onClose, isDarkMode }) {
     onClose(graph.id);
   };
 
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.25, 3)); // Max zoom 300%
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.25, 0.5)); // Min zoom 50%
+  };
+
+  const handleResetZoom = () => {
+    setZoomLevel(1); // Reset to 100%
+  };
+
   return (
     <div className={`enlarged-tile ${categoryClass}`}>
       <div className="enlarged-content">
@@ -51,6 +72,28 @@ function EnlargedTile({ graph, onClose, isDarkMode }) {
         >
           ✕
         </button>
+
+        <div className="zoom-controls">
+          <button 
+            className="zoom-button zoom-out"
+            onClick={handleZoomOut}
+            title="Zoom Out"
+            disabled={zoomLevel <= 0.5}
+          >
+            −
+          </button>
+          <span className="zoom-level" onClick={handleResetZoom} title="Reset Zoom">
+            {Math.round(zoomLevel * 100)}%
+          </span>
+          <button 
+            className="zoom-button zoom-in"
+            onClick={handleZoomIn}
+            title="Zoom In"
+            disabled={zoomLevel >= 3}
+          >
+            +
+          </button>
+        </div>
         
         {isLoading && (
           <div className="loading-indicator">
@@ -58,15 +101,23 @@ function EnlargedTile({ graph, onClose, isDarkMode }) {
             <span>Loading chart...</span>
           </div>
         )}
-        <iframe
-          src={convertUrlForTheme(graph.url, isDarkMode)}
-          title={graph.title}
-          className={`enlarged-iframe ${isLoading ? 'loading' : ''}`}
-          onLoad={handleLoad}
-          onError={handleError}
-          frameBorder="0"
-          scrolling="yes"
-        />
+        <div className="iframe-container">
+          <iframe
+            src={convertUrlForTheme(graph.url, isDarkMode, zoomLevel)}
+            title={graph.title}
+            className={`enlarged-iframe ${isLoading ? 'loading' : ''}`}
+            style={{ 
+              transform: `scale(${zoomLevel})`,
+              transformOrigin: 'top left',
+              width: `${100 / zoomLevel}%`,
+              height: `${100 / zoomLevel}%`
+            }}
+            onLoad={handleLoad}
+            onError={handleError}
+            frameBorder="0"
+            scrolling="yes"
+          />
+        </div>
         {hasError && (
           <div className="error-overlay">
             Chart unavailable

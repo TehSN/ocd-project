@@ -1,40 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Dashboard from './components/Dashboard';
-
-// Sample data for your graphs
-const graphData = [
-  {
-    id: 1,
-    title: "Invested Wealth",
-    url: "https://charts.checkonchain.com/btconchain/urpd/urpd_realised/urpd_realised_dark.html",
-    category: "Wealth"
-  },
-  {
-    id: 2,
-    title: "Comparison of Aggregate Volume Metrics",
-    url: "https://charts.checkonchain.com/btconchain/etfs/etf_volume_vsspot/etf_volume_vsspot_dark.html",
-    category: "Volume"
-  },
-  {
-    id: 3,
-    title: "The HODL Waves",
-    url: "https://charts.checkonchain.com/btconchain/supply/hodl_waves_0/hodl_waves_0_dark.html",
-    category: "HODL"
-  },
-  {
-    id: 4,
-    title: "Revived Supply Breakdown by Age",
-    url: "https://charts.checkonchain.com/btconchain/supply/revived_supply_1_supply/revived_supply_1_supply_dark.html",
-    category: "Supply"
-  },
-  {
-    id: 5,
-    title: "Bitcoin ETF Flows [USD]",
-    url: "https://charts.checkonchain.com/btconchain/etfs/etf_flows_1_1w/etf_flows_1_1w_dark.html",
-    category: "ETF"
-  }
-];
+import { graphData } from './graphData';
 
 function App() {
   // State to track if we're in dark mode or light mode
@@ -60,12 +27,27 @@ function App() {
     setEnlargedTiles(enlargedTiles.filter(id => id !== graphId));
   };
 
+  const closeAllTiles = () => {
+    setEnlargedTiles([]);
+  };
+
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-      <header className="App-header">
-        <h1>On Chain Dashboard</h1>
-        <button 
-          className="theme-toggle" 
+            <header className="App-header">
+        <div className="header-left">
+          <h1>On-Chain Dashboard</h1>
+          {enlargedTiles.length > 0 && (
+            <button
+              className="home-button"
+              onClick={closeAllTiles}
+              aria-label="Return to main grid"
+            >
+              ⌂
+            </button>
+          )}
+        </div>
+        <button
+          className="theme-toggle"
           onClick={toggleTheme}
           aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
         >
