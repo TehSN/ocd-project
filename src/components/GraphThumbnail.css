@@ -1,66 +1,300 @@
 .graph-thumbnail {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-    position: relative;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.graph-thumbnail:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: #e0e0e0;
+}
   
-  .graph-thumbnail:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  }
-  
-  .placeholder-image {
-    width: 100%;
-    height: 200px;
-    background: #f5f5f5;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    margin-bottom: 12px;
-  }
+  .graph-iframe {
+  position: relative;
+  left: 0;
+  width: 1000%;
+  height: 1000%;
+  max-width: none;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+  border: none;
+  transform: scale(0.1);
+  transform-origin: top left;
+  box-sizing: border-box;
+}
+
+/* Scale effect on hover for better visibility */
+.graph-thumbnail:hover .graph-iframe {
+  transform: scale(0.102);
+  transform-origin: top left;
+}
+
+.graph-iframe:hover {
+  opacity: 0.95;
+}
+
+/* Loading state for iframes */
+.graph-iframe.loading {
+  opacity: 0;
+}
+
+.loading-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 12px; /* Account for margin-bottom */
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #666666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e5e5e5;
+  border-top: 2px solid #666666;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.graph-image {
+  position: relative;
+  top: 50px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 100px;
+}
+
+.graph-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+.graph-thumbnail:hover .graph-image::after {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.error-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  background: rgba(255, 193, 7, 0.9);
+  color: #856404;
+  padding: 4px 8px;
+  font-size: 11px;
+  text-align: center;
+  border-radius: 0 0 6px 6px;
+  font-weight: 500;
+}
+
+.dark-mode .error-overlay {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
   
   .graph-info h3 {
-    margin: 0 0 8px 0;
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  
-  .category {
-    background: #e3f2fd;
-    color: #1976d2;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-  }
+  margin: 0 0 6px 0;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.category {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Category Colors */
+.category {
+  background: #f5f5f5;
+  color: #666666;
+}
+
+/* Green for Wealth and Supply */
+.category-wealth .category,
+.category-supply .category {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* Purple for Volume and ETF */  
+.category-volume .category,
+.category-etf .category {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+/* Orange for HODL */
+.category-hodl .category {
+  background: #fed7aa;
+  color: #ea580c;
+}
   
   .hover-options {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 8px;
-  }
-  
-  .hover-options button {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .hover-options button:hover {
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.hover-options button {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 30%;
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #4a4a4a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hover-options button:hover {
+  background: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Dark Mode Styles for Graph Thumbnails */
+.dark-mode .graph-thumbnail {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #ffffff;
+}
+
+.dark-mode .graph-thumbnail:hover {
+  background: #1f1f1f;
+  border-color: #333333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.dark-mode .graph-iframe {
+  background: #0f0f0f;
+}
+
+.dark-mode .loading-indicator {
+  background: #1a1a1a;
+  color: #a0a0a0;
+}
+
+.dark-mode .loading-spinner {
+  border-color: #333333;
+  border-top-color: #a0a0a0;
+}
+
+.dark-mode .graph-info h3 {
+  color: #f5f5f5;
+}
+
+.dark-mode .category {
+  background: #2a2a2a;
+  color: #a0a0a0;
+}
+
+/* Dark mode category colors */
+.dark-mode .category-wealth .category,
+.dark-mode .category-supply .category {
+  background: #1a3a2e;
+  color: #4ade80;
+}
+
+.dark-mode .category-volume .category,
+.dark-mode .category-etf .category {
+  background: #2a1a4e;
+  color: #a78bfa;
+}
+
+.dark-mode .category-hodl .category {
+  background: #4a2a1a;
+  color: #fb923c;
+}
+
+.dark-mode .hover-options button {
+  background: rgba(26, 26, 26, 0.95);
+  color: #e5e5e5;
+  border: 1px solid #333333;
+}
+
+.dark-mode .hover-options button:hover {
+  background: #2a2a2a;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
+.dark-mode .graph-thumbnail:hover .graph-image::after {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Enlarged indicator */
+.graph-thumbnail.is-enlarged {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.graph-thumbnail.is-enlarged::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  z-index: 15;
+}
+
+.dark-mode .graph-thumbnail.is-enlarged {
+  border-color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
+}
+
+.dark-mode .graph-thumbnail.is-enlarged::before {
+  background: #60a5fa;
+}

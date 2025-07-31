@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './GraphThumbnail.css';
+import './EnlargedTile.css';
 
 // Utility function to convert URLs based on theme
 const convertUrlForTheme = (url, isDarkMode) => {
@@ -20,26 +20,21 @@ const convertUrlForTheme = (url, isDarkMode) => {
   }
 };
 
-function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
-  const [isHovered, setIsHovered] = useState(false);
+function EnlargedTile({ graph, onClose, isDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   
   // Generate category class for styling
   const categoryClass = `category-${graph.category.toLowerCase()}`;
 
-  const handleImageLoad = () => {
+  const handleLoad = () => {
     setIsLoading(false);
     setHasError(false);
   };
 
-  const handleImageError = () => {
+  const handleError = () => {
     setIsLoading(false);
     setHasError(true);
-  };
-
-  const handleEnlarge = () => {
-    onEnlarge(graph.id);
   };
 
   const handleClose = () => {
@@ -47,28 +42,30 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
   };
 
   return (
-    <div 
-      className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isEnlarged ? 'is-enlarged' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="graph-image">
+    <div className={`enlarged-tile ${categoryClass}`}>
+      <div className="enlarged-content">
+        <button 
+          className="close-button"
+          onClick={handleClose}
+          title="Close"
+        >
+          ✕
+        </button>
+        
         {isLoading && (
           <div className="loading-indicator">
             <div className="loading-spinner"></div>
             <span>Loading chart...</span>
           </div>
         )}
-        {/* Live embedded website */}
         <iframe
           src={convertUrlForTheme(graph.url, isDarkMode)}
           title={graph.title}
-          className={`graph-iframe ${isLoading ? 'loading' : ''}`}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
+          className={`enlarged-iframe ${isLoading ? 'loading' : ''}`}
+          onLoad={handleLoad}
+          onError={handleError}
           frameBorder="0"
-          scrolling="no"
-          sandbox="allow-scripts allow-same-origin"
+          scrolling="yes"
         />
         {hasError && (
           <div className="error-overlay">
@@ -76,27 +73,8 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, isDarkMode }) {
           </div>
         )}
       </div>
-      <div className="graph-info">
-        <h3>{graph.title}</h3>
-        <span className="category">{graph.category}</span>
-      </div>
-      
-      {isHovered && (
-        <div className="hover-options">
-          {!isEnlarged ? (
-            <button title="Enlarge" onClick={handleEnlarge}>
-              <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
-            </button>
-          ) : (
-            <button title="Close" onClick={handleClose}>
-              ✕
-            </button>
-          )}
-          <button title="Details">ⓘ</button>
-        </div>
-      )}
     </div>
   );
 }
 
-export default GraphThumbnail;
+export default EnlargedTile;
