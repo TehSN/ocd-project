@@ -1,5 +1,5 @@
 import React from 'react';
-import GraphThumbnail from './GraphThumbnail';
+// import GraphThumbnail from './GraphThumbnail';
 import CategoryDropdown from './CategoryDropdown';
 import { categories } from '../graphData';
 import './ChartSelector.css';

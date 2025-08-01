@@ -51,9 +51,9 @@ function CategoryNavigation({ graphs, isDarkMode }) {
     return () => observer.disconnect();
   }, [availableCategories]);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+  // const toggleCollapse = () => {
+  //   setIsCollapsed(!isCollapsed);
+  // };
 
   return (
     <div className={`category-navigation ${isCollapsed ? 'collapsed' : ''}`}>
