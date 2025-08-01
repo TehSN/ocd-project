@@ -3,7 +3,7 @@ import { categories, categoryConfig } from '../graphData';
 import './CategoryNavigation.css';
 
 function CategoryNavigation({ graphs, isDarkMode }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const isCollapsed = false; // Collapse functionality disabled
   const [activeCategory, setActiveCategory] = useState(null);
 
   // Get categories that have charts
