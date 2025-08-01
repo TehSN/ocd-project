@@ -1,5 +1,32 @@
 .category-dropdown {
   margin-bottom: 24px;
+  
+  /* 
+   * 🎨 CENTRALIZED GRADIENT PARAMETERS
+   * 
+   * Change these values to instantly update ALL category gradients:
+   * 
+   * --gradient-rotation: Angle of gradient (0deg = top-to-bottom, 90deg = left-to-right, 180deg = bottom-to-top)
+   * --gradient-start-position: Where the strongest color begins (0% = start)
+   * --gradient-middle-position: Where color starts fading (50% = middle)
+   * --gradient-end-position: Where it becomes transparent (100% = end)
+   * 
+   * Opacity values control how strong/subtle the gradients appear:
+   * Light mode: More subtle for professional look
+   * Dark mode: More vibrant for better visibility
+   */
+  --gradient-rotation: 25deg;
+  --gradient-start-position: 0%;
+  --gradient-middle-position: 50%;
+  --gradient-end-position: 100%;
+  
+  /* Light mode opacity values */
+  --gradient-light-start-opacity: 0.2;
+  --gradient-light-middle-opacity: 0.03;
+  
+  /* Dark mode opacity values */
+  --gradient-dark-start-opacity: 0.22;
+  --gradient-dark-middle-opacity: 0.01;
 }
 
 .category-header {
@@ -11,6 +38,9 @@
   transition: all 0.3s ease;
   user-select: none;
   border-bottom: 2px solid transparent;
+  background: transparent; /* Make header transparent so gradient shows through */
+  position: relative;
+  z-index: 2; /* Ensure header content is above gradient */
 }
 
 /* Use CSS variables for category colors */
@@ -133,181 +163,196 @@
 }
 
 .category-content {
-  margin-top: 16px;
-  padding: 20px; /* Add padding back for gradient background */
-  border-radius: 12px;
+  margin-top: 0; /* Remove margin since gradient now starts from header */
+  padding: 20px;
+  border-radius: 0 0 12px 12px; /* Only round bottom corners */
   overflow: hidden;
   animation: slideDown 0.3s ease-out;
+  background: transparent; /* Remove background since gradient is now on parent */
+  position: relative;
+  z-index: 1;
 }
 
-/* Category-specific gradient backgrounds */
-.category-dropdown[data-category="pricing-models"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(220, 38, 38, 0.08) 0%, 
-    rgba(220, 38, 38, 0.03) 50%, 
-    transparent 100%);
+/* Category-specific gradient backgrounds - applied to entire dropdown container including header */
+.category-dropdown[data-category="pricing-models"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(234, 88, 12, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(234, 88, 12, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="spot-etf"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 0.08) 0%, 
-    rgba(124, 58, 237, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="spot-etf"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(124, 58, 237, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(124, 58, 237, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="derivatives"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(37, 99, 235, 0.08) 0%, 
-    rgba(37, 99, 235, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="derivatives"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(220, 38, 38, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(220, 38, 38, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="strategy"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(5, 150, 105, 0.08) 0%, 
-    rgba(5, 150, 105, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="strategy"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(146, 64, 14, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(146, 64, 14, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="profit-loss"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(234, 88, 12, 0.08) 0%, 
-    rgba(234, 88, 12, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="profit-loss"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(6, 182, 212, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(6, 182, 212, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="lifespan"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(8, 145, 178, 0.08) 0%, 
-    rgba(8, 145, 178, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="lifespan"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(5, 150, 105, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(5, 150, 105, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="network-adoption"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(124, 45, 18, 0.08) 0%, 
-    rgba(124, 45, 18, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="network-adoption"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(37, 99, 235, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(37, 99, 235, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="supply-dynamics"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(21, 128, 61, 0.08) 0%, 
-    rgba(21, 128, 61, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="supply-dynamics"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(217, 119, 6, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(217, 119, 6, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="mining"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(55, 65, 81, 0.08) 0%, 
-    rgba(55, 65, 81, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="mining"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(55, 65, 81, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(55, 65, 81, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="ta-and-volatility"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(190, 24, 93, 0.08) 0%, 
-    rgba(190, 24, 93, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="ta-and-volatility"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(190, 24, 93, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(190, 24, 93, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="stablecoins"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(3, 105, 161, 0.08) 0%, 
-    rgba(3, 105, 161, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="stablecoins"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(5, 150, 105, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(5, 150, 105, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-.category-dropdown[data-category="tradfi"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(88, 28, 135, 0.08) 0%, 
-    rgba(88, 28, 135, 0.03) 50%, 
-    transparent 100%);
+.category-dropdown[data-category="tradfi"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(101, 163, 13, var(--gradient-light-start-opacity)) var(--gradient-start-position), 
+    rgba(101, 163, 13, var(--gradient-light-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position));
+  border-radius: 12px;
 }
 
-/* Dark mode gradient backgrounds */
-.dark-mode .category-dropdown[data-category="pricing-models"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(248, 113, 113, 0.12) 0%, 
-    rgba(248, 113, 113, 0.05) 50%, 
-    transparent 100%);
+/* Dark mode gradient backgrounds - applied to entire dropdown container including header */
+.dark-mode .category-dropdown[data-category="pricing-models"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(251, 146, 60, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(251, 146, 60, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="spot-etf"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(167, 139, 250, 0.12) 0%, 
-    rgba(167, 139, 250, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="spot-etf"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(167, 139, 250, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(167, 139, 250, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="derivatives"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(96, 165, 250, 0.12) 0%, 
-    rgba(96, 165, 250, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="derivatives"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(248, 113, 113, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(248, 113, 113, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="strategy"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(52, 211, 153, 0.12) 0%, 
-    rgba(52, 211, 153, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="strategy"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(217, 119, 6, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(217, 119, 6, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="profit-loss"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(251, 146, 60, 0.12) 0%, 
-    rgba(251, 146, 60, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="profit-loss"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(103, 232, 249, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(103, 232, 249, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="lifespan"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(34, 211, 238, 0.12) 0%, 
-    rgba(34, 211, 238, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="lifespan"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(52, 211, 153, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(52, 211, 153, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="network-adoption"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(254, 215, 170, 0.12) 0%, 
-    rgba(254, 215, 170, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="network-adoption"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(96, 165, 250, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(96, 165, 250, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="supply-dynamics"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(74, 222, 128, 0.12) 0%, 
-    rgba(74, 222, 128, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="supply-dynamics"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(251, 191, 36, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(251, 191, 36, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="mining"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(156, 163, 175, 0.12) 0%, 
-    rgba(156, 163, 175, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="mining"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(156, 163, 175, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(156, 163, 175, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="ta-and-volatility"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(244, 114, 182, 0.12) 0%, 
-    rgba(244, 114, 182, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="ta-and-volatility"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(244, 114, 182, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(244, 114, 182, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="stablecoins"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(56, 189, 248, 0.12) 0%, 
-    rgba(56, 189, 248, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="stablecoins"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(16, 185, 129, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(16, 185, 129, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
-.dark-mode .category-dropdown[data-category="tradfi"] .category-content {
-  background: linear-gradient(135deg, 
-    rgba(192, 132, 252, 0.12) 0%, 
-    rgba(192, 132, 252, 0.05) 50%, 
-    transparent 100%);
+.dark-mode .category-dropdown[data-category="tradfi"] {
+  background: linear-gradient(var(--gradient-rotation), 
+    rgba(132, 204, 22, var(--gradient-dark-start-opacity)) var(--gradient-start-position), 
+    rgba(132, 204, 22, var(--gradient-dark-middle-opacity)) var(--gradient-middle-position), 
+    transparent var(--gradient-end-position)) !important;
 }
 
 @keyframes slideDown {

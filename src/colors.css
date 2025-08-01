@@ -15,37 +15,37 @@
  */
 
 :root {
-  /* ===== PRICING MODELS - Red ===== */
-  --color-pricing-models-light: #dc2626;
-  --color-pricing-models-dark: #f87171;
+  /* ===== PRICING MODELS - Orange ===== */
+  --color-pricing-models-light: #ea580c;
+  --color-pricing-models-dark: #fb923c;
   
   /* ===== SPOT ETF - Purple ===== */
   --color-spot-etf-light: #7c3aed;
   --color-spot-etf-dark: #a78bfa;
   
-  /* ===== DERIVATIVES - Blue ===== */
-  --color-derivatives-light: #2563eb;
-  --color-derivatives-dark: #60a5fa;
+  /* ===== DERIVATIVES - Red ===== */
+  --color-derivatives-light: #dc2626;
+  --color-derivatives-dark: #f87171;
   
-  /* ===== STRATEGY - Green ===== */
-  --color-strategy-light: #059669;
-  --color-strategy-dark: #34d399;
+  /* ===== STRATEGY - Brown ===== */
+  --color-strategy-light: #92400e;
+  --color-strategy-dark: #d97706;
   
-  /* ===== PROFIT LOSS - Orange ===== */
-  --color-profit-loss-light: #ea580c;
-  --color-profit-loss-dark: #fb923c;
+  /* ===== PROFIT LOSS - Cyan ===== */
+  --color-profit-loss-light: #06b6d4;
+  --color-profit-loss-dark: #67e8f9;
   
-  /* ===== LIFESPAN - Cyan ===== */
-  --color-lifespan-light: #0891b2;
-  --color-lifespan-dark: #22d3ee;
+  /* ===== LIFESPAN - Green ===== */
+  --color-lifespan-light: #059669;
+  --color-lifespan-dark: #34d399;
   
-  /* ===== NETWORK ADOPTION - Brown/Amber ===== */
-  --color-network-adoption-light: #7c2d12;
-  --color-network-adoption-dark: #fed7aa;
+  /* ===== NETWORK ADOPTION - Blue ===== */
+  --color-network-adoption-light: #2563eb;
+  --color-network-adoption-dark: #60a5fa;
   
-  /* ===== SUPPLY DYNAMICS - Emerald ===== */
-  --color-supply-dynamics-light: #15803d;
-  --color-supply-dynamics-dark: #4ade80;
+  /* ===== SUPPLY DYNAMICS - Brown/Amber ===== */
+  --color-supply-dynamics-light: #d97706;
+  --color-supply-dynamics-dark: #fbbf24;
   
   /* ===== MINING - Gray ===== */
   --color-mining-light: #374151;
@@ -55,13 +55,13 @@
   --color-ta-and-volatility-light: #be185d;
   --color-ta-and-volatility-dark: #f472b6;
   
-  /* ===== STABLECOINS - Sky Blue ===== */
-  --color-stablecoins-light: #0369a1;
-  --color-stablecoins-dark: #38bdf8;
+  /* ===== STABLECOINS - Emerald ===== */
+  --color-stablecoins-light: #059669;
+  --color-stablecoins-dark: #10b981;
   
-  /* ===== TRADFI - Violet ===== */
-  --color-tradfi-light: #581c87;
-  --color-tradfi-dark: #c084fc;
+  /* ===== TRADFI - Sage Green ===== */
+  --color-tradfi-light: #65a30d;
+  --color-tradfi-dark: #84cc16;
 }
 
 /**

@@ -10,7 +10,7 @@ export const graphData = [
     id: 1,
     title: "Invested Wealth",
     url: "https://charts.checkonchain.com/btconchain/urpd/urpd_realised/urpd_realised_dark.html",
-    category: "Pricing Models",
+    category: "Profit/Loss",
     details: "There are no details about this chart yet!"
   },
   {
@@ -70,7 +70,7 @@ export const categories = [
   "Spot ETF", 
   "Derivatives",
   "Strategy",
-  "Profit Loss",
+  "Profit/Loss",
   "Lifespan",
   "Network Adoption",
   "Supply Dynamics",
@@ -94,7 +94,7 @@ export const categoryConfig = {
   "Strategy": {
     cssVar: "strategy"
   },
-  "Profit Loss": {
+  "Profit/Loss": {
     cssVar: "profit-loss"
   },
   "Lifespan": {
