@@ -31,7 +31,7 @@ const convertUrlForTheme = (url, isDarkMode, zoomLevel = 1) => {
 function EnlargedTile({ graph, onClose, isDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100%, 0.5 = 50%, 1.5 = 150%
+  const [zoomLevel, setZoomLevel] = useState(0.75); // 1 = 100%, 0.5 = 50%, 1.5 = 150%
   
   // Generate category class for styling
   const categoryClass = `category-${graph.category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`;
