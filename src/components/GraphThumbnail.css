@@ -373,6 +373,11 @@
   z-index: 15;
 }
 
+/* Hide enlarged indicator in navigation mode */
+.graph-thumbnail.is-navigation.is-enlarged::before {
+  display: none;
+}
+
 /* .dark-mode .graph-thumbnail.is-enlarged {
   border-color: #60a5fa;
   box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
@@ -380,4 +385,9 @@
 
 .dark-mode .graph-thumbnail.is-enlarged::before {
   background: #7521fc;
+}
+
+/* Hide enlarged indicator in dark mode navigation as well */
+.dark-mode .graph-thumbnail.is-navigation.is-enlarged::before {
+  display: none;
 }

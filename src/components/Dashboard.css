@@ -14,7 +14,7 @@
   display: flex;
   gap: 10px;
   height: 100%;
-  padding: 20px 20px 0 20px; /* top right bottom left - no bottom padding */
+  padding: 28px 10px 0 10px; /* top right bottom left - no bottom padding */
   max-width: 100vw;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -23,7 +23,7 @@
 
 .sidebar {
   /* Dynamic width set via inline styles */
-  min-width: 200px;
+  min-width: 150px;
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -100,6 +100,17 @@
   min-width: 150px;
 }
 
+/* Dashboard Controls */
+.dashboard-controls {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 /* Sidebar Toggle Button */
 .sidebar-toggle {
   background: rgba(255, 255, 255, 0.95);
@@ -116,29 +127,234 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: absolute;
-  top: 0px;
-  left: 20px;
-  z-index: 30;
 }
 
-.sidebar-toggle:hover {
+/* Chart Selector Toggle Button */
+.chart-selector-toggle {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-toggle:hover,
+.chart-selector-toggle:hover {
   background: rgba(59, 130, 246, 0.1);
   border-color: #8540f3;
   color: #8540f3;
   transform: scale(1.05);
 }
 
-/* Dark Mode Styles for Toggle Button */
-.dark-mode .sidebar-toggle {
+/* Navigation Sidebar Styles - inherits from .sidebar */
+
+.navigation-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+.navigation-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+}
+
+.navigation-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navigation-item.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg) scale(1.02);
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Top drop zone for inserting at position 0 */
+.top-drop-zone {
+  height: 20px;
+  margin: 0;
+  position: relative;
+  /* Invisible but functional drop area */
+}
+
+/* Drop indicators for insertion points */
+.drop-indicator {
+  height: 4px;
+  margin: -2px 0;
+  position: relative;
+  z-index: 100;
+}
+
+.drop-line {
+  height: 3px;
+  background: linear-gradient(90deg, #8540f3, #a855f7);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(133, 64, 243, 0.4);
+  animation: pulse-drop 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-drop {
+  0% { opacity: 0.7; transform: scaleY(1); }
+  100% { opacity: 1; transform: scaleY(1.2); }
+}
+
+.navigation-item .graph-thumbnail {
+  margin: 0;
+  border-radius: 8px;
+}
+
+.drag-handle {
+  position: absolute;
+  top: 50%;
+  right: 95%;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.navigation-item:hover .drag-handle {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Add Chart Tile */
+.add-chart-tile {
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  min-height: 120px;
+  pointer-events: auto;
+  /* Not draggable - exclude from drag operations */
+}
+
+.add-chart-tile:hover {
+  background: rgba(133, 64, 243, 0.05);
+  border-color: rgba(133, 64, 243, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(133, 64, 243, 0.1);
+}
+
+.add-chart-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  gap: 8px;
+}
+
+.add-chart-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(133, 64, 243, 0.1);
+  border: 2px solid rgba(133, 64, 243, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.add-chart-tile:hover .add-chart-circle {
+  background: rgba(133, 64, 243, 0.2);
+  border-color: rgba(133, 64, 243, 0.5);
+  transform: scale(1.1);
+}
+
+.add-chart-plus {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8540f3;
+  line-height: 1;
+}
+
+.add-chart-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-chart-tile:hover .add-chart-text {
+  color: #8540f3;
+}
+
+/* Dark Mode Styles for Controls */
+.dark-mode .sidebar-toggle,
+.dark-mode .chart-selector-toggle {
   background: rgba(26, 26, 26, 0.95);
   border-color: #333333;
   color: #a0a0a0;
 }
 
-.dark-mode .sidebar-toggle:hover {
+.dark-mode .sidebar-toggle:hover,
+.dark-mode .chart-selector-toggle:hover {
   background: rgba(133, 64, 243, 0.2);
   border-color: #8540f3;
+  color: #8540f3;
+}
+
+.dark-mode .drag-handle {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dark-mode .navigation-item:hover .drag-handle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark Mode Add Chart Tile */
+.dark-mode .add-chart-tile {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .add-chart-tile:hover {
+  background: rgba(133, 64, 243, 0.1);
+  border-color: rgba(133, 64, 243, 0.4);
+  box-shadow: 0 4px 12px rgba(133, 64, 243, 0.2);
+}
+
+.dark-mode .add-chart-circle {
+  background: rgba(133, 64, 243, 0.15);
+  border-color: rgba(133, 64, 243, 0.4);
+}
+
+.dark-mode .add-chart-tile:hover .add-chart-circle {
+  background: rgba(133, 64, 243, 0.25);
+  border-color: rgba(133, 64, 243, 0.6);
+}
+
+.dark-mode .add-chart-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark-mode .add-chart-tile:hover .add-chart-text {
   color: #8540f3;
 }
 
@@ -162,8 +378,22 @@
     max-width: 100%;
   }
   
-  /* Hide toggle buttons on mobile since layout stacks anyway */
-  .sidebar-toggle {
+  /* Hide control buttons on mobile since layout stacks anyway */
+  .dashboard-controls {
+    display: none;
+  }
+  
+  /* Disable drag functionality on mobile */
+  .navigation-item {
+    cursor: default;
+  }
+  
+  .drag-handle {
+    display: none;
+  }
+  
+  /* Hide add chart tile on mobile since chart selector button is hidden anyway */
+  .add-chart-tile {
     display: none;
   }
 }

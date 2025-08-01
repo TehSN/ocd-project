@@ -20,7 +20,7 @@ const convertUrlForTheme = (url, isDarkMode) => {
   }
 };
 
-function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, isDarkMode }) {
+function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, isDarkMode, isNavigation = false, isSelector = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -52,7 +52,7 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
 
   return (
     <div 
-      className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isEnlarged ? 'is-enlarged' : ''}`}
+      className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isEnlarged ? 'is-enlarged' : ''} ${isNavigation ? 'is-navigation' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -87,16 +87,41 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
       
       {isHovered && (
         <div className="hover-options">
-          {!isEnlarged ? (
-            <button title="Enlarge" onClick={handleEnlarge}>
-              <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
-            </button>
+          {isNavigation ? (
+            // Navigation mode: Show navigate and close buttons
+            <>
+              <button title="Go to chart" onClick={handleEnlarge}>
+                ↗
+              </button>
+              <button title="Remove from view" onClick={handleClose}>
+                ✕
+              </button>
+            </>
+          ) : isSelector ? (
+            // Selector mode: Show enlarge button or already added indicator
+            <>
+              {!isEnlarged && (
+                <button title="Add to view" onClick={handleEnlarge}>
+                  <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
+                </button>
+              )}
+              <button title="Details" onClick={handleShowDetails}>ⓘ</button>
+            </>
           ) : (
-            <button title="Close" onClick={handleClose}>
-              ✕
-            </button>
+            // Regular mode: Original behavior
+            <>
+              {!isEnlarged ? (
+                <button title="Enlarge" onClick={handleEnlarge}>
+                  <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
+                </button>
+              ) : (
+                <button title="Close" onClick={handleClose}>
+                  ✕
+                </button>
+              )}
+              <button title="Details" onClick={handleShowDetails}>ⓘ</button>
+            </>
           )}
-                           <button title="Details" onClick={handleShowDetails}>ⓘ</button>
         </div>
       )}
     </div>

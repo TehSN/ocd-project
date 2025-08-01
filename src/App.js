@@ -43,6 +43,11 @@ function App() {
     setEnlargedTiles([]);
   };
 
+  // Function to reorder enlarged tiles
+  const reorderTiles = (newOrder) => {
+    setEnlargedTiles(newOrder);
+  };
+
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
             <header className="App-header">
@@ -72,6 +77,7 @@ function App() {
           enlargedTiles={enlargedTiles}
           onEnlarge={enlargeTile}
           onClose={closeTile}
+          onReorder={reorderTiles}
           isDarkMode={isDarkMode}
         />
       </main>
