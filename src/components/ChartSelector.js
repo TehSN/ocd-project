@@ -1,5 +1,7 @@
 import React from 'react';
 import GraphThumbnail from './GraphThumbnail';
+import CategoryDropdown from './CategoryDropdown';
+import { categories } from '../graphData';
 import './ChartSelector.css';
 
 function ChartSelector({ graphs, enlargedTiles, onEnlarge, onClose, isOpen, isDarkMode }) {
@@ -30,27 +32,20 @@ function ChartSelector({ graphs, enlargedTiles, onEnlarge, onClose, isOpen, isDa
         </div>
         
         <div className="chart-selector-content">
-          <div className="chart-selector-grid">
-            {graphs.map(graph => (
-              <div 
-                key={`selector-${graph.id}`}
-                className={`chart-selector-item ${enlargedTiles.includes(graph.id) ? 'already-enlarged' : ''}`}
-              >
-                <GraphThumbnail
-                  graph={graph}
-                  isEnlarged={enlargedTiles.includes(graph.id)}
-                  onEnlarge={() => handleEnlarge(graph.id)}
-                  onClose={() => {}} // No close functionality in selector
-                  onShowDetails={handleShowDetails}
-                  isDarkMode={isDarkMode}
-                  isSelector={true}
-                />
-                {enlargedTiles.includes(graph.id) && (
-                  <div className="enlarged-indicator">
-                    <span>✓ Added</span>
-                  </div>
-                )}
-              </div>
+          <div className="chart-selector-categories">
+            {categories.map(category => (
+              <CategoryDropdown
+                key={category}
+                category={category}
+                graphs={graphs}
+                isOpen={false} // Closed by default in chart selector
+                enlargedTiles={enlargedTiles}
+                onEnlarge={handleEnlarge}
+                onClose={() => {}} // No close functionality in selector
+                onShowDetails={handleShowDetails}
+                isDarkMode={isDarkMode}
+                isSelector={true}
+              />
             ))}
           </div>
         </div>

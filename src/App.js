@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import './colors.css';
 import Dashboard from './components/Dashboard';
 import { graphData } from './graphData';
 

@@ -51,6 +51,21 @@
   box-sizing: border-box;
 }
 
+.categories-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+  padding-left: 180px; /* Space for category navigation sidebar */
+}
+
+/* Remove left padding on mobile where navigation is hidden */
+@media (max-width: 1024px) {
+  .categories-container {
+    padding-left: 0;
+  }
+}
+
 /* Responsive breakpoints for optimal square fitting */
 @media (min-width: 1400px) {
   .graph-grid {

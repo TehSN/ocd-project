@@ -4,6 +4,9 @@ import EnlargedTile from './EnlargedTile';
 import DetailsModal from './DetailsModal';
 import ResizableSplitter from './ResizableSplitter';
 import ChartSelector from './ChartSelector';
+import CategoryDropdown from './CategoryDropdown';
+import CategoryNavigation from './CategoryNavigation';
+import { categories } from '../graphData';
 import './Dashboard.css';
 
 function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDarkMode }) {
@@ -352,19 +355,29 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
       )}
 
       {!hasEnlargedTiles && (
-        <div className="graph-grid">
-          {graphs.map(graph => (
-                           <GraphThumbnail
-                 key={graph.id}
-                 graph={graph}
-                 isEnlarged={false}
-                 onEnlarge={onEnlarge}
-                 onClose={onClose}
-                 onShowDetails={handleShowDetails}
-                 isDarkMode={isDarkMode}
-               />
-          ))}
-        </div>
+        <>
+          <CategoryNavigation 
+            graphs={graphs}
+            isDarkMode={isDarkMode}
+          />
+          <div className="categories-container">
+            {categories.map(category => (
+              <div key={category} data-category-section={category}>
+                <CategoryDropdown
+                  category={category}
+                  graphs={graphs}
+                  isOpen={true} // Open by default on homepage
+                  enlargedTiles={enlargedTiles}
+                  onEnlarge={onEnlarge}
+                  onClose={onClose}
+                  onShowDetails={handleShowDetails}
+                  isDarkMode={isDarkMode}
+                  isSelector={false}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
       
       <DetailsModal 

@@ -80,4 +80,44 @@ export const categories = [
   "Tradfi"
 ];
 
+// Category CSS variable mapping - automatically uses colors from colors.css
+export const categoryConfig = {
+  "Pricing Models": {
+    cssVar: "pricing-models"
+  },
+  "Spot ETF": {
+    cssVar: "spot-etf"
+  },
+  "Derivatives": {
+    cssVar: "derivatives"
+  },
+  "Strategy": {
+    cssVar: "strategy"
+  },
+  "Profit Loss": {
+    cssVar: "profit-loss"
+  },
+  "Lifespan": {
+    cssVar: "lifespan"
+  },
+  "Network Adoption": {
+    cssVar: "network-adoption"
+  },
+  "Supply Dynamics": {
+    cssVar: "supply-dynamics"
+  },
+  "Mining": {
+    cssVar: "mining"
+  },
+  "TA and Volatility": {
+    cssVar: "ta-and-volatility"
+  },
+  "Stablecoins": {
+    cssVar: "stablecoins"
+  },
+  "Tradfi": {
+    cssVar: "tradfi"
+  }
+};
+
 export default graphData;
