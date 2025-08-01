@@ -19,6 +19,18 @@ function App() {
   const enlargeTile = (graphId) => {
     if (!enlargedTiles.includes(graphId)) {
       setEnlargedTiles([...enlargedTiles, graphId]);
+    } else {
+      // If already enlarged, scroll to it
+      setTimeout(() => {
+        const element = document.getElementById(`enlarged-${graphId}`);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
     }
   };
 

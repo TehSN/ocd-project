@@ -1,0 +1,106 @@
+.resizable-splitter {
+  width: 1px;
+  background: transparent;
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.resizable-splitter:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.resizable-splitter.dragging {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.splitter-handle {
+  width: 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+  background: rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  opacity: 0.8;
+}
+
+.resizable-splitter:hover .splitter-handle {
+  opacity: 1;
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.resizable-splitter.dragging .splitter-handle {
+  opacity: 1;
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.splitter-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.dot {
+  width: 1px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.resizable-splitter:hover .dot {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+.resizable-splitter.dragging .dot {
+  background: rgba(59, 130, 246, 1);
+}
+
+/* Dark Mode Styles */
+.dark-mode .resizable-splitter:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .resizable-splitter.dragging {
+  background: rgba(133, 64, 243, 0.1);
+}
+
+.dark-mode .splitter-handle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .resizable-splitter:hover .splitter-handle {
+  background: rgba(133, 64, 243, 0.2);
+}
+
+.dark-mode .resizable-splitter.dragging .splitter-handle {
+  background: rgba(133, 64, 243, 0.3);
+}
+
+.dark-mode .dot {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.dark-mode .resizable-splitter:hover .dot {
+  background: rgba(133, 64, 243, 0.7);
+}
+
+.dark-mode .resizable-splitter.dragging .dot {
+  background: rgba(133, 64, 243, 1);
+}
+
+/* Responsive behavior */
+@media (max-width: 1024px) {
+  .resizable-splitter {
+    display: none;
+  }
+}

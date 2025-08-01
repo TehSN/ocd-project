@@ -1,38 +1,41 @@
 .dashboard {
-  padding: 20px;
+  padding: 10px 10px 0 10px; /* top right bottom left - no bottom padding */
   margin: 0 auto;
   width: 100%;
   max-width: 100%;
+  height: 100%; /* Fill available height */
   transition: all 0.3s ease;
   box-sizing: border-box;
   overflow-x: hidden;
+  overflow-y: auto; /* Allow scrolling within dashboard */
 }
 
 .dashboard.has-enlarged {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   height: 100%;
-  padding: 20px;
+  padding: 20px 20px 0 20px; /* top right bottom left - no bottom padding */
   max-width: 100vw;
   overflow-x: hidden;
   box-sizing: border-box;
+  position: relative; /* For absolute positioning of toggle button */
 }
 
 .sidebar {
-  width: 300px;
-  min-width: 280px;
-  max-width: 320px;
+  /* Dynamic width set via inline styles */
+  min-width: 200px;
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .enlarged-area {
-  flex: 1;
-  min-width: 0;
+  /* Dynamic width set via inline styles */
+  min-width: 200px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0;
@@ -42,7 +45,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -84,12 +87,59 @@
   }
 }
 
-/* Sidebar grid - single column */
+/* Sidebar grid - responsive to dynamic width */
 .sidebar .graph-grid {
   grid-template-columns: 1fr;
   gap: 12px;
   width: 100%;
   max-width: 100%;
+}
+
+/* Allow thumbnails to scale down for narrower sidebars */
+.sidebar .graph-thumbnail {
+  min-width: 150px;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  z-index: 30;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #8540f3;
+  color: #8540f3;
+  transform: scale(1.05);
+}
+
+/* Dark Mode Styles for Toggle Button */
+.dark-mode .sidebar-toggle {
+  background: rgba(26, 26, 26, 0.95);
+  border-color: #333333;
+  color: #a0a0a0;
+}
+
+.dark-mode .sidebar-toggle:hover {
+  background: rgba(133, 64, 243, 0.2);
+  border-color: #8540f3;
+  color: #8540f3;
 }
 
 /* Responsive adjustments for enlarged view */
@@ -110,6 +160,11 @@
   .sidebar .graph-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     max-width: 100%;
+  }
+  
+  /* Hide toggle buttons on mobile since layout stacks anyway */
+  .sidebar-toggle {
+    display: none;
   }
 }
 

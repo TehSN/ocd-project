@@ -9,6 +9,7 @@
 
 html, body {
   overflow-x: hidden;
+  overflow-y: hidden; /* Prevent document-level scrolling */
   max-width: 100vw;
   height: 100vh;
   margin: 0;
@@ -26,7 +27,7 @@ body {
   max-width: 100vw;
   min-height: 100vh;
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden; /* Prevent any overflow scrolling */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -119,6 +120,7 @@ main {
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
+  height: calc(100vh - 50px); /* Fixed height to prevent over-scroll */
 }
 
 /* Light Mode Styles */
