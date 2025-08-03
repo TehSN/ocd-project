@@ -6,14 +6,33 @@ import ResizableSplitter from './ResizableSplitter';
 import ChartSelector from './ChartSelector';
 import CategoryDropdown from './CategoryDropdown';
 import CategoryNavigation from './CategoryNavigation';
+import SaveCollectionModal from './SaveCollectionModal';
+import ClearWorkbenchModal from './ClearWorkbenchModal';
+import CollectionsView from './CollectionsView';
 import { categories } from '../graphData';
 import './Dashboard.css';
 
-function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDarkMode }) {
+function Dashboard({ 
+  graphs, 
+  enlargedTiles, 
+  onEnlarge, 
+  onClose,
+  onCloseAll, 
+  onReorder, 
+  isDarkMode, 
+  currentView,
+  collections,
+  activeCollectionId,
+  onSaveCollection,
+  onEditCollection,
+  goToHome
+}) {
   const [detailsGraph, setDetailsGraph] = useState(null);
   const [sidebarWidth, setSidebarWidth] = useState(300); // Default sidebar width
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Track collapse state
   const [chartSelectorOpen, setChartSelectorOpen] = useState(false); // Track chart selector modal
+  const [saveCollectionOpen, setSaveCollectionOpen] = useState(false); // Track save collection modal
+  const [clearWorkbenchOpen, setClearWorkbenchOpen] = useState(false); // Track clear workbench modal
   const [draggedItem, setDraggedItem] = useState(null); // Track dragged item
   const [dragOverIndex, setDragOverIndex] = useState(null); // Track drag over position
   const previousEnlargedTiles = useRef([]); // Track previous state to detect new additions
@@ -21,6 +40,9 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
   // Create enlargedGraphs in the order they were enlarged
   const enlargedGraphs = enlargedTiles.map(id => graphs.find(graph => graph.id === id)).filter(Boolean);
   const hasEnlargedTiles = enlargedTiles.length > 0;
+  const isWorkbenchView = currentView === 'workbench';
+  const isCollectionView = currentView === 'collection';
+  const activeCollection = activeCollectionId ? collections.find(c => c.id === activeCollectionId) : null;
 
   // Scroll to newly enlarged chart
   useEffect(() => {
@@ -75,6 +97,33 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
 
   const closeChartSelector = () => {
     setChartSelectorOpen(false);
+  };
+
+  const openSaveCollection = () => {
+    setSaveCollectionOpen(true);
+  };
+
+  const closeSaveCollection = () => {
+    setSaveCollectionOpen(false);
+  };
+
+  const handleSaveCollection = (name) => {
+    onSaveCollection(name);
+    setSaveCollectionOpen(false);
+  };
+
+  const openClearWorkbench = () => {
+    setClearWorkbenchOpen(true);
+  };
+
+  const closeClearWorkbench = () => {
+    setClearWorkbenchOpen(false);
+  };
+
+  const handleClearWorkbench = () => {
+    // Clear all charts at once and return to home
+    onCloseAll();
+    setClearWorkbenchOpen(false);
   };
 
   const handleNavigationClick = (graphId, e) => {
@@ -221,8 +270,18 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
   };
 
     return (
-    <div className={`dashboard ${hasEnlargedTiles ? 'has-enlarged' : ''}`}>
-      {hasEnlargedTiles && (
+    <div className={`dashboard ${isWorkbenchView ? 'has-enlarged' : ''}`}>
+      {isCollectionView && (
+        <CollectionsView
+          collection={activeCollection}
+          graphs={graphs}
+          onEditCollection={onEditCollection}
+          onBack={goToHome}
+          isDarkMode={isDarkMode}
+        />
+      )}
+      
+      {isWorkbenchView && (
         <>
           {/* Control buttons positioned outside all containers */}
           <div className="dashboard-controls">
@@ -241,6 +300,26 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
             >
               +
             </button>
+            
+            {enlargedTiles.length > 0 && (
+              <>
+                <button 
+                  className="save-collection-toggle"
+                  onClick={openSaveCollection}
+                  title="Save Collection"
+                >
+                  Save
+                </button>
+                
+                <button 
+                  className="clear-workbench-toggle"
+                  onClick={openClearWorkbench}
+                  title="Clear Workbench"
+                >
+                  Clear
+                </button>
+              </>
+            )}
           </div>
           
           {!sidebarCollapsed && (
@@ -354,7 +433,7 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
         </>
       )}
 
-      {!hasEnlargedTiles && (
+      {!isWorkbenchView && !isCollectionView && (
         <>
           <CategoryNavigation 
             graphs={graphs}
@@ -393,6 +472,21 @@ function Dashboard({ graphs, enlargedTiles, onEnlarge, onClose, onReorder, isDar
         onEnlarge={onEnlarge}
         onClose={closeChartSelector}
         isOpen={chartSelectorOpen}
+        isDarkMode={isDarkMode}
+      />
+      
+      <SaveCollectionModal
+        isOpen={saveCollectionOpen}
+        onClose={closeSaveCollection}
+        onSave={handleSaveCollection}
+        isDarkMode={isDarkMode}
+      />
+      
+      <ClearWorkbenchModal
+        isOpen={clearWorkbenchOpen}
+        onConfirm={handleClearWorkbench}
+        onCancel={closeClearWorkbench}
+        chartCount={enlargedTiles.length}
         isDarkMode={isDarkMode}
       />
     </div>

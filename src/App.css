@@ -82,6 +82,150 @@ body {
   transform: scale(1.05);
 }
 
+/* Navigation buttons */
+.navigation-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-button {
+  background: transparent;
+  border: 1px solid #444444;
+  color: #e5e5e5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.nav-button:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #666666;
+}
+
+.nav-button.active {
+  background: #8f3bf6;
+  color: white;
+  border-color: #8f3bf6;
+}
+
+.nav-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.workbench-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  line-height: 1;
+  min-width: 16px;
+  text-align: center;
+}
+
+.nav-button:not(.active) .workbench-count {
+  background: #8f3bf6;
+  color: white;
+}
+
+/* Header Right Section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Collections Menu */
+.collections-menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* Collections toggle button inherits nav-button styles */
+
+.collections-count {
+  background: #8f3bf6;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  line-height: 1;
+  min-width: 16px;
+  text-align: center;
+}
+
+.collections-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: rgba(26, 26, 26, 0.95);
+  border: 1px solid #333333;
+  border-radius: 8px;
+  min-width: 200px;
+  max-width: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.collection-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #333333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.collection-item:last-child {
+  border-bottom: none;
+}
+
+.collection-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.collection-item span {
+  flex: 1;
+  color: #e5e5e5;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.delete-collection {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.delete-collection:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: rgb(248, 113, 113);
+}
+
 .theme-toggle {
   background: transparent;
   border: 1px solid #444444;
@@ -169,6 +313,60 @@ main {
   color: #833bf6;
 }
 
+.light-mode .nav-button {
+  border-color: #cccccc;
+  color: #2a2a2a;
+}
+
+.light-mode .nav-button:hover:not(.disabled) {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #999999;
+}
+
+.light-mode .nav-button.active {
+  background: #8f3bf6;
+  color: white;
+  border-color: #8f3bf6;
+}
+
+/* Light mode collections menu */
+.light-mode .collections-toggle {
+  border-color: #cccccc;
+  color: #2a2a2a;
+}
+
+.light-mode .collections-toggle:hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #999999;
+}
+
+.light-mode .collections-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .collection-item {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.light-mode .collection-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.light-mode .collection-item span {
+  color: #2a2a2a;
+}
+
+.light-mode .delete-collection {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.light-mode .delete-collection:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: rgb(220, 38, 38);
+}
+
 .dark-mode .home-button {
   border-color: #444444;
 }
@@ -196,5 +394,19 @@ main {
   
   .App-header h1 {
     font-size: 1.5rem;
+  }
+  
+  .navigation-buttons {
+    gap: 6px;
+  }
+  
+  .nav-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .workbench-count {
+    font-size: 0.7rem;
+    padding: 1px 4px;
   }
 }

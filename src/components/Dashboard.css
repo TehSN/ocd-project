@@ -162,11 +162,63 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Save Collection Toggle Button */
+.save-collection-toggle {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Clear Workbench Toggle Button */
+.clear-workbench-toggle {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .sidebar-toggle:hover,
 .chart-selector-toggle:hover {
   background: rgba(59, 130, 246, 0.1);
   border-color: #8540f3;
   color: #8540f3;
+  transform: scale(1.05);
+}
+
+.save-collection-toggle:hover {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+  color: #22c55e;
+  transform: scale(1.05);
+}
+
+.clear-workbench-toggle:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
   transform: scale(1.05);
 }
 
@@ -322,10 +374,16 @@
 
 /* Dark Mode Styles for Controls */
 .dark-mode .sidebar-toggle,
-.dark-mode .chart-selector-toggle {
+.dark-mode .chart-selector-toggle,
+.dark-mode .save-collection-toggle,
+.dark-mode .clear-workbench-toggle {
   background: rgba(26, 26, 26, 0.95);
   border-color: #333333;
   color: #a0a0a0;
+}
+
+.dark-mode .clear-workbench-toggle {
+  color: #f59e0b;
 }
 
 .dark-mode .sidebar-toggle:hover,
@@ -333,6 +391,18 @@
   background: rgba(133, 64, 243, 0.2);
   border-color: #8540f3;
   color: #8540f3;
+}
+
+.dark-mode .save-collection-toggle:hover {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.dark-mode .clear-workbench-toggle:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 .dark-mode .drag-handle {

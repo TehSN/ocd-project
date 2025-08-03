@@ -243,6 +243,35 @@
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* Enlarge icon with plus overlay */
+.enlarge-icon {
+  position: relative;
+  display: inline-block;
+  font-size: 40px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  bottom: 4px;
+}
+
+.plus-overlay {
+  position: absolute;
+  top: 2px;
+  right: -12px;
+  font-size: 15px;
+  font-weight: bold;
+  background: #5e005900;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
 /* Dark Mode Styles for Graph Thumbnails */
 .dark-mode .graph-thumbnail {
   background: #1a1a1a;
@@ -349,6 +378,12 @@
 .dark-mode .hover-options button:hover {
   background: #2a2a2a;
   box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
+.dark-mode .plus-overlay {
+  background: #de7fd900;
+  color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 .dark-mode .graph-thumbnail:hover .graph-image::after {

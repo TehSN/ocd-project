@@ -28,7 +28,7 @@ const convertUrlForTheme = (url, isDarkMode, zoomLevel = 1) => {
   return `${processedUrl}${separator}zoom=${zoomPercent}`;
 };
 
-function EnlargedTile({ graph, onClose, isDarkMode }) {
+function EnlargedTile({ graph, onClose, isDarkMode, isReadOnly = false }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(0.75); // 1 = 100%, 0.5 = 50%, 1.5 = 150%
@@ -65,13 +65,15 @@ function EnlargedTile({ graph, onClose, isDarkMode }) {
   return (
     <div className={`enlarged-tile ${categoryClass}`}>
       <div className="enlarged-content">
-        <button 
-          className="close-button"
-          onClick={handleClose}
-          title="Close"
-        >
-          ✕
-        </button>
+        {!isReadOnly && (
+          <button 
+            className="close-button"
+            onClick={handleClose}
+            title="Close"
+          >
+            ✕
+          </button>
+        )}
 
         <div className="zoom-controls">
           <button 

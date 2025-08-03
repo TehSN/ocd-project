@@ -101,8 +101,11 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
             // Selector mode: Show enlarge button or already added indicator
             <>
               {!isEnlarged && (
-                <button title="Add to view" onClick={handleEnlarge}>
-                  <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
+                <button title="Add to Workbench" onClick={handleEnlarge}>
+                  <span className="enlarge-icon">
+                    ⚒
+                    <span className="plus-overlay">+</span>
+                  </span>
                 </button>
               )}
               <button title="Details" onClick={handleShowDetails}>ⓘ</button>
@@ -111,11 +114,14 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
             // Regular mode: Original behavior
             <>
               {!isEnlarged ? (
-                <button title="Enlarge" onClick={handleEnlarge}>
-                  <span style={{ display: 'inline-block', transform: 'rotate(-30deg)' }}>⚲</span>
+                <button title="Add to Workbench" onClick={handleEnlarge}>
+                  <span className="enlarge-icon">
+                    ⚒
+                    <span className="plus-overlay">+</span>
+                  </span>
                 </button>
               ) : (
-                <button title="Close" onClick={handleClose}>
+                <button title="Remove from Workbench" onClick={handleClose}>
                   ✕
                 </button>
               )}
