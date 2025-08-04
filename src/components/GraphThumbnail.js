@@ -20,7 +20,7 @@ const convertUrlForTheme = (url, isDarkMode) => {
   }
 };
 
-function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, isDarkMode, isNavigation = false, isSelector = false }) {
+function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, onPreview, isDarkMode, isNavigation = false, isSelector = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -48,6 +48,12 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
 
   const handleShowDetails = () => {
     onShowDetails(graph);
+  };
+
+  const handlePreview = () => {
+    if (onPreview) {
+      onPreview(graph);
+    }
   };
 
   return (
@@ -116,8 +122,8 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
               {!isEnlarged ? (
                 <button title="Add to Workbench" onClick={handleEnlarge}>
                   <span className="enlarge-icon">
-                    ⚒
-                    <span className="plus-overlay">+</span>
+                    <span style={{ fontSize: '2rem' }}>⚒</span>
+                    <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
                   </span>
                 </button>
               ) : (
@@ -125,7 +131,8 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
                   ✕
                 </button>
               )}
-              <button title="Details" onClick={handleShowDetails}>ⓘ</button>
+              <button title="Preview Chart" onClick={handlePreview}><span style={{ fontSize: '1.6rem' }}>𖠂</span></button>
+              <button title="Details" onClick={handleShowDetails}> <span style={{ fontWeight: 'bold' }}>ⓘ</span></button>
             </>
           )}
         </div>

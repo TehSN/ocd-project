@@ -12,13 +12,12 @@ function App() {
   // State to track which tiles are enlarged
   const [enlargedTiles, setEnlargedTiles] = useState([]);
   
-  // State to track current view: 'home', 'workbench', or 'collection'
+  // State to track current view: 'home', 'workbench', 'collection', or 'collections-page'
   const [currentView, setCurrentView] = useState('home');
   
   // State for collections
   const [collections, setCollections] = useState([]);
   const [activeCollectionId, setActiveCollectionId] = useState(null);
-  const [collectionsMenuOpen, setCollectionsMenuOpen] = useState(false);
   
   // State for enlarge choice modal
   const [enlargeChoiceModal, setEnlargeChoiceModal] = useState({
@@ -27,25 +26,7 @@ function App() {
     chartTitle: ''
   });
 
-  // Ref for collections menu to handle click outside
-  const collectionsMenuRef = useRef(null);
 
-  // Close collections dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (collectionsMenuRef.current && !collectionsMenuRef.current.contains(event.target)) {
-        setCollectionsMenuOpen(false);
-      }
-    };
-
-    if (collectionsMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [collectionsMenuOpen]);
   
   // Function to toggle between light and dark mode
   const toggleTheme = () => {
@@ -95,18 +76,19 @@ function App() {
   const closeAllTiles = () => {
     setEnlargedTiles([]);
     setCurrentView('home');
-    setCollectionsMenuOpen(false); // Close collections dropdown
   };
 
   // Navigation functions
   const goToHome = () => {
     setCurrentView('home');
-    setCollectionsMenuOpen(false); // Close collections dropdown
   };
 
   const goToWorkbench = () => {
     setCurrentView('workbench');
-    setCollectionsMenuOpen(false); // Close collections dropdown
+  };
+
+  const goToCollectionsPage = () => {
+    setCurrentView('collections-page');
   };
 
   // Modal choice handlers
@@ -115,7 +97,6 @@ function App() {
     setEnlargedTiles([...enlargedTiles, chartId]);
     setCurrentView('workbench');
     setEnlargeChoiceModal({ isOpen: false, chartId: null, chartTitle: '' });
-    setCollectionsMenuOpen(false); // Close collections dropdown
   };
 
   const handleReplaceWorkbench = () => {
@@ -123,7 +104,6 @@ function App() {
     setEnlargedTiles([chartId]);
     setCurrentView('workbench');
     setEnlargeChoiceModal({ isOpen: false, chartId: null, chartTitle: '' });
-    setCollectionsMenuOpen(false); // Close collections dropdown
   };
 
   const closeEnlargeChoiceModal = () => {
@@ -148,7 +128,6 @@ function App() {
     if (collection) {
       setActiveCollectionId(collectionId);
       setCurrentView('collection');
-      setCollectionsMenuOpen(false); // Close collections dropdown
     }
   };
 
@@ -158,7 +137,6 @@ function App() {
       setEnlargedTiles([...collection.charts]);
       setActiveCollectionId(null);
       setCurrentView('workbench');
-      setCollectionsMenuOpen(false); // Close collections dropdown
     }
   };
 
@@ -202,35 +180,17 @@ function App() {
               )}
             </button>
             
-            <div className="collections-menu" ref={collectionsMenuRef}>
-              <button 
-                className="collections-toggle nav-button"
-                onClick={() => setCollectionsMenuOpen(!collectionsMenuOpen)}
-              >
-                <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>⛉</span>
-                Collections {collections.length > 0 && <span className="collections-count">{collections.length}</span>}
-              </button>
-              {collections.length > 0 && collectionsMenuOpen && (
-                <div className="collections-dropdown">
-                  {collections.map(collection => (
-                    <div key={collection.id} className="collection-item">
-                      <span onClick={() => openCollection(collection.id)}>
-                        {collection.name}
-                      </span>
-                      <button 
-                        className="delete-collection"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteCollection(collection.id);
-                        }}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
+            <button
+              className={`nav-button ${currentView === 'collections-page' ? 'active' : ''}`}
+              onClick={goToCollectionsPage}
+              aria-label="Go to collections page"
+            >
+              <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>⛉</span>
+              Collections
+              {collections.length > 0 && (
+                <span className="collections-count">{collections.length}</span>
               )}
-            </div>
+            </button>
           </div>
         </div>
         <div className="header-right">
@@ -257,7 +217,10 @@ function App() {
           activeCollectionId={activeCollectionId}
           onSaveCollection={saveCollection}
           onEditCollection={editCollection}
+          onOpenCollection={openCollection}
+          onDeleteCollection={deleteCollection}
           goToHome={goToHome}
+          goToCollectionsPage={goToCollectionsPage}
         />
       </main>
       

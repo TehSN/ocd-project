@@ -67,13 +67,13 @@ function CollectionsView({
   return (
     <div className="collections-view has-sidebar">
       {/* Control buttons positioned outside all containers */}
-      <div className="collection-controls">
+      <div className="dashboard-controls">
         <button 
           className={`sidebar-toggle ${sidebarCollapsed ? 'sidebar-expand' : 'sidebar-collapse'}`}
           onClick={toggleSidebarCollapse}
-          title={sidebarCollapsed ? "Show Navigation" : "Hide Navigation"}
+          title={sidebarCollapsed ? "Show navigation" : "Hide navigation"}
         >
-          {sidebarCollapsed ? '>>' : '<<'}
+          {sidebarCollapsed ? '\u00bb' : '\u00ab'}
         </button>
       </div>
 
@@ -106,7 +106,7 @@ function CollectionsView({
                 {collectionGraphs.map((graph) => (
                   <div
                     key={`nav-${graph.id}`}
-                    className="navigation-item collection-nav-item"
+                    className={`navigation-item collection-nav-item category-${graph.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                     onClick={() => handleChartNavigation(graph.id)}
                     title={`Go to ${graph.title}`}
                   >

@@ -1,3 +1,4 @@
+
 /* Collections View Styles */
 .collections-view {
   width: 100%;
@@ -13,15 +14,15 @@
   position: relative;
 }
 
-/* Collection Controls */
-.collection-controls {
+/* Collection Controls - Same as Dashboard Controls */
+.collections-view .dashboard-controls {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 15;
+  top: 0px;
+  left: 20px;
+  z-index: 30;
   display: flex;
+  gap: 8px;
   align-items: center;
-  gap: 10px;
 }
 
 /* Collection Sidebar */
@@ -36,19 +37,19 @@
 }
 
 .collection-info-section {
-  padding: 24px 20px;
+  padding: 12px 10px;
   border-bottom: 2px solid var(--border-color);
   background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .collection-details {
   flex: 1;
-  padding: 16px;
+  padding: 8px;
   background: var(--background-secondary);
   border-radius: 12px;
   border: 1px solid var(--border-color);
@@ -73,13 +74,6 @@
   gap: 8px;
   font-weight: 500;
 }
-
-.collection-meta::before {
-  content: "⦿";
-  font-size: 1rem;
-  margin-right: 4px;
-}
-
 
 
 .collection-info h1 {
@@ -128,24 +122,18 @@
 }
 
 .navigation-title {
-  margin: 0 0 16px 0;
+  margin: 0 0 8px 0;
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.75px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-primary) 100%);
+  /* background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-primary) 100%); */
   border-radius: 8px;
   margin: 0 12px 16px 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.1); */
   position: relative;
-}
-
-.navigation-title::before {
-  content: "▸";
-  margin-right: 8px;
-  font-size: 1rem;
 }
 
 .navigation-grid {
@@ -159,23 +147,21 @@
 }
 
 .collection-nav-item {
-  margin: 0 12px 8px 12px;
-  padding: 16px;
-  border-radius: 12px;
+  margin: 0 8px 6px 8px;
+  padding: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-primary) 100%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   position: relative;
   overflow: hidden;
 }
 
 .collection-nav-item:hover {
   background: linear-gradient(135deg, var(--hover-background) 0%, var(--background-secondary) 100%);
-  border-color: #8540f3;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(133, 64, 243, 0.15);
+  transform: translateY(-1px);
 }
 
 .collection-nav-item::before {
@@ -185,7 +171,6 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #8540f3 0%, #6366f1 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -225,6 +210,9 @@
 /* Sidebar toggle button - consistent with workbench */
 .sidebar-toggle {
   background: rgba(255, 255, 255, 0.95);
+  position: absolute;
+  top: 97%;
+  right: -10px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   width: 24px;
@@ -331,7 +319,7 @@
 }
 
 .dark-mode .collection-info-section {
-  background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+  background: transparent;
   border-bottom: 2px solid #222222;
 }
 
@@ -364,7 +352,7 @@
 }
 
 .dark-mode .navigation-title {
-  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
+  background: transparent;
   color: #f5f5f5;
 }
 
@@ -375,13 +363,7 @@
 
 .dark-mode .collection-nav-item:hover {
   background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%);
-  border-color: #8540f3;
-  box-shadow: 0 4px 12px rgba(133, 64, 243, 0.2);
 }
-
-
-
-
 
 .dark-mode .nav-item-title {
   color: #e5e5e5;
@@ -401,6 +383,63 @@
   background: rgba(133, 64, 243, 0.2);
   border-color: #8540f3;
   color: #8540f3;
+}
+
+/* Dark mode category-specific hover shadows */
+.dark-mode .collection-nav-item.category-pricing-models:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-pricing-models-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-spot-etf:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-spot-etf-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-derivatives:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-derivatives-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-strategy:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-strategy-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-profit-loss:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-profit-loss-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-lifespan:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-lifespan-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-network-adoption:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-network-adoption-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-supply-dynamics:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-supply-dynamics-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-mining:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-mining-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-ta-and-volatility:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-ta-and-volatility-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-whales:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-whales-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-consensus:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-consensus-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-stablecoins:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-stablecoins-dark) 25%, transparent) 0%, transparent 60%);
+}
+
+.dark-mode .collection-nav-item.category-tradfi:hover {
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--color-tradfi-dark) 25%, transparent) 0%, transparent 60%);
 }
 
 /* Light mode adjustments */
@@ -433,7 +472,7 @@
 }
 
 .light-mode .collection-info-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: transparent;
   border-bottom: 2px solid #e5e5e5;
 }
 
@@ -466,7 +505,7 @@
 }
 
 .light-mode .navigation-title {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: transparent;
   color: #2a2a2a;
 }
 
@@ -477,7 +516,7 @@
 
 .light-mode .collection-nav-item:hover {
   background: linear-gradient(135deg, #f1f5f9 0%, #f8f9fa 100%);
-  border-color: #8540f3;
+  /* border-color: #8540f3; */
   box-shadow: 0 4px 12px rgba(133, 64, 243, 0.1);
 }
 

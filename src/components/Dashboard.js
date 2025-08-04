@@ -8,7 +8,9 @@ import CategoryDropdown from './CategoryDropdown';
 import CategoryNavigation from './CategoryNavigation';
 import SaveCollectionModal from './SaveCollectionModal';
 import ClearWorkbenchModal from './ClearWorkbenchModal';
+import PreviewModal from './PreviewModal';
 import CollectionsView from './CollectionsView';
+import CollectionsPageView from './CollectionsPageView';
 import { categories } from '../graphData';
 import './Dashboard.css';
 
@@ -25,7 +27,10 @@ function Dashboard({
   activeCollectionId,
   onSaveCollection,
   onEditCollection,
-  goToHome
+  onOpenCollection,
+  onDeleteCollection,
+  goToHome,
+  goToCollectionsPage
 }) {
   const [detailsGraph, setDetailsGraph] = useState(null);
   const [sidebarWidth, setSidebarWidth] = useState(300); // Default sidebar width
@@ -33,6 +38,7 @@ function Dashboard({
   const [chartSelectorOpen, setChartSelectorOpen] = useState(false); // Track chart selector modal
   const [saveCollectionOpen, setSaveCollectionOpen] = useState(false); // Track save collection modal
   const [clearWorkbenchOpen, setClearWorkbenchOpen] = useState(false); // Track clear workbench modal
+  const [previewGraph, setPreviewGraph] = useState(null); // Track preview modal
   const [draggedItem, setDraggedItem] = useState(null); // Track dragged item
   const [dragOverIndex, setDragOverIndex] = useState(null); // Track drag over position
   const previousEnlargedTiles = useRef([]); // Track previous state to detect new additions
@@ -42,6 +48,7 @@ function Dashboard({
   const hasEnlargedTiles = enlargedTiles.length > 0;
   const isWorkbenchView = currentView === 'workbench';
   const isCollectionView = currentView === 'collection';
+  const isCollectionsPageView = currentView === 'collections-page';
   const activeCollection = activeCollectionId ? collections.find(c => c.id === activeCollectionId) : null;
 
   // Scroll to newly enlarged chart
@@ -124,6 +131,19 @@ function Dashboard({
     // Clear all charts at once and return to home
     onCloseAll();
     setClearWorkbenchOpen(false);
+  };
+
+  const handlePreview = (graph) => {
+    setPreviewGraph(graph);
+  };
+
+  const closePreview = () => {
+    setPreviewGraph(null);
+  };
+
+  const handlePreviewAddToWorkbench = (graphId) => {
+    onEnlarge(graphId);
+    setPreviewGraph(null);
   };
 
   const handleNavigationClick = (graphId, e) => {
@@ -271,6 +291,16 @@ function Dashboard({
 
     return (
     <div className={`dashboard ${isWorkbenchView ? 'has-enlarged' : ''}`}>
+      {isCollectionsPageView && (
+        <CollectionsPageView
+          collections={collections}
+          onOpenCollection={onOpenCollection}
+          onDeleteCollection={onDeleteCollection}
+          isDarkMode={isDarkMode}
+          graphs={graphs}
+        />
+      )}
+      
       {isCollectionView && (
         <CollectionsView
           collection={activeCollection}
@@ -433,7 +463,7 @@ function Dashboard({
         </>
       )}
 
-      {!isWorkbenchView && !isCollectionView && (
+      {!isWorkbenchView && !isCollectionView && !isCollectionsPageView && (
         <>
           <CategoryNavigation 
             graphs={graphs}
@@ -450,6 +480,7 @@ function Dashboard({
                   onEnlarge={onEnlarge}
                   onClose={onClose}
                   onShowDetails={handleShowDetails}
+                  onPreview={handlePreview}
                   isDarkMode={isDarkMode}
                   isSelector={false}
                 />
@@ -487,6 +518,14 @@ function Dashboard({
         onConfirm={handleClearWorkbench}
         onCancel={closeClearWorkbench}
         chartCount={enlargedTiles.length}
+        isDarkMode={isDarkMode}
+      />
+      
+      <PreviewModal
+        isOpen={!!previewGraph}
+        graph={previewGraph}
+        onClose={closePreview}
+        onAddToWorkbench={handlePreviewAddToWorkbench}
         isDarkMode={isDarkMode}
       />
     </div>

@@ -11,6 +11,7 @@ function CategoryDropdown({
   onEnlarge,
   onClose,
   onShowDetails,
+  onPreview,
   isDarkMode,
   isSelector = false
 }) {
@@ -61,6 +62,7 @@ function CategoryDropdown({
                   onEnlarge={onEnlarge}
                   onClose={onClose}
                   onShowDetails={onShowDetails}
+                  onPreview={onPreview}
                   isDarkMode={isDarkMode}
                   isSelector={isSelector}
                 />

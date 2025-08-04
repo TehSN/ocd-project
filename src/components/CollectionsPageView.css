@@ -1,0 +1,578 @@
+/* Collections Page View Styles */
+.collections-page-view {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+}
+
+.collections-page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.collections-page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2a2a2a;
+}
+
+.collections-subtitle {
+  font-size: 1.1rem;
+  color: #666666;
+  margin: 0;
+}
+
+/* Empty state */
+.empty-collections {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.empty-collections-content {
+  max-width: 400px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #666666;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.empty-collections h2 {
+  font-size: 1.8rem;
+  color: #2a2a2a;
+  margin-bottom: 12px;
+}
+
+.empty-collections p {
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+/* Collections grid */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* Collection tile */
+.collection-tile {
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: #8f3bf6;
+}
+
+.collection-tile:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--color-pricing-models-light), 
+    var(--color-spot-etf-light), 
+    var(--color-derivatives-light),
+    var(--color-strategy-light),
+    var(--color-profit-loss-light),
+    var(--color-lifespan-light)
+  );
+  opacity: 0.8;
+}
+
+.collection-tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.collection-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2a2a2a;
+  line-height: 1.3;
+  flex: 1;
+  margin-right: 12px;
+}
+
+.collection-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.collection-info-btn,
+.collection-delete-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.collection-info-btn {
+  background: #e5f3ff;
+  color: #0066cc;
+}
+
+.collection-info-btn:hover {
+  background: #bfdbfe;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.collection-delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.collection-delete-btn:hover {
+  background: #fecaca;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.collection-tile:hover .collection-info-btn,
+.collection-tile:hover .collection-delete-btn {
+  opacity: 0.8;
+}
+
+/* Collection preview */
+.collection-preview {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  min-height: 32px;
+  align-items: center;
+}
+
+.mini-chart {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-chart-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: currentColor;
+  opacity: 0.8;
+}
+
+.mini-chart.more-charts {
+  background: #f3f4f6;
+  color: #666666;
+  border: 1px dashed #d1d5db;
+  font-size: 10px;
+}
+
+/* Category colors for mini charts */
+.mini-chart.category-pricing-models { background: var(--color-pricing-models-light); color: white; }
+.mini-chart.category-spot-etf { background: var(--color-spot-etf-light); color: white; }
+.mini-chart.category-derivatives { background: var(--color-derivatives-light); color: white; }
+.mini-chart.category-strategy { background: var(--color-strategy-light); color: white; }
+.mini-chart.category-profit-loss { background: var(--color-profit-loss-light); color: white; }
+.mini-chart.category-lifespan { background: var(--color-lifespan-light); color: white; }
+.mini-chart.category-network-adoption { background: var(--color-network-adoption-light); color: white; }
+.mini-chart.category-supply-dynamics { background: var(--color-supply-dynamics-light); color: white; }
+.mini-chart.category-mining { background: var(--color-mining-light); color: white; }
+.mini-chart.category-ta-and-volatility { background: var(--color-ta-and-volatility-light); color: white; }
+.mini-chart.category-stablecoins { background: var(--color-stablecoins-light); color: white; }
+.mini-chart.category-tradfi { background: var(--color-tradfi-light); color: white; }
+
+/* Collection meta */
+.collection-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.chart-count {
+  color: #2a2a2a;
+  font-weight: 600;
+}
+
+.collection-date {
+  color: #666666;
+}
+
+/* Collection Info Modal */
+.collection-info-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.collection-info-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e5e5e5;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 0;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2a2a2a;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666666;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f3f4f6;
+  color: #2a2a2a;
+}
+
+.modal-body {
+  padding: 0 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.collection-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-body h3 {
+  font-size: 1.1rem;
+  color: #2a2a2a;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+.collection-charts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chart-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid currentColor;
+  background: #f9fafb;
+}
+
+.chart-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chart-title {
+  font-weight: 500;
+  color: #2a2a2a;
+  font-size: 0.95rem;
+}
+
+.chart-category {
+  font-size: 0.8rem;
+  color: #666666;
+}
+
+.modal-footer {
+  padding: 20px 24px 24px;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.open-collection-btn {
+  background: #8f3bf6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.open-collection-btn:hover {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+/* Dark mode styles */
+.App.dark-mode .collections-page-header h1 {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .collections-subtitle {
+  color: #888888;
+}
+
+.App.dark-mode .empty-icon {
+  color: #888888;
+}
+
+.App.dark-mode .empty-collections h2 {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .empty-collections p {
+  color: #888888;
+}
+
+.App.dark-mode .collection-tile {
+  background: #1f1f1f;
+  border-color: #333333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.App.dark-mode .collection-tile:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: #8f3bf6;
+}
+
+.App.dark-mode .collection-tile:hover::before {
+  background: linear-gradient(90deg, 
+    var(--color-pricing-models-dark), 
+    var(--color-spot-etf-dark), 
+    var(--color-derivatives-dark),
+    var(--color-strategy-dark),
+    var(--color-profit-loss-dark),
+    var(--color-lifespan-dark)
+  );
+}
+
+.App.dark-mode .collection-title {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .collection-info-btn {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.App.dark-mode .collection-info-btn:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.App.dark-mode .collection-delete-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.App.dark-mode .collection-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.App.dark-mode .mini-chart.more-charts {
+  background: #2a2a2a;
+  color: #888888;
+  border-color: #444444;
+}
+
+.App.dark-mode .chart-count {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .collection-date {
+  color: #888888;
+}
+
+.App.dark-mode .collection-info-modal {
+  background: #1f1f1f;
+  border-color: #333333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.App.dark-mode .modal-header {
+  border-bottom-color: #333333;
+}
+
+.App.dark-mode .modal-header h2 {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .modal-close {
+  color: #888888;
+}
+
+.App.dark-mode .modal-close:hover {
+  background: #2a2a2a;
+  color: #e5e5e5;
+}
+
+.App.dark-mode .stat-value {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .stat-label {
+  color: #888888;
+}
+
+.App.dark-mode .modal-body h3 {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .chart-item {
+  background: #2a2a2a;
+}
+
+.App.dark-mode .chart-title {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .chart-category {
+  color: #888888;
+}
+
+.App.dark-mode .modal-footer {
+  border-top-color: #333333;
+}
+
+.App.dark-mode .open-collection-btn {
+  background: #8f3bf6;
+  color: white;
+}
+
+.App.dark-mode .open-collection-btn:hover {
+  background: #7c3aed;
+}
+
+/* Dark mode category colors for mini charts */
+.App.dark-mode .mini-chart.category-pricing-models { background: var(--color-pricing-models-dark); }
+.App.dark-mode .mini-chart.category-spot-etf { background: var(--color-spot-etf-dark); }
+.App.dark-mode .mini-chart.category-derivatives { background: var(--color-derivatives-dark); }
+.App.dark-mode .mini-chart.category-strategy { background: var(--color-strategy-dark); }
+.App.dark-mode .mini-chart.category-profit-loss { background: var(--color-profit-loss-dark); }
+.App.dark-mode .mini-chart.category-lifespan { background: var(--color-lifespan-dark); }
+.App.dark-mode .mini-chart.category-network-adoption { background: var(--color-network-adoption-dark); }
+.App.dark-mode .mini-chart.category-supply-dynamics { background: var(--color-supply-dynamics-dark); }
+.App.dark-mode .mini-chart.category-mining { background: var(--color-mining-dark); }
+.App.dark-mode .mini-chart.category-ta-and-volatility { background: var(--color-ta-and-volatility-dark); }
+.App.dark-mode .mini-chart.category-stablecoins { background: var(--color-stablecoins-dark); }
+.App.dark-mode .mini-chart.category-tradfi { background: var(--color-tradfi-dark); }
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .collections-page-view {
+    padding: 16px;
+  }
+  
+  .collections-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .collection-tile {
+    padding: 16px;
+  }
+  
+  .collections-page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .collection-info-modal {
+    margin: 20px;
+    max-width: none;
+  }
+  
+  .collection-stats {
+    gap: 20px;
+    justify-content: center;
+  }
+}
