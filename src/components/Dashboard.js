@@ -25,8 +25,11 @@ function Dashboard({
   currentView,
   collections,
   activeCollectionId,
+  editingCollectionId,
   onSaveCollection,
   onEditCollection,
+  onRenameCollection,
+  onCancelEditing,
   onOpenCollection,
   onDeleteCollection,
   goToHome,
@@ -45,7 +48,6 @@ function Dashboard({
   
   // Create enlargedGraphs in the order they were enlarged
   const enlargedGraphs = enlargedTiles.map(id => graphs.find(graph => graph.id === id)).filter(Boolean);
-  const hasEnlargedTiles = enlargedTiles.length > 0;
   const isWorkbenchView = currentView === 'workbench';
   const isCollectionView = currentView === 'collection';
   const isCollectionsPageView = currentView === 'collections-page';
@@ -296,6 +298,8 @@ function Dashboard({
           collections={collections}
           onOpenCollection={onOpenCollection}
           onDeleteCollection={onDeleteCollection}
+          onRenameCollection={onRenameCollection}
+          onEditCollection={onEditCollection}
           isDarkMode={isDarkMode}
           graphs={graphs}
         />
@@ -306,7 +310,7 @@ function Dashboard({
           collection={activeCollection}
           graphs={graphs}
           onEditCollection={onEditCollection}
-          onBack={goToHome}
+          onBack={goToCollectionsPage}
           isDarkMode={isDarkMode}
         />
       )}
@@ -511,6 +515,8 @@ function Dashboard({
         onClose={closeSaveCollection}
         onSave={handleSaveCollection}
         isDarkMode={isDarkMode}
+        isEditing={!!editingCollectionId}
+        editingCollectionName={editingCollectionId ? collections.find(c => c.id === editingCollectionId)?.name : ''}
       />
       
       <ClearWorkbenchModal

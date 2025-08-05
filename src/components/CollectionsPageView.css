@@ -69,13 +69,16 @@
 .collection-tile {
   background: white;
   border: 1px solid #e5e5e5;
-  border-radius: 16px;
+  border-radius: 6px;
   padding: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 .collection-tile:hover {
@@ -87,25 +90,27 @@
 .collection-tile:hover::before {
   content: '';
   position: absolute;
+  border-radius: 2px;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
+  width: 99%;
+  margin: 0 auto;
   background: linear-gradient(90deg, 
     var(--color-pricing-models-light), 
     var(--color-spot-etf-light), 
     var(--color-derivatives-light),
-    var(--color-strategy-light),
+    var(--color-treasury-companies-light),
     var(--color-profit-loss-light),
     var(--color-lifespan-light)
   );
   opacity: 0.8;
 }
 
+
 .collection-tile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  position: relative;
   margin-bottom: 16px;
 }
 
@@ -115,18 +120,21 @@
   margin: 0;
   color: #2a2a2a;
   line-height: 1.3;
-  flex: 1;
-  margin-right: 12px;
+  text-align: center;
+  padding: 0 60px; /* Add padding to prevent overlap with buttons */
 }
 
 .collection-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
   gap: 4px;
   flex-shrink: 0;
 }
 
 .collection-info-btn,
-.collection-delete-btn {
+  .collection-menu-btn {
   width: 28px;
   height: 28px;
   border: none;
@@ -152,20 +160,73 @@
   transform: scale(1.1);
 }
 
-.collection-delete-btn {
-  background: #fee2e2;
-  color: #dc2626;
+.collection-menu-btn {
+  background: #f3f4f6;
+  color: #374151;
 }
 
-.collection-delete-btn:hover {
-  background: #fecaca;
+.collection-menu-btn:hover {
+  background: #e5e7eb;
   opacity: 1;
   transform: scale(1.1);
 }
 
 .collection-tile:hover .collection-info-btn,
-.collection-tile:hover .collection-delete-btn {
+.collection-tile:hover .collection-menu-btn {
   opacity: 0.8;
+}
+
+/* Menu container and dropdown */
+.collection-menu-container {
+  position: relative;
+}
+
+.collection-menu-dropdown {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 8px);
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 120px;
+  overflow: visible;
+}
+
+.menu-option {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #374151;
+  transition: background-color 0.2s ease;
+}
+
+.menu-option:hover {
+  background: #f3f4f6;
+}
+
+.menu-option-delete {
+  color: #dc2626;
+}
+
+.menu-option-delete:hover {
+  background: #fef2f2;
+}
+
+.menu-icon {
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 
 /* Collection preview */
@@ -176,6 +237,7 @@
   flex-wrap: wrap;
   min-height: 32px;
   align-items: center;
+  justify-content: center;
 }
 
 .mini-chart {
@@ -210,7 +272,7 @@
 .mini-chart.category-pricing-models { background: var(--color-pricing-models-light); color: white; }
 .mini-chart.category-spot-etf { background: var(--color-spot-etf-light); color: white; }
 .mini-chart.category-derivatives { background: var(--color-derivatives-light); color: white; }
-.mini-chart.category-strategy { background: var(--color-strategy-light); color: white; }
+.mini-chart.category-treasury-companies { background: var(--color-treasury-companies-light); color: white; }
 .mini-chart.category-profit-loss { background: var(--color-profit-loss-light); color: white; }
 .mini-chart.category-lifespan { background: var(--color-lifespan-light); color: white; }
 .mini-chart.category-network-adoption { background: var(--color-network-adoption-light); color: white; }
@@ -223,7 +285,7 @@
 /* Collection meta */
 .collection-meta {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-size: 0.9rem;
 }
@@ -265,8 +327,8 @@
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: space-between;
+  justify-content: center;
   padding: 24px 24px 0;
   border-bottom: 1px solid #e5e5e5;
   margin-bottom: 20px;
@@ -282,6 +344,8 @@
 .modal-close {
   background: none;
   border: none;
+  position: relative;
+  left: 45%;
   font-size: 24px;
   cursor: pointer;
   color: #666666;
@@ -309,6 +373,7 @@
   display: flex;
   gap: 32px;
   margin-bottom: 24px;
+  justify-content: center;
 }
 
 .stat {
@@ -349,8 +414,8 @@
   align-items: center;
   padding: 12px;
   border-radius: 8px;
-  border-left: 4px solid currentColor;
   background: #f9fafb;
+  justify-content: center;
 }
 
 .chart-info {
@@ -394,6 +459,84 @@
   transform: translateY(-1px);
 }
 
+/* Rename Modal */
+.rename-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.rename-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e5e5e5;
+}
+
+.rename-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 12px;
+  box-sizing: border-box;
+}
+
+.rename-input:focus {
+  outline: none;
+  border-color: #8f3bf6;
+  box-shadow: 0 0 0 3px rgba(143, 59, 246, 0.1);
+}
+
+.rename-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.rename-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  margin-right: 12px;
+}
+
+.rename-cancel:hover {
+  background: #e5e7eb;
+}
+
+.rename-confirm {
+  background: #8f3bf6;
+  color: white;
+}
+
+.rename-confirm:hover:not(:disabled) {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.rename-confirm:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Dark mode styles */
 .App.dark-mode .collections-page-header h1 {
   color: #e5e5e5;
@@ -431,7 +574,7 @@
     var(--color-pricing-models-dark), 
     var(--color-spot-etf-dark), 
     var(--color-derivatives-dark),
-    var(--color-strategy-dark),
+    var(--color-treasury-companies-dark),
     var(--color-profit-loss-dark),
     var(--color-lifespan-dark)
   );
@@ -450,13 +593,35 @@
   background: rgba(59, 130, 246, 0.3);
 }
 
-.App.dark-mode .collection-delete-btn {
-  background: rgba(239, 68, 68, 0.2);
+.App.dark-mode .collection-menu-btn {
+  background: #2a2a2a;
+  color: #e5e5e5;
+}
+
+.App.dark-mode .collection-menu-btn:hover {
+  background: #333333;
+}
+
+.App.dark-mode .collection-menu-dropdown {
+  background: #1f1f1f;
+  border-color: #333333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.App.dark-mode .menu-option {
+  color: #e5e5e5;
+}
+
+.App.dark-mode .menu-option:hover {
+  background: #2a2a2a;
+}
+
+.App.dark-mode .menu-option-delete {
   color: #f87171;
 }
 
-.App.dark-mode .collection-delete-btn:hover {
-  background: rgba(239, 68, 68, 0.3);
+.App.dark-mode .menu-option-delete:hover {
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .App.dark-mode .mini-chart.more-charts {
@@ -537,7 +702,7 @@
 .App.dark-mode .mini-chart.category-pricing-models { background: var(--color-pricing-models-dark); }
 .App.dark-mode .mini-chart.category-spot-etf { background: var(--color-spot-etf-dark); }
 .App.dark-mode .mini-chart.category-derivatives { background: var(--color-derivatives-dark); }
-.App.dark-mode .mini-chart.category-strategy { background: var(--color-strategy-dark); }
+.App.dark-mode .mini-chart.category-treasury-companies { background: var(--color-treasury-companies-dark); }
 .App.dark-mode .mini-chart.category-profit-loss { background: var(--color-profit-loss-dark); }
 .App.dark-mode .mini-chart.category-lifespan { background: var(--color-lifespan-dark); }
 .App.dark-mode .mini-chart.category-network-adoption { background: var(--color-network-adoption-dark); }
@@ -546,6 +711,47 @@
 .App.dark-mode .mini-chart.category-ta-and-volatility { background: var(--color-ta-and-volatility-dark); }
 .App.dark-mode .mini-chart.category-stablecoins { background: var(--color-stablecoins-dark); }
 .App.dark-mode .mini-chart.category-tradfi { background: var(--color-tradfi-dark); }
+
+/* Dark mode rename modal */
+.App.dark-mode .rename-modal {
+  background: #1f1f1f;
+  border-color: #333333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.App.dark-mode .rename-input {
+  background: #2a2a2a;
+  border-color: #444444;
+  color: #e5e5e5;
+}
+
+.App.dark-mode .rename-input:focus {
+  border-color: #8f3bf6;
+  box-shadow: 0 0 0 3px rgba(143, 59, 246, 0.2);
+}
+
+.App.dark-mode .rename-cancel {
+  background: #2a2a2a;
+  color: #e5e5e5;
+}
+
+.App.dark-mode .rename-cancel:hover {
+  background: #333333;
+}
+
+.App.dark-mode .rename-confirm {
+  background: #8f3bf6;
+  color: white;
+}
+
+.App.dark-mode .rename-confirm:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.App.dark-mode .rename-confirm:disabled {
+  background: #444444;
+  color: #888888;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -574,5 +780,12 @@
   .collection-stats {
     gap: 20px;
     justify-content: center;
+  }
+  
+  /* On mobile, show dropdown below instead of to the right */
+  .collection-menu-dropdown {
+    top: calc(100% + 4px);
+    left: auto;
+    right: 0;
   }
 }

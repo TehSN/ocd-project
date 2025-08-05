@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CollectionsPageView.css';
 
 function CollectionsPageView({ 
   collections, 
   onOpenCollection, 
   onDeleteCollection, 
+  onRenameCollection,
+  onEditCollection,
   isDarkMode, 
   graphs 
 }) {
   const [collectionInfoModal, setCollectionInfoModal] = useState(null);
+  const [renameModal, setRenameModal] = useState({ isOpen: false, collection: null, newName: '' });
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+    };
+
+    if (openMenuId) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenuId]);
 
   const handleOpenCollection = (collectionId) => {
     onOpenCollection(collectionId);
@@ -23,10 +45,52 @@ function CollectionsPageView({
     setCollectionInfoModal(null);
   };
 
-  const handleDeleteCollection = (e, collectionId) => {
+
+
+  const handleRenameConfirm = () => {
+    if (renameModal.newName.trim() && renameModal.collection) {
+      onRenameCollection(renameModal.collection.id, renameModal.newName.trim());
+      setRenameModal({ isOpen: false, collection: null, newName: '' });
+    }
+  };
+
+  const handleRenameCancel = () => {
+    setRenameModal({ isOpen: false, collection: null, newName: '' });
+  };
+
+  const handleMenuToggle = (e, collectionId) => {
+    e.stopPropagation();
+    setOpenMenuId(openMenuId === collectionId ? null : collectionId);
+  };
+
+  const handleMenuAction = (e, action, collection) => {
     e.stopPropagation(); // Prevent opening the collection
-    if (window.confirm('Are you sure you want to delete this collection?')) {
-      onDeleteCollection(collectionId);
+    setOpenMenuId(null); // Close menu
+    
+    switch (action) {
+      case 'rename':
+        setRenameModal({ isOpen: true, collection, newName: collection.name });
+        break;
+      case 'edit':
+        // Use the existing edit collection functionality from the collections view
+        // This should trigger the edit modal and then open in workbench
+        handleEditCollection(collection.id);
+        break;
+      case 'delete':
+        if (window.confirm('Are you sure you want to delete this collection?')) {
+          onDeleteCollection(collection.id);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleEditCollection = (collectionId) => {
+    // This will need to be passed down from the parent or we can navigate directly
+    // For now, let's assume we have access to the edit function through props
+    if (onEditCollection) {
+      onEditCollection(collectionId);
     }
   };
 
@@ -80,13 +144,43 @@ function CollectionsPageView({
                     >
                       ℹ
                     </button>
-                    <button
-                      className="collection-delete-btn"
-                      onClick={(e) => handleDeleteCollection(e, collection.id)}
-                      title="Delete collection"
-                    >
-                      ×
-                    </button>
+                    <div className="collection-menu-container" ref={menuRef}>
+                      <button
+                        className="collection-menu-btn"
+                        onClick={(e) => handleMenuToggle(e, collection.id)}
+                        title="Collection options"
+                      >
+                        ☰
+                      </button>
+                      {openMenuId === collection.id && (
+                        <div 
+                          className="collection-menu-dropdown"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button
+                            className="menu-option"
+                            onClick={(e) => handleMenuAction(e, 'rename', collection)}
+                          >
+                            <span className="menu-icon">✎</span>
+                            Rename
+                          </button>
+                          <button
+                            className="menu-option"
+                            onClick={(e) => handleMenuAction(e, 'edit', collection)}
+                          >
+                            <span className="menu-icon" style={{ fontSize: '20px' }}>⚒</span>
+                            Edit
+                          </button>
+                          <button
+                            className="menu-option menu-option-delete"
+                            onClick={(e) => handleMenuAction(e, 'delete', collection)}
+                          >
+                            <span className="menu-icon" style={{ fontSize: '20px' }}>⊝</span>
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 
@@ -112,9 +206,6 @@ function CollectionsPageView({
                   <div className="collection-meta">
                     <span className="chart-count">
                       {chartCount} chart{chartCount !== 1 ? 's' : ''}
-                    </span>
-                    <span className="collection-date">
-                      {new Date(collection.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -167,6 +258,53 @@ function CollectionsPageView({
                 }}
               >
                 Open Collection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rename Collection Modal */}
+      {renameModal.isOpen && (
+        <div className="rename-modal-overlay" onClick={handleRenameCancel}>
+          <div className="rename-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Rename Collection</h2>
+              <button className="modal-close" onClick={handleRenameCancel}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <p>Enter a new name for <strong>"{renameModal.collection?.name}"</strong>:</p>
+              <input
+                type="text"
+                value={renameModal.newName}
+                onChange={(e) => setRenameModal({...renameModal, newName: e.target.value})}
+                placeholder="Collection name..."
+                className="rename-input"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleRenameConfirm();
+                  } else if (e.key === 'Escape') {
+                    handleRenameCancel();
+                  }
+                }}
+              />
+            </div>
+            
+            <div className="modal-footer">
+              <button 
+                className="rename-btn rename-cancel"
+                onClick={handleRenameCancel}
+              >
+                Cancel
+              </button>
+              <button 
+                className="rename-btn rename-confirm"
+                onClick={handleRenameConfirm}
+                disabled={!renameModal.newName.trim()}
+              >
+                Rename
               </button>
             </div>
           </div>

@@ -128,9 +128,9 @@
   border-left-color: var(--color-derivatives-light);
 }
 
-.category-nav-item[data-category="strategy"]:hover,
-.category-nav-item[data-category="strategy"].active {
-  border-left-color: var(--color-strategy-light);
+.category-nav-item[data-category="treasury-companies"]:hover,
+.category-nav-item[data-category="treasury-companies"].active {
+  border-left-color: var(--color-treasury-companies-light);
 }
 
 .category-nav-item[data-category="profit-loss"]:hover,
@@ -219,9 +219,9 @@
   border-left-color: var(--color-derivatives-dark);
 }
 
-.dark-mode .category-nav-item[data-category="strategy"]:hover,
-.dark-mode .category-nav-item[data-category="strategy"].active {
-  border-left-color: var(--color-strategy-dark);
+.dark-mode .category-nav-item[data-category="treasury-companies"]:hover,
+.dark-mode .category-nav-item[data-category="treasury-companies"].active {
+  border-left-color: var(--color-treasury-companies-dark);
 }
 
 .dark-mode .category-nav-item[data-category="profit-loss"]:hover,

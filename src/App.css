@@ -111,7 +111,7 @@ body {
 }
 
 .nav-button.active {
-  background: #8f3bf6;
+  background: #4d1f84;
   color: white;
   border-color: #8f3bf6;
 }
@@ -154,7 +154,7 @@ body {
 /* Collections toggle button inherits nav-button styles */
 
 .collections-count {
-  background: #8f3bf6;
+  background: #8f3bf676;
   color: white;
   font-size: 0.75rem;
   font-weight: 600;

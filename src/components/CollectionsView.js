@@ -21,7 +21,7 @@ function CollectionsView({
         <div className="collection-not-found">
           <h2>Collection not found</h2>
           <button onClick={onBack} className="back-button">
-            Back to Home
+            Back to Collections
           </button>
         </div>
       </div>
@@ -64,14 +64,31 @@ function CollectionsView({
     }
   };
 
+  const togglePosition = sidebarCollapsed ? '12px' : `${sidebarWidth + 12}px`;
+  
   return (
-    <div className="collections-view has-sidebar">
+    <div className={`collections-view has-sidebar ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       {/* Control buttons positioned outside all containers */}
       <div className="dashboard-controls">
         <button 
           className={`sidebar-toggle ${sidebarCollapsed ? 'sidebar-expand' : 'sidebar-collapse'}`}
           onClick={toggleSidebarCollapse}
           title={sidebarCollapsed ? "Show navigation" : "Hide navigation"}
+          style={{
+            left: togglePosition,
+            position: 'fixed',
+            top: '10%',
+            transform: 'translateY(-50%)',
+            zIndex: 9999,
+            background: '#ffffff',
+            border: '2px solid #e0e0e0',
+            borderRadius: '8px',
+            width: '40px',
+            height: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
         >
           {sidebarCollapsed ? '\u00bb' : '\u00ab'}
         </button>
@@ -82,6 +99,16 @@ function CollectionsView({
           <div className="sidebar collection-sidebar" style={{ width: `${sidebarWidth}px` }}>
             {/* Collection Info Section */}
             <div className="collection-info-section">
+              <div className="collection-header-controls">
+                <button 
+                  onClick={onBack} 
+                  className="back-to-collections-button"
+                  title="Back to Collections"
+                >
+                  <span style={{fontSize: '1.2rem'}} >←</span>
+                </button>
+              </div>
+              
               <div className="collection-details">
                 <h2 className="collection-title">{collection.name}</h2>
                 <span className="collection-meta">

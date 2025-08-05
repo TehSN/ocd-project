@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import './colors.css';
 import Dashboard from './components/Dashboard';
@@ -18,6 +18,7 @@ function App() {
   // State for collections
   const [collections, setCollections] = useState([]);
   const [activeCollectionId, setActiveCollectionId] = useState(null);
+  const [editingCollectionId, setEditingCollectionId] = useState(null);
   
   // State for enlarge choice modal
   const [enlargeChoiceModal, setEnlargeChoiceModal] = useState({
@@ -25,6 +26,8 @@ function App() {
     chartId: null,
     chartTitle: ''
   });
+
+
 
 
   
@@ -75,6 +78,7 @@ function App() {
 
   const closeAllTiles = () => {
     setEnlargedTiles([]);
+    setEditingCollectionId(null); // Clear editing state when clearing workbench
     setCurrentView('home');
   };
 
@@ -112,15 +116,33 @@ function App() {
 
   // Collection management functions
   const saveCollection = (name) => {
-    const newCollection = {
-      id: Date.now().toString(),
-      name: name,
-      charts: [...enlargedTiles],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    setCollections([...collections, newCollection]);
-    return newCollection.id;
+    if (editingCollectionId) {
+      // Update existing collection
+      const updatedCollections = collections.map(collection => 
+        collection.id === editingCollectionId
+          ? {
+              ...collection,
+              name: name,
+              charts: [...enlargedTiles],
+              updatedAt: new Date().toISOString()
+            }
+          : collection
+      );
+      setCollections(updatedCollections);
+      setEditingCollectionId(null); // Clear editing state
+      return editingCollectionId;
+    } else {
+      // Create new collection
+      const newCollection = {
+        id: Date.now().toString(),
+        name: name,
+        charts: [...enlargedTiles],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setCollections([...collections, newCollection]);
+      return newCollection.id;
+    }
   };
 
   const openCollection = (collectionId) => {
@@ -136,9 +158,29 @@ function App() {
     if (collection) {
       setEnlargedTiles([...collection.charts]);
       setActiveCollectionId(null);
+      setEditingCollectionId(collectionId); // Track which collection we're editing
       setCurrentView('workbench');
     }
   };
+
+  const renameCollection = (collectionId, newName) => {
+    const updatedCollections = collections.map(collection => 
+      collection.id === collectionId
+        ? {
+            ...collection,
+            name: newName,
+            updatedAt: new Date().toISOString()
+          }
+        : collection
+    );
+    setCollections(updatedCollections);
+  };
+
+  const cancelEditing = () => {
+    setEditingCollectionId(null);
+  };
+
+
 
   const deleteCollection = (collectionId) => {
     setCollections(collections.filter(c => c.id !== collectionId));
@@ -164,7 +206,7 @@ function App() {
               onClick={goToHome}
               aria-label="Go to home page"
             >
-              <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>⌂</span>
+              <span style={{ fontSize: '1.5em'}}>⌂</span>
             Home
             </button>
             <button
@@ -215,8 +257,11 @@ function App() {
           currentView={currentView}
           collections={collections}
           activeCollectionId={activeCollectionId}
+          editingCollectionId={editingCollectionId}
           onSaveCollection={saveCollection}
           onEditCollection={editCollection}
+          onRenameCollection={renameCollection}
+          onCancelEditing={cancelEditing}
           onOpenCollection={openCollection}
           onDeleteCollection={deleteCollection}
           goToHome={goToHome}

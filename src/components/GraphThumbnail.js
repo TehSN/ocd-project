@@ -56,6 +56,8 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
     }
   };
 
+
+
   return (
     <div 
       className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isEnlarged ? 'is-enlarged' : ''} ${isNavigation ? 'is-navigation' : ''}`}
@@ -119,20 +121,30 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
           ) : (
             // Regular mode: Original behavior
             <>
-              {!isEnlarged ? (
-                <button title="Add to Workbench" onClick={handleEnlarge}>
-                  <span className="enlarge-icon">
-                    <span style={{ fontSize: '2rem' }}>⚒</span>
-                    <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
-                  </span>
-                </button>
-              ) : (
-                <button title="Remove from Workbench" onClick={handleClose}>
-                  ✕
-                </button>
-              )}
-              <button title="Preview Chart" onClick={handlePreview}><span style={{ fontSize: '1.6rem' }}>𖠂</span></button>
-              <button title="Details" onClick={handleShowDetails}> <span style={{ fontWeight: 'bold' }}>ⓘ</span></button>
+              <button className="preview-btn-wide" title="Preview Chart" onClick={handlePreview}>
+                Preview Chart
+              </button>
+              <div className="action-buttons-row">
+                {!isEnlarged ? (
+                  <button title="Add to Workbench" onClick={handleEnlarge}>
+                    <span className="enlarge-icon">
+                      <span style={{ fontSize: '2rem' }}>⚒</span>
+                      <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
+                    </span>
+                  </button>
+                ) : (
+                  <button title="Remove from Workbench" onClick={handleClose}>
+                    ✕
+                  </button>
+                )}
+                  <button title="Add to Collection" onClick={handleEnlarge}>
+                    <span className="enlarge-icon">
+                      <span style={{ fontSize: '1.5rem' }}>⛉</span>
+                      <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
+                    </span>
+                  </button>
+                <button title="Details" onClick={handleShowDetails}> <span style={{ fontWeight: 'bold' }}>ⓘ</span></button>
+              </div>
             </>
           )}
         </div>

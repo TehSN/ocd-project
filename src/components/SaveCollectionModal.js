@@ -5,7 +5,9 @@ function SaveCollectionModal({
   isOpen, 
   onClose, 
   onSave, 
-  isDarkMode 
+  isDarkMode,
+  isEditing = false,
+  editingCollectionName = ''
 }) {
   const [collectionName, setCollectionName] = useState('');
 
@@ -30,9 +32,9 @@ function SaveCollectionModal({
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
-      setCollectionName('');
+      setCollectionName(isEditing ? editingCollectionName : '');
     }
-  }, [isOpen]);
+  }, [isOpen, isEditing, editingCollectionName]);
 
   if (!isOpen) return null;
 
@@ -52,7 +54,7 @@ function SaveCollectionModal({
     <div className="save-collection-overlay" onClick={onClose}>
       <div className="save-collection-modal" onClick={e => e.stopPropagation()}>
         <div className="save-collection-header">
-          <h2>Save Collection</h2>
+          <h2>{isEditing ? 'Update Collection' : 'Save Collection'}</h2>
           <button className="save-collection-close" onClick={onClose}>
             ×
           </button>
@@ -60,7 +62,7 @@ function SaveCollectionModal({
         
         <form onSubmit={handleSubmit} className="save-collection-form">
           <div className="save-collection-content">
-            <p>Enter a name for your collection:</p>
+            <p>{isEditing ? 'Update the collection name:' : 'Enter a name for your collection:'}</p>
             <input
               type="text"
               value={collectionName}
@@ -84,7 +86,7 @@ function SaveCollectionModal({
               className="save-collection-btn save-collection-save"
               disabled={!collectionName.trim()}
             >
-              Save Collection
+              {isEditing ? 'Update Collection' : 'Save Collection'}
             </button>
           </div>
         </form>

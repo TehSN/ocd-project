@@ -304,9 +304,9 @@
   color: var(--color-derivatives-light);
 }
 
-.category-badge.category-strategy {
-  border: 1px solid var(--color-strategy-light);
-  color: var(--color-strategy-light);
+.category-badge.category-treasury-companies {
+  border: 1px solid var(--color-treasury-companies-light);
+  color: var(--color-treasury-companies-light);
 }
 
 .category-badge.category-profit-loss {
@@ -365,9 +365,9 @@
   color: var(--color-derivatives-dark);
 }
 
-.dark-mode .category-badge.category-strategy {
-  border-color: var(--color-strategy-dark);
-  color: var(--color-strategy-dark);
+.dark-mode .category-badge.category-treasury-companies {
+  border-color: var(--color-treasury-companies-dark);
+  color: var(--color-treasury-companies-dark);
 }
 
 .dark-mode .category-badge.category-profit-loss {

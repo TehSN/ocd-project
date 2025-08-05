@@ -166,9 +166,9 @@
   color: var(--color-derivatives-light);
 }
 
-.category-strategy .category {
-  background: color-mix(in srgb, var(--color-strategy-light) 20%, transparent);
-  color: var(--color-strategy-light);
+.category-treasury-companies .category {
+  background: color-mix(in srgb, var(--color-treasury-companies-light) 20%, transparent);
+  color: var(--color-treasury-companies-light);
 }
 
 .category-profit-loss .category {
@@ -213,12 +213,14 @@
   
   .hover-options {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   gap: 8px;
   z-index: 10;
+  width: 200px;
 }
 
 .hover-options button {
@@ -243,6 +245,60 @@
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* Preview button - wide style */
+.preview-btn-wide {
+  width: 100% !important;
+  height: 40px !important;
+  border-radius: 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #4a4a4a !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.preview-btn-wide:hover {
+  background: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Action buttons row */
+.action-buttons-row {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.action-buttons-row button {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 30%;
+  width: 56px;
+  height: 56px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #4a4a4a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.action-buttons-row button:hover {
+  background: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
 /* Enlarge icon with plus overlay */
 .enlarge-icon {
   position: relative;
@@ -260,8 +316,7 @@
   right: -12px;
   font-size: 15px;
   font-weight: bold;
-  background: #5e005900;
-  color: white;
+  color: rgb(0, 0, 0);
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -269,7 +324,27 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Collection icon with plus overlay */
+.collection-icon {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  bottom: 2px;
+}
+
+.collection-icon .plus-overlay {
+  top: -2px;
+  right: -8px;
+  font-size: 10px;
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  color: #000000;
+  color: var(--text-primary);
 }
 
 /* Dark Mode Styles for Graph Thumbnails */
@@ -324,9 +399,9 @@
   color: var(--color-derivatives-dark);
 }
 
-.dark-mode .category-strategy .category {
-  background: color-mix(in srgb, var(--color-strategy-dark) 20%, transparent);
-  color: var(--color-strategy-dark);
+.dark-mode .category-treasury-companies .category {
+  background: color-mix(in srgb, var(--color-treasury-companies-dark) 20%, transparent);
+  color: var(--color-treasury-companies-dark);
 }
 
 .dark-mode .category-profit-loss .category {
@@ -380,10 +455,38 @@
   box-shadow: 0 3px 8px rgba(0,0,0,0.4);
 }
 
+/* Dark mode - Preview button wide */
+.dark-mode .preview-btn-wide {
+  background: rgba(26, 26, 26, 0.95) !important;
+  color: #e5e5e5 !important;
+  border: 1px solid #333333 !important;
+}
+
+.dark-mode .preview-btn-wide:hover {
+  background: #2a2a2a !important;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.4) !important;
+}
+
+/* Dark mode - Action buttons row */
+.dark-mode .action-buttons-row button {
+  background: rgba(26, 26, 26, 0.95);
+  color: #e5e5e5;
+  border: 1px solid #333333;
+}
+
+.dark-mode .action-buttons-row button:hover {
+  background: #2a2a2a;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
 .dark-mode .plus-overlay {
   background: #de7fd900;
   color: white;
   box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.dark-mode .collection-icon .plus-overlay {
+  color: #e5e5e5;
 }
 
 .dark-mode .graph-thumbnail:hover .graph-image::after {

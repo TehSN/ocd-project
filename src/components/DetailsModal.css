@@ -131,9 +131,9 @@
   color: var(--color-derivatives-light);
 }
 
-.details-category-tag.category-strategy {
-  background: color-mix(in srgb, var(--color-strategy-light) 20%, transparent);
-  color: var(--color-strategy-light);
+.details-category-tag.category-treasury-companies {
+  background: color-mix(in srgb, var(--color-treasury-companies-light) 20%, transparent);
+  color: var(--color-treasury-companies-light);
 }
 
 .details-category-tag.category-profit-loss {
@@ -273,9 +273,9 @@
   color: var(--color-derivatives-dark);
 }
 
-.dark-mode .details-category-tag.category-strategy {
-  background: color-mix(in srgb, var(--color-strategy-dark) 20%, transparent);
-  color: var(--color-strategy-dark);
+.dark-mode .details-category-tag.category-treasury-companies {
+  background: color-mix(in srgb, var(--color-treasury-companies-dark) 20%, transparent);
+  color: var(--color-treasury-companies-dark);
 }
 
 .dark-mode .details-category-tag.category-profit-loss {
