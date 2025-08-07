@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import EnlargedTile from './EnlargedTile';
+import WorkbenchItem from './WorkbenchItem';
 import EditCollectionModal from './EditCollectionModal';
 import ResizableSplitter from './ResizableSplitter';
+import Icon from './Icon';
+import { GiAnvilImpact } from 'react-icons/gi';
 import './CollectionsView.css';
 
 function CollectionsView({ 
@@ -54,7 +56,7 @@ function CollectionsView({
   };
 
   const handleChartNavigation = (chartId) => {
-    const element = document.getElementById(`collection-enlarged-${chartId}`);
+    const element = document.getElementById(`collection-workbench-${chartId}`);
     if (element) {
       element.scrollIntoView({ 
         behavior: 'smooth', 
@@ -122,7 +124,7 @@ function CollectionsView({
                 className="edit-collection-button"
                 title="Edit Collection in Workbench"
               >
-                <span> <b style={{ fontSize: '1.2rem' }}>⚒</b> Edit</span>
+                <Icon size="medium" variant="action"><GiAnvilImpact /></Icon> Edit
               </button>
             </div>
 
@@ -155,7 +157,7 @@ function CollectionsView({
         </>
       )}
       
-      <div className="enlarged-area collection-enlarged-area" style={{ 
+             <div className="workbench-area collection-workbench-area" style={{ 
         width: sidebarCollapsed ? '100%' : `calc(100% - ${sidebarWidth + 26}px)` 
       }}>
         {collectionGraphs.length === 0 ? (
@@ -164,8 +166,8 @@ function CollectionsView({
           </div>
         ) : (
           collectionGraphs.map((graph) => (
-            <div id={`collection-enlarged-${graph.id}`} key={`collection-enlarged-${graph.id}`}>
-              <EnlargedTile
+            <div id={`collection-workbench-${graph.id}`} key={`collection-workbench-${graph.id}`}>
+                             <WorkbenchItem
                 graph={graph}
                 onClose={null} // Read-only, no close functionality
                 isDarkMode={isDarkMode}

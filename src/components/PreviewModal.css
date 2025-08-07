@@ -456,7 +456,6 @@
 }
 
 .dark-mode .preview-modal-close:hover {
-  background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
 }
 
@@ -507,7 +506,6 @@
 }
 
 .light-mode .preview-modal-close:hover {
-  background: rgba(0, 0, 0, 0.05);
   color: #2a2a2a;
 }
 

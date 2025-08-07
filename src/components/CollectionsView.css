@@ -277,7 +277,7 @@
   padding: 0;
 }
 
-.collection-enlarged-area {
+.collection-workbench-area {
   width: 100%;
   min-width: 200px;
   flex: 1;
@@ -321,7 +321,7 @@
   margin-bottom: 24px;
 }
 
-/* Collections view uses enlarged-area layout like workbench */
+/* Collections view uses workbench-area layout like workbench */
 
 /* Dark mode adjustments */
 .dark-mode .collection-header {

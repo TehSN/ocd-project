@@ -10,7 +10,7 @@
   overflow-y: auto; /* Allow scrolling within dashboard */
 }
 
-.dashboard.has-enlarged {
+.dashboard.has-workbench {
   display: flex;
   gap: 10px;
   height: 100%;
@@ -29,7 +29,7 @@
   overflow-x: hidden;
 }
 
-.enlarged-area {
+.workbench-area {
   /* Dynamic width set via inline styles */
   min-width: 200px;
   flex-shrink: 0;
@@ -56,7 +56,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 0;
-  padding-left: 180px; /* Space for category navigation sidebar */
+  padding-left: 215px; /* Space for category navigation sidebar */
 }
 
 /* Remove left padding on mobile where navigation is hidden */
@@ -126,32 +126,24 @@
   align-items: center;
 }
 
-/* Sidebar Toggle Button */
-.sidebar-toggle {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  width: 24px;
-  height: 24px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #666666;
+/* Sidebar Controls */
+.sidebar-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  justify-content: space-between;
+  width: 50%;
 }
+
+
 
 /* Chart Selector Toggle Button */
 .chart-selector-toggle {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid #e0e0e0;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 16px;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -373,6 +365,8 @@
 }
 
 /* Dark Mode Styles for Controls */
+
+
 .dark-mode .sidebar-toggle,
 .dark-mode .chart-selector-toggle,
 .dark-mode .save-collection-toggle,
@@ -443,9 +437,9 @@
   color: #8540f3;
 }
 
-/* Responsive adjustments for enlarged view */
+/* Responsive adjustments for workbench view */
 @media (max-width: 1024px) {
-  .dashboard.has-enlarged {
+  .dashboard.has-workbench {
     flex-direction: column;
     height: auto;
     gap: 16px;

@@ -14,7 +14,7 @@ function ResizableSplitter({ onResize, isDarkMode, currentSidebarWidth = 200 }) 
       const newWidth = dragStartRef.current.startWidth + deltaX;
       
       // Get container width for percentage calculation
-      const dashboardContainer = document.querySelector('.dashboard.has-enlarged');
+      const dashboardContainer = document.querySelector('.dashboard.has-workbench');
       if (!dashboardContainer) return;
       
       const containerWidth = dashboardContainer.clientWidth;

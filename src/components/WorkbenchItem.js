@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import './EnlargedTile.css';
+import Icon from './Icon';
+import { IoRemoveCircleOutline } from 'react-icons/io5';
+import './WorkbenchItem.css';
 
 // Utility function to convert URLs based on theme and add zoom
 const convertUrlForTheme = (url, isDarkMode, zoomLevel = 1) => {
@@ -28,7 +30,7 @@ const convertUrlForTheme = (url, isDarkMode, zoomLevel = 1) => {
   return `${processedUrl}${separator}zoom=${zoomPercent}`;
 };
 
-function EnlargedTile({ graph, onClose, isDarkMode, isReadOnly = false }) {
+function WorkbenchItem({ graph, onClose, isDarkMode, isReadOnly = false }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(0.75); // 1 = 100%, 0.5 = 50%, 1.5 = 150%
@@ -63,15 +65,15 @@ function EnlargedTile({ graph, onClose, isDarkMode, isReadOnly = false }) {
   };
 
   return (
-    <div className={`enlarged-tile ${categoryClass}`}>
-      <div className="enlarged-content">
+    <div className={`workbench-item ${categoryClass}`}>
+      <div className="workbench-content">
         {!isReadOnly && (
           <button 
             className="close-button"
             onClick={handleClose}
             title="Close"
           >
-            ✕
+            <Icon size="small" variant="close"><IoRemoveCircleOutline /></Icon>
           </button>
         )}
 
@@ -107,7 +109,7 @@ function EnlargedTile({ graph, onClose, isDarkMode, isReadOnly = false }) {
           <iframe
             src={convertUrlForTheme(graph.url, isDarkMode, zoomLevel)}
             title={graph.title}
-            className={`enlarged-iframe ${isLoading ? 'loading' : ''}`}
+            className={`workbench-iframe ${isLoading ? 'loading' : ''}`}
             style={{ 
               transform: `scale(${zoomLevel})`,
               transformOrigin: 'top left',
@@ -130,4 +132,4 @@ function EnlargedTile({ graph, onClose, isDarkMode, isReadOnly = false }) {
   );
 }
 
-export default EnlargedTile;
+export default WorkbenchItem;

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './SaveCollectionModal.css';
 
 function SaveCollectionModal({ 
@@ -55,9 +57,9 @@ function SaveCollectionModal({
       <div className="save-collection-modal" onClick={e => e.stopPropagation()}>
         <div className="save-collection-header">
           <h2>{isEditing ? 'Update Collection' : 'Save Collection'}</h2>
-          <button className="save-collection-close" onClick={onClose}>
-            ×
-          </button>
+                  <button className="save-collection-close" onClick={onClose}>
+          <Icon size="medium" variant="modal-close"><HiX /></Icon>
+        </button>
         </div>
         
         <form onSubmit={handleSubmit} className="save-collection-form">

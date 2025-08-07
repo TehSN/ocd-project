@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './ClearWorkbenchModal.css';
 
 function ClearWorkbenchModal({ 
@@ -33,9 +35,9 @@ function ClearWorkbenchModal({
       <div className="clear-workbench-modal" onClick={e => e.stopPropagation()}>
         <div className="clear-workbench-header">
           <h2>Clear Workbench</h2>
-          <button className="clear-workbench-close" onClick={onCancel}>
-            ×
-          </button>
+                  <button className="clear-workbench-close" onClick={onCancel}>
+          <Icon size="medium" variant="modal-close"><HiX /></Icon>
+        </button>
         </div>
         
         <div className="clear-workbench-content">

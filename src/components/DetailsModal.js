@@ -1,4 +1,6 @@
 import React from 'react';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './DetailsModal.css';
 
 function DetailsModal({ graph, isOpen, onClose, isDarkMode }) {
@@ -49,7 +51,7 @@ function DetailsModal({ graph, isOpen, onClose, isDarkMode }) {
             onClick={onClose}
             aria-label="Close details"
           >
-            ✕
+            <Icon size="medium" variant="modal-close"><HiX /></Icon>
           </button>
         </div>
         

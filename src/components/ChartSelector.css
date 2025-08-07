@@ -90,11 +90,11 @@
   transform: translateY(-2px);
 }
 
-.chart-selector-item.already-enlarged {
+.chart-selector-item.already-in-workbench {
   opacity: 0.7;
 }
 
-.enlarged-indicator {
+.workbench-indicator {
   position: absolute;
   top: 8px;
   right: 8px;

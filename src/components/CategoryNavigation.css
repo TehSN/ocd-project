@@ -19,6 +19,13 @@
   min-width: 50px;
 }
 
+/* Hide navigation on mobile to prevent overlap */
+@media (max-width: 1024px) {
+  .category-navigation {
+    display: none;
+  }
+}
+
 .category-nav-header {
   display: flex;
   align-items: center;

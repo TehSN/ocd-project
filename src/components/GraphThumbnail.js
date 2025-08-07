@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Icon from './Icon';
+import { HiOutlineExternalLink, HiX, HiInformationCircle, HiCollection } from 'react-icons/hi';
+import { IoMdAdd } from 'react-icons/io';
+import { GiAnvilImpact } from 'react-icons/gi';
 import './GraphThumbnail.css';
 
 // Utility function to convert URLs based on theme
@@ -20,7 +24,7 @@ const convertUrlForTheme = (url, isDarkMode) => {
   }
 };
 
-function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, onPreview, isDarkMode, isNavigation = false, isSelector = false }) {
+function GraphThumbnail({ graph, isInWorkbench, onEnlarge, onClose, onShowDetails, onPreview, onAddToCollection, isDarkMode, isNavigation = false, isSelector = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -56,11 +60,17 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
     }
   };
 
+  const handleAddToCollection = () => {
+    if (onAddToCollection) {
+      onAddToCollection(graph);
+    }
+  };
+
 
 
   return (
     <div 
-      className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isEnlarged ? 'is-enlarged' : ''} ${isNavigation ? 'is-navigation' : ''}`}
+      className={`graph-thumbnail ${categoryClass} ${isHovered ? 'hovered' : ''} ${isInWorkbench ? 'is-in-workbench' : ''} ${isNavigation ? 'is-navigation' : ''} ${isSelector ? 'is-selector' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -99,24 +109,26 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
             // Navigation mode: Show navigate and close buttons
             <>
               <button title="Go to chart" onClick={handleEnlarge}>
-                ↗
+                <Icon size="medium"><HiOutlineExternalLink /></Icon>
               </button>
               <button title="Remove from view" onClick={handleClose}>
-                ✕
+                <Icon size="medium"><HiX /></Icon>
               </button>
             </>
           ) : isSelector ? (
             // Selector mode: Show enlarge button or already added indicator
             <>
-              {!isEnlarged && (
+              {!isInWorkbench && (
                 <button title="Add to Workbench" onClick={handleEnlarge}>
-                  <span className="enlarge-icon">
-                    ⚒
-                    <span className="plus-overlay">+</span>
-                  </span>
+                  <div className="composite-icon">
+                    <Icon size="large"><GiAnvilImpact /></Icon>
+                    <Icon size="tiny" className="icon-overlay-badge"><IoMdAdd /></Icon>
+                  </div>
                 </button>
               )}
-              <button title="Details" onClick={handleShowDetails}>ⓘ</button>
+              <button title="Details" onClick={handleShowDetails}>
+                <Icon size="large"><HiInformationCircle /></Icon>
+              </button>
             </>
           ) : (
             // Regular mode: Original behavior
@@ -125,25 +137,27 @@ function GraphThumbnail({ graph, isEnlarged, onEnlarge, onClose, onShowDetails, 
                 Preview Chart
               </button>
               <div className="action-buttons-row">
-                {!isEnlarged ? (
+                {!isInWorkbench ? (
                   <button title="Add to Workbench" onClick={handleEnlarge}>
-                    <span className="enlarge-icon">
-                      <span style={{ fontSize: '2rem' }}>⚒</span>
-                      <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
-                    </span>
+                    <div className="composite-icon">
+                      <Icon size="large"><GiAnvilImpact /></Icon>
+                      <Icon size="tiny" className="icon-overlay-badge"><IoMdAdd /></Icon>
+                    </div>
                   </button>
                 ) : (
                   <button title="Remove from Workbench" onClick={handleClose}>
-                    ✕
+                    <Icon size="medium" variant="action"><HiX /></Icon>
                   </button>
                 )}
-                  <button title="Add to Collection" onClick={handleEnlarge}>
-                    <span className="enlarge-icon">
-                      <span style={{ fontSize: '1.5rem' }}>⛉</span>
-                      <span className="plus-overlay" style={{ fontSize: '0.8rem' }}>+</span>
-                    </span>
+                  <button title="Add to Collection" onClick={handleAddToCollection}>
+                    <div className="composite-icon">
+                      <Icon size="large"><HiCollection /></Icon>
+                      <Icon size="tiny" variant = "nav bold" className="icon-overlay-badge"><IoMdAdd /></Icon>
+                    </div>
                   </button>
-                <button title="Details" onClick={handleShowDetails}> <span style={{ fontWeight: 'bold' }}>ⓘ</span></button>
+                <button title="Details" onClick={handleShowDetails}>
+                  <Icon size="large"><HiInformationCircle /></Icon>
+                </button>
               </div>
             </>
           )}

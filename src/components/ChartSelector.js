@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import GraphThumbnail from './GraphThumbnail';
 import CategoryDropdown from './CategoryDropdown';
 import { categories } from '../graphData';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './ChartSelector.css';
 
-function ChartSelector({ graphs, enlargedTiles, onEnlarge, onClose, isOpen, isDarkMode }) {
+function ChartSelector({ graphs, workbenchItems, onEnlarge, onClose, isOpen, isDarkMode }) {
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleShowDetails = () => {
@@ -27,7 +47,7 @@ function ChartSelector({ graphs, enlargedTiles, onEnlarge, onClose, isOpen, isDa
             onClick={onClose}
             title="Close"
           >
-            ✕
+            <Icon size="medium" variant="modal-close"><HiX /></Icon>
           </button>
         </div>
         
@@ -39,7 +59,7 @@ function ChartSelector({ graphs, enlargedTiles, onEnlarge, onClose, isOpen, isDa
                 category={category}
                 graphs={graphs}
                 isOpen={false} // Closed by default in chart selector
-                enlargedTiles={enlargedTiles}
+                workbenchItems={workbenchItems}
                 onEnlarge={handleEnlarge}
                 onClose={() => {}} // No close functionality in selector
                 onShowDetails={handleShowDetails}

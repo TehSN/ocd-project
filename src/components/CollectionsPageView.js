@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Icon from './Icon';
+import { GiAnvilImpact } from 'react-icons/gi';
+import { HiHome, HiCollection, HiX } from 'react-icons/hi';
 import './CollectionsPageView.css';
 
 function CollectionsPageView({ 
@@ -44,6 +47,28 @@ function CollectionsPageView({
   const handleCloseInfo = () => {
     setCollectionInfoModal(null);
   };
+
+  // Handle ESC key to close modals
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape') {
+        if (collectionInfoModal) {
+          handleCloseInfo();
+        } else if (renameModal.isOpen) {
+          handleRenameCancel();
+        }
+      }
+    };
+
+    if (collectionInfoModal || renameModal.isOpen) {
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [collectionInfoModal, renameModal.isOpen]);
 
 
 
@@ -116,10 +141,10 @@ function CollectionsPageView({
       {collections.length === 0 ? (
         <div className="empty-collections">
           <div className="empty-collections-content">
-            <span className="empty-icon">⛉</span>
+            <Icon size="xl" variant="empty-state"><HiCollection /></Icon>
             <h2>No Collections Yet</h2>
             <p>Create collections by saving charts from your workbench.</p>
-            <p>Go to <strong>⌂ Home</strong> → add charts → <strong>⚒ Workbench</strong> → <strong>Save</strong></p>
+            <p>Go to <strong><Icon size="small"><HiHome /></Icon> Home</strong> → add charts → <strong><Icon size="small"><GiAnvilImpact /></Icon> Workbench</strong> → <strong>Save</strong></p>
           </div>
         </div>
       ) : (
@@ -168,7 +193,7 @@ function CollectionsPageView({
                             className="menu-option"
                             onClick={(e) => handleMenuAction(e, 'edit', collection)}
                           >
-                            <span className="menu-icon" style={{ fontSize: '20px' }}>⚒</span>
+                            <Icon size="medium" variant="action"><GiAnvilImpact /></Icon> 
                             Edit
                           </button>
                           <button
@@ -221,7 +246,7 @@ function CollectionsPageView({
           <div className="collection-info-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>{collectionInfoModal.name}</h2>
-              <button className="modal-close" onClick={handleCloseInfo}>×</button>
+                              <button className="modal-close" onClick={handleCloseInfo}><Icon size="medium" variant="modal-close"><HiX /></Icon></button>
             </div>
             
             <div className="modal-body">
@@ -270,7 +295,7 @@ function CollectionsPageView({
           <div className="rename-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Rename Collection</h2>
-              <button className="modal-close" onClick={handleRenameCancel}>×</button>
+                              <button className="modal-close" onClick={handleRenameCancel}><Icon size="medium" variant="modal-close"><HiX /></Icon></button>
             </div>
             
             <div className="modal-body">

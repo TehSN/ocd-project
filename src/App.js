@@ -3,14 +3,19 @@ import './App.css';
 import './colors.css';
 import Dashboard from './components/Dashboard';
 import EnlargeChoiceModal from './components/EnlargeChoiceModal';
+import AddToCollectionModal from './components/AddToCollectionModal';
+import Icon from './components/Icon';
 import { graphData } from './graphData';
+import { HiHome, HiCollection, HiSun, HiMoon } from 'react-icons/hi';
+import { GiAnvilImpact } from "react-icons/gi";
+
 
 function App() {
   // State to track if we're in dark mode or light mode
   const [isDarkMode, setIsDarkMode] = useState(true);
   
-  // State to track which tiles are enlarged
-  const [enlargedTiles, setEnlargedTiles] = useState([]);
+  // State to track workbench items
+  const [workbenchItems, setWorkbenchItems] = useState([]);
   
   // State to track current view: 'home', 'workbench', 'collection', or 'collections-page'
   const [currentView, setCurrentView] = useState('home');
@@ -27,6 +32,12 @@ function App() {
     chartTitle: ''
   });
 
+  // State for add to collection modal
+  const [addToCollectionModal, setAddToCollectionModal] = useState({
+    isOpen: false,
+    chart: null
+  });
+
 
 
 
@@ -38,12 +49,12 @@ function App() {
 
   // Function to enlarge a tile
   const enlargeTile = (graphId) => {
-    // If chart is already enlarged
-    if (enlargedTiles.includes(graphId)) {
+            // If chart is already in workbench
+    if (workbenchItems.includes(graphId)) {
       // Switch to workbench view and scroll to it
       setCurrentView('workbench');
       setTimeout(() => {
-        const element = document.getElementById(`enlarged-${graphId}`);
+        const element = document.getElementById(`workbench-${graphId}`);
         if (element) {
           element.scrollIntoView({ 
             behavior: 'smooth', 
@@ -56,7 +67,7 @@ function App() {
     }
 
     // If enlarging from home page and there are existing charts, show modal
-    if (currentView === 'home' && enlargedTiles.length > 0) {
+    if (currentView === 'home' && workbenchItems.length > 0) {
       const chart = graphData.find(g => g.id === graphId);
       setEnlargeChoiceModal({
         isOpen: true,
@@ -67,17 +78,17 @@ function App() {
     }
 
     // Otherwise, just add the chart and switch to workbench
-    setEnlargedTiles([...enlargedTiles, graphId]);
+    setWorkbenchItems([...workbenchItems, graphId]);
     setCurrentView('workbench');
   };
 
   // Function to close/shrink a tile
   const closeTile = (graphId) => {
-    setEnlargedTiles(enlargedTiles.filter(id => id !== graphId));
+    setWorkbenchItems(workbenchItems.filter(id => id !== graphId));
   };
 
   const closeAllTiles = () => {
-    setEnlargedTiles([]);
+    setWorkbenchItems([]);
     setEditingCollectionId(null); // Clear editing state when clearing workbench
     setCurrentView('home');
   };
@@ -98,14 +109,14 @@ function App() {
   // Modal choice handlers
   const handleAddToWorkbench = () => {
     const { chartId } = enlargeChoiceModal;
-    setEnlargedTiles([...enlargedTiles, chartId]);
+    setWorkbenchItems([...workbenchItems, chartId]);
     setCurrentView('workbench');
     setEnlargeChoiceModal({ isOpen: false, chartId: null, chartTitle: '' });
   };
 
   const handleReplaceWorkbench = () => {
     const { chartId } = enlargeChoiceModal;
-    setEnlargedTiles([chartId]);
+    setWorkbenchItems([chartId]);
     setCurrentView('workbench');
     setEnlargeChoiceModal({ isOpen: false, chartId: null, chartTitle: '' });
   };
@@ -123,7 +134,7 @@ function App() {
           ? {
               ...collection,
               name: name,
-              charts: [...enlargedTiles],
+              charts: [...workbenchItems],
               updatedAt: new Date().toISOString()
             }
           : collection
@@ -136,7 +147,7 @@ function App() {
       const newCollection = {
         id: Date.now().toString(),
         name: name,
-        charts: [...enlargedTiles],
+        charts: [...workbenchItems],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -156,7 +167,7 @@ function App() {
   const editCollection = (collectionId) => {
     const collection = collections.find(c => c.id === collectionId);
     if (collection) {
-      setEnlargedTiles([...collection.charts]);
+      setWorkbenchItems([...collection.charts]);
       setActiveCollectionId(null);
       setEditingCollectionId(collectionId); // Track which collection we're editing
       setCurrentView('workbench');
@@ -180,6 +191,48 @@ function App() {
     setEditingCollectionId(null);
   };
 
+  // Add to collection functions
+  const openAddToCollectionModal = (chart) => {
+    setAddToCollectionModal({
+      isOpen: true,
+      chart: chart
+    });
+  };
+
+  const closeAddToCollectionModal = () => {
+    setAddToCollectionModal({
+      isOpen: false,
+      chart: null
+    });
+  };
+
+  const addChartToCollection = (chartId, collectionId) => {
+    const updatedCollections = collections.map(collection => 
+      collection.id === collectionId
+        ? {
+            ...collection,
+            charts: collection.charts.includes(chartId) 
+              ? collection.charts 
+              : [...collection.charts, chartId],
+            updatedAt: new Date().toISOString()
+          }
+        : collection
+    );
+    setCollections(updatedCollections);
+  };
+
+  const createCollectionWithChart = (chartId, collectionName) => {
+    const newCollection = {
+      id: Date.now().toString(),
+      name: collectionName,
+      charts: [chartId],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    setCollections([...collections, newCollection]);
+    return newCollection.id;
+  };
+
 
 
   const deleteCollection = (collectionId) => {
@@ -190,9 +243,9 @@ function App() {
     }
   };
 
-  // Function to reorder enlarged tiles
+  // Function to reorder workbench items
   const reorderTiles = (newOrder) => {
-    setEnlargedTiles(newOrder);
+    setWorkbenchItems(newOrder);
   };
 
   return (
@@ -206,19 +259,19 @@ function App() {
               onClick={goToHome}
               aria-label="Go to home page"
             >
-              <span style={{ fontSize: '1.5em'}}>⌂</span>
-            Home
+              <Icon size="small" variant="nav"><HiHome /></Icon>
+              Home
             </button>
             <button
-              className={`nav-button ${currentView === 'workbench' ? 'active' : ''} ${enlargedTiles.length === 0 ? 'disabled' : ''}`}
+              className={`nav-button ${currentView === 'workbench' ? 'active' : ''} ${workbenchItems.length === 0 ? 'disabled' : ''}`}
               onClick={goToWorkbench}
-              disabled={enlargedTiles.length === 0}
+              disabled={workbenchItems.length === 0}
               aria-label="Go to workbench"
             >
-              <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>⚒</span>
+              <Icon size="small" variant="nav bold"><GiAnvilImpact /></Icon>
               Workbench
-              {enlargedTiles.length > 0 && (
-                <span className="workbench-count">{enlargedTiles.length}</span>
+              {workbenchItems.length > 0 && (
+                <span className="workbench-count">{workbenchItems.length}</span>
               )}
             </button>
             
@@ -227,7 +280,7 @@ function App() {
               onClick={goToCollectionsPage}
               aria-label="Go to collections page"
             >
-              <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>⛉</span>
+              <Icon size="small" variant="nav"><HiCollection /></Icon>
               Collections
               {collections.length > 0 && (
                 <span className="collections-count">{collections.length}</span>
@@ -241,14 +294,16 @@ function App() {
             onClick={toggleTheme}
             aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
           >
-            {isDarkMode ? '◐' : '◑'}
+            <Icon size="medium">
+              {isDarkMode ? <HiSun /> : <HiMoon />}
+            </Icon>
           </button>
         </div>
       </header>
       <main>
         <Dashboard 
           graphs={graphData} 
-          enlargedTiles={enlargedTiles}
+          workbenchItems={workbenchItems}
           onEnlarge={enlargeTile}
           onClose={closeTile}
           onCloseAll={closeAllTiles}
@@ -264,6 +319,7 @@ function App() {
           onCancelEditing={cancelEditing}
           onOpenCollection={openCollection}
           onDeleteCollection={deleteCollection}
+          onAddToCollection={openAddToCollectionModal}
           goToHome={goToHome}
           goToCollectionsPage={goToCollectionsPage}
         />
@@ -275,8 +331,18 @@ function App() {
         onAddToWorkbench={handleAddToWorkbench}
         onReplaceWorkbench={handleReplaceWorkbench}
         chartTitle={enlargeChoiceModal.chartTitle}
-        workbenchCount={enlargedTiles.length}
+        workbenchCount={workbenchItems.length}
         isDarkMode={isDarkMode}
+      />
+      
+      <AddToCollectionModal
+        isOpen={addToCollectionModal.isOpen}
+        onClose={closeAddToCollectionModal}
+        onAddToCollection={addChartToCollection}
+        onCreateCollection={createCollectionWithChart}
+        collections={collections}
+        chartTitle={addToCollectionModal.chart?.title || ''}
+        chartId={addToCollectionModal.chart?.id || ''}
       />
     </div>
   );

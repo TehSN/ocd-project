@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import GraphThumbnail from './GraphThumbnail';
 import { categoryConfig } from '../graphData';
+import Icon from './Icon';
+import { HiCheck } from 'react-icons/hi';
 import './CategoryDropdown.css';
 
 function CategoryDropdown({ 
   category, 
   graphs, 
   isOpen: initialOpen = false,
-  enlargedTiles = [],
+  workbenchItems = [],
   onEnlarge,
   onClose,
   onShowDetails,
   onPreview,
+  onAddToCollection,
   isDarkMode,
   isSelector = false
 }) {
@@ -54,21 +57,22 @@ function CategoryDropdown({
             {categoryGraphs.map(graph => (
               <div 
                 key={isSelector ? `selector-${graph.id}` : graph.id}
-                className={`category-item ${enlargedTiles.includes(graph.id) ? 'already-enlarged' : ''}`}
+                className={`category-item ${workbenchItems.includes(graph.id) ? 'already-in-workbench' : ''}`}
               >
                 <GraphThumbnail
                   graph={graph}
-                  isEnlarged={enlargedTiles.includes(graph.id)}
+                  isInWorkbench={workbenchItems.includes(graph.id)}
                   onEnlarge={onEnlarge}
                   onClose={onClose}
                   onShowDetails={onShowDetails}
                   onPreview={onPreview}
+                  onAddToCollection={onAddToCollection}
                   isDarkMode={isDarkMode}
                   isSelector={isSelector}
                 />
-                {isSelector && enlargedTiles.includes(graph.id) && (
-                  <div className="enlarged-indicator">
-                    <span>✓ Added</span>
+                {isSelector && workbenchItems.includes(graph.id) && (
+                  <div className="workbench-indicator">
+                    <Icon size="small" variant="status"><HiCheck /></Icon> Added
                   </div>
                 )}
               </div>

@@ -131,7 +131,7 @@
   .graph-info h3 {
   margin: 0 0 6px 0;
   color: #1a1a1a;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -213,14 +213,45 @@
   
   .hover-options {
   position: absolute;
-  top: 40%;
-  left: 50%;
+  top: 30%;
+  left: 45%;
+  scale: 0.8;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   gap: 8px;
   z-index: 10;
+  justify-content: center;
+  align-items: center;
   width: 200px;
+}
+
+/* Navigation mode hover options - horizontal layout for sidebar */
+.graph-thumbnail.is-navigation .hover-options {
+  flex-direction: row;
+  top: 50%;
+  left: 50%;
+  scale: 1;
+  width: fit-content;
+  gap: 12px;
+}
+
+/* Selector mode hover options - horizontal layout for chart selector */
+.graph-thumbnail.is-selector .hover-options {
+  flex-direction: row;
+  top: 50%;
+  left: 50%;
+  scale: 1;
+  width: fit-content;
+  gap: 12px;
+}
+
+/* Adjust button sizes for navigation and selector modes */
+.graph-thumbnail.is-navigation .hover-options button,
+.graph-thumbnail.is-selector .hover-options button {
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
 }
 
 .hover-options button {
@@ -274,6 +305,7 @@
   display: flex;
   gap: 8px;
   justify-content: space-between;
+  width: 100%;
 }
 
 .action-buttons-row button {
@@ -299,52 +331,25 @@
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* Enlarge icon with plus overlay */
-.enlarge-icon {
+/* Composite icon styles - for icons with overlays */
+.composite-icon {
   position: relative;
-  display: inline-block;
-  font-size: 40px;
-  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  bottom: 4px;
 }
 
-.plus-overlay {
+.composite-icon .plus-overlay {
   position: absolute;
-  top: 2px;
-  right: -12px;
-  font-size: 15px;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
+  top: -50%;
+  right: -10%;
+  color: white;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-}
-
-/* Collection icon with plus overlay */
-.collection-icon {
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-  align-items: center;
-  justify-content: center;
-  bottom: 2px;
-}
-
-.collection-icon .plus-overlay {
-  top: -2px;
-  right: -8px;
-  font-size: 10px;
-  width: 12px;
-  height: 12px;
-  background: transparent;
-  color: #000000;
-  color: var(--text-primary);
 }
 
 /* Dark Mode Styles for Graph Thumbnails */
@@ -479,21 +484,16 @@
   box-shadow: 0 3px 8px rgba(0,0,0,0.4);
 }
 
-.dark-mode .plus-overlay {
-  background: #de7fd900;
-  color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-}
-
-.dark-mode .collection-icon .plus-overlay {
-  color: #e5e5e5;
+.dark-mode .composite-icon .plus-overlay {
+  background: rgba(255, 255, 255, 0);
+  color: #ffffff;
 }
 
 .dark-mode .graph-thumbnail:hover .graph-image::after {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Enlarged indicator */
+/* In workbench indicator */
 /* .graph-thumbnail.is-enlarged {
   border-color: #3b82f6;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
@@ -511,7 +511,7 @@
   z-index: 15;
 }
 
-/* Hide enlarged indicator in navigation mode */
+/* Hide workbench indicator in navigation mode */
 .graph-thumbnail.is-navigation.is-enlarged::before {
   display: none;
 }
@@ -525,7 +525,7 @@
   background: #7521fc;
 }
 
-/* Hide enlarged indicator in dark mode navigation as well */
+/* Hide workbench indicator in dark mode navigation as well */
 .dark-mode .graph-thumbnail.is-navigation.is-enlarged::before {
   display: none;
 }

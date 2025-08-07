@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import GraphThumbnail from './GraphThumbnail';
-import EnlargedTile from './EnlargedTile';
+import WorkbenchItem from './WorkbenchItem';
 import DetailsModal from './DetailsModal';
 import ResizableSplitter from './ResizableSplitter';
 import ChartSelector from './ChartSelector';
@@ -11,12 +11,15 @@ import ClearWorkbenchModal from './ClearWorkbenchModal';
 import PreviewModal from './PreviewModal';
 import CollectionsView from './CollectionsView';
 import CollectionsPageView from './CollectionsPageView';
+import Icon from './Icon';
 import { categories } from '../graphData';
+import { HiChevronLeft, HiChevronRight, HiDotsVertical } from 'react-icons/hi';
+import { IoMdAdd } from 'react-icons/io';
 import './Dashboard.css';
 
 function Dashboard({ 
   graphs, 
-  enlargedTiles, 
+  workbenchItems, 
   onEnlarge, 
   onClose,
   onCloseAll, 
@@ -32,6 +35,7 @@ function Dashboard({
   onCancelEditing,
   onOpenCollection,
   onDeleteCollection,
+  onAddToCollection,
   goToHome,
   goToCollectionsPage
 }) {
@@ -44,24 +48,24 @@ function Dashboard({
   const [previewGraph, setPreviewGraph] = useState(null); // Track preview modal
   const [draggedItem, setDraggedItem] = useState(null); // Track dragged item
   const [dragOverIndex, setDragOverIndex] = useState(null); // Track drag over position
-  const previousEnlargedTiles = useRef([]); // Track previous state to detect new additions
+  const previousWorkbenchItems = useRef([]); // Track previous state to detect new additions
   
-  // Create enlargedGraphs in the order they were enlarged
-  const enlargedGraphs = enlargedTiles.map(id => graphs.find(graph => graph.id === id)).filter(Boolean);
+  // Create workbenchGraphs in the order they were enlarged
+  const workbenchGraphs = workbenchItems.map(id => graphs.find(graph => graph.id === id)).filter(Boolean);
   const isWorkbenchView = currentView === 'workbench';
   const isCollectionView = currentView === 'collection';
   const isCollectionsPageView = currentView === 'collections-page';
   const activeCollection = activeCollectionId ? collections.find(c => c.id === activeCollectionId) : null;
 
-  // Scroll to newly enlarged chart
+  // Scroll to newly added workbench chart
   useEffect(() => {
-    if (enlargedTiles.length > previousEnlargedTiles.current.length) {
+    if (workbenchItems.length > previousWorkbenchItems.current.length) {
       // Find the newly added tile ID
-      const newTileId = enlargedTiles.find(id => !previousEnlargedTiles.current.includes(id));
+      const newTileId = workbenchItems.find(id => !previousWorkbenchItems.current.includes(id));
       if (newTileId) {
         // Small delay to ensure the element is rendered
         setTimeout(() => {
-          const element = document.getElementById(`enlarged-${newTileId}`);
+          const element = document.getElementById(`workbench-${newTileId}`);
           if (element) {
             element.scrollIntoView({ 
               behavior: 'smooth', 
@@ -72,8 +76,8 @@ function Dashboard({
         }, 100);
       }
     }
-    previousEnlargedTiles.current = [...enlargedTiles];
-  }, [enlargedTiles]);
+    previousWorkbenchItems.current = [...workbenchItems];
+  }, [workbenchItems]);
 
   // Cleanup scroll interval on unmount
   useEffect(() => {
@@ -155,9 +159,9 @@ function Dashboard({
       return;
     }
     
-    // Scroll to the enlarged chart instead of toggling
+    // Scroll to the workbench chart instead of toggling
     setTimeout(() => {
-      const element = document.getElementById(`enlarged-${graphId}`);
+      const element = document.getElementById(`workbench-${graphId}`);
       if (element) {
         element.scrollIntoView({ 
           behavior: 'smooth', 
@@ -261,7 +265,7 @@ function Dashboard({
       return;
     }
 
-    const newOrder = [...enlargedTiles];
+    const newOrder = [...workbenchItems];
     const draggedItemId = newOrder[draggedItem];
     
     // Remove the dragged item first
@@ -292,7 +296,7 @@ function Dashboard({
   };
 
     return (
-    <div className={`dashboard ${isWorkbenchView ? 'has-enlarged' : ''}`}>
+    <div className={`dashboard ${isWorkbenchView ? 'has-workbench' : ''}`}>
       {isCollectionsPageView && (
         <CollectionsPageView
           collections={collections}
@@ -317,48 +321,57 @@ function Dashboard({
       
       {isWorkbenchView && (
         <>
-          {/* Control buttons positioned outside all containers */}
-          <div className="dashboard-controls">
+          {/* Sidebar toggle - moves with sidebar */}
+          <div className="sidebar-toggle-container" style={{
+            position: 'absolute',
+            left: sidebarCollapsed ? '20px' : `${sidebarWidth + 5}px`,
+            top: '0px',
+            zIndex: 30
+          }}>
             <button 
               className={`sidebar-toggle ${sidebarCollapsed ? 'sidebar-expand' : 'sidebar-collapse'}`}
               onClick={toggleSidebarCollapse}
               title={sidebarCollapsed ? "Show navigation" : "Hide navigation"}
             >
-              {sidebarCollapsed ? '\u00bb' : '\u00ab'}
+              <Icon size="medium">
+                {sidebarCollapsed ? <HiChevronRight /> : <HiChevronLeft />}
+              </Icon>
             </button>
-            
-            <button 
-              className="chart-selector-toggle"
-              onClick={openChartSelector}
-              title="Add charts"
-            >
-              +
-            </button>
-            
-            {enlargedTiles.length > 0 && (
-              <>
-                <button 
-                  className="save-collection-toggle"
-                  onClick={openSaveCollection}
-                  title="Save Collection"
-                >
-                  Save
-                </button>
-                
-                <button 
-                  className="clear-workbench-toggle"
-                  onClick={openClearWorkbench}
-                  title="Clear Workbench"
-                >
-                  Clear
-                </button>
-              </>
-            )}
           </div>
-          
+
           {!sidebarCollapsed && (
             <>
               <div className="sidebar navigation-sidebar" style={{ width: `${sidebarWidth}px` }}>
+                {/* Sidebar workbench controls */}
+                <div className="sidebar-controls">
+                  <button 
+                    className="chart-selector-toggle"
+                    onClick={openChartSelector}
+                    title="Add charts"
+                  >
+                    <Icon size="small" variant="action"><IoMdAdd /></Icon>
+                  </button>
+                  
+                  {workbenchItems.length > 0 && (
+                    <>
+                      <button 
+                        className="save-collection-toggle"
+                        onClick={openSaveCollection}
+                        title="Save Collection"
+                      >
+                        Save
+                      </button>
+                      
+                      <button 
+                        className="clear-workbench-toggle"
+                        onClick={openClearWorkbench}
+                        title="Clear Workbench"
+                      >
+                        Clear
+                      </button>
+                    </>
+                  )}
+                </div>
                 <div 
                   className="navigation-grid"
                   onDrop={handleDrop}
@@ -378,14 +391,14 @@ function Dashboard({
                       }
                     }}
                   >
-                    {dragOverIndex === 0 && enlargedGraphs.length > 0 && (
+                    {dragOverIndex === 0 && workbenchGraphs.length > 0 && (
                       <div className="drop-indicator">
                         <div className="drop-line"></div>
                       </div>
                     )}
                   </div>
                   
-                  {enlargedGraphs.map((graph, index) => (
+                  {workbenchGraphs.map((graph, index) => (
                     <div key={`nav-${graph.id}`}>
                       {/* Insertion indicator before this item (except for index 0 which is handled by top-drop-zone) */}
                       {dragOverIndex === index && index > 0 && (
@@ -407,18 +420,20 @@ function Dashboard({
                       >
                         <GraphThumbnail
                           graph={graph}
-                          isEnlarged={true}
+                          isInWorkbench={true}
                           onEnlarge={(e) => handleNavigationClick(graph.id, e)}
                           onClose={onClose}
                           onShowDetails={handleShowDetails}
                           isDarkMode={isDarkMode}
                           isNavigation={true}
                         />
-                        <div className="drag-handle">⋮⋮</div>
+                        <div className="drag-handle">
+                          <Icon size="small"><HiDotsVertical /></Icon>
+                        </div>
                       </div>
                       
                       {/* Insertion indicator after the last item */}
-                      {index === enlargedGraphs.length - 1 && dragOverIndex === enlargedGraphs.length && (
+                      {index === workbenchGraphs.length - 1 && dragOverIndex === workbenchGraphs.length && (
                         <div className="drop-indicator">
                           <div className="drop-line"></div>
                         </div>
@@ -435,7 +450,7 @@ function Dashboard({
                   >
                     <div className="add-chart-content">
                       <div className="add-chart-circle">
-                        <span className="add-chart-plus">+</span>
+                        <Icon size="small" variant="action"><IoMdAdd /></Icon>
                       </div>
                       <div className="add-chart-text">Add Chart</div>
                     </div>
@@ -451,12 +466,12 @@ function Dashboard({
             </>
           )}
           
-          <div className="enlarged-area" style={{ 
+          <div className="workbench-area" style={{ 
             width: sidebarCollapsed ? '100%' : `calc(100% - ${sidebarWidth + 26}px)` 
           }}>
-            {enlargedGraphs.map(graph => (
-              <div id={`enlarged-${graph.id}`} key={`enlarged-${graph.id}`}>
-                <EnlargedTile
+            {workbenchGraphs.map(graph => (
+              <div id={`workbench-${graph.id}`} key={`workbench-${graph.id}`}>
+                                 <WorkbenchItem
                   graph={graph}
                   onClose={onClose}
                   isDarkMode={isDarkMode}
@@ -480,11 +495,12 @@ function Dashboard({
                   category={category}
                   graphs={graphs}
                   isOpen={true} // Open by default on homepage
-                  enlargedTiles={enlargedTiles}
+                  workbenchItems={workbenchItems}
                   onEnlarge={onEnlarge}
                   onClose={onClose}
                   onShowDetails={handleShowDetails}
                   onPreview={handlePreview}
+                  onAddToCollection={onAddToCollection}
                   isDarkMode={isDarkMode}
                   isSelector={false}
                 />
@@ -503,7 +519,7 @@ function Dashboard({
       
       <ChartSelector
         graphs={graphs}
-        enlargedTiles={enlargedTiles}
+        workbenchItems={workbenchItems}
         onEnlarge={onEnlarge}
         onClose={closeChartSelector}
         isOpen={chartSelectorOpen}
@@ -523,7 +539,7 @@ function Dashboard({
         isOpen={clearWorkbenchOpen}
         onConfirm={handleClearWorkbench}
         onCancel={closeClearWorkbench}
-        chartCount={enlargedTiles.length}
+        chartCount={workbenchItems.length}
         isDarkMode={isDarkMode}
       />
       

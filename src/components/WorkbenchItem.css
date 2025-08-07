@@ -1,4 +1,4 @@
-.enlarged-tile {
+.workbench-item {
   background: white;
   border: 1px solid #f0f0f0;
   border-radius: 12px;
@@ -7,60 +7,60 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: 763px;
-  min-height: 600px;
+  height: 695px;
+  min-height: 100%;
   flex-shrink: 0;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   box-sizing: border-box;
 }
 
-/* Category Colors for Enlarged Tile Borders */
-.category-pricing-models.enlarged-tile {
+/* Category Colors for Workbench Item Borders */
+.category-pricing-models.workbench-item {
   border-color: var(--color-pricing-models-light);
 }
 
-.category-spot-etf.enlarged-tile {
+.category-spot-etf.workbench-item {
   border-color: var(--color-spot-etf-light);
 }
 
-.category-derivatives.enlarged-tile {
+.category-derivatives.workbench-item {
   border-color: var(--color-derivatives-light);
 }
 
-.category-treasury-companies.enlarged-tile {
+.category-treasury-companies.workbench-item {
   border-color: var(--color-treasury-companies-light);
 }
 
-.category-profit-loss.enlarged-tile {
+.category-profit-loss.workbench-item {
   border-color: var(--color-profit-loss-light);
 }
 
-.category-lifespan.enlarged-tile {
+.category-lifespan.workbench-item {
   border-color: var(--color-lifespan-light);
 }
 
-.category-network-adoption.enlarged-tile {
+.category-network-adoption.workbench-item {
   border-color: var(--color-network-adoption-light);
 }
 
-.category-supply-dynamics.enlarged-tile {
+.category-supply-dynamics.workbench-item {
   border-color: var(--color-supply-dynamics-light);
 }
 
-.category-mining.enlarged-tile {
+.category-mining.workbench-item {
   border-color: var(--color-mining-light);
 }
 
-.category-ta-and-volatility.enlarged-tile {
+.category-ta-and-volatility.workbench-item {
   border-color: var(--color-ta-and-volatility-light);
 }
 
-.category-stablecoins.enlarged-tile {
+.category-stablecoins.workbench-item {
   border-color: var(--color-stablecoins-light);
 }
 
-.category-tradfi.enlarged-tile {
+.category-tradfi.workbench-item {
   border-color: var(--color-tradfi-light);
 }
 
@@ -68,32 +68,27 @@
   position: absolute;
   top: 2%;
   right: 97.5%;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e0e0e0;
-  border-radius: 50%;
   width: 16px;
   height: 16px;
-  font-size: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #666666;
+  color: #dc2626;
+  background: none;
+  border: none;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
   z-index: 20;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .close-button:hover {
-  background: #dc2626;
-  border-color: #dc2626;
-  color: white;
-  transform: scale(1.5);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+  color: #b80000;
+  transform: scale(1.2);
+  filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.5));
 }
 
-.enlarged-content {
+.workbench-content {
   position: relative;
   height: 100%;
   width: 100%;
@@ -108,7 +103,7 @@
   background: white;
 }
 
-.enlarged-iframe {
+.workbench-iframe {
   border: none;
   background: white;
   transition: opacity 0.3s ease;
@@ -118,7 +113,7 @@
   box-sizing: border-box;
 }
 
-.enlarged-iframe.loading {
+.workbench-iframe.loading {
   opacity: 0;
 }
 
@@ -168,74 +163,72 @@
 }
 
 /* Dark Mode Styles */
-.dark-mode .enlarged-tile {
+.dark-mode .workbench-item {
   background: #1a1a1a;
   border-color: #2a2a2a;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 /* Dark Mode Category Border Colors */
-.dark-mode .category-pricing-models.enlarged-tile {
+.dark-mode .category-pricing-models.workbench-item {
   border-color: var(--color-pricing-models-dark);
 }
 
-.dark-mode .category-spot-etf.enlarged-tile {
+.dark-mode .category-spot-etf.workbench-item {
   border-color: var(--color-spot-etf-dark);
 }
 
-.dark-mode .category-derivatives.enlarged-tile {
+.dark-mode .category-derivatives.workbench-item {
   border-color: var(--color-derivatives-dark);
 }
 
-.dark-mode .category-treasury-companies.enlarged-tile {
+.dark-mode .category-treasury-companies.workbench-item {
   border-color: var(--color-treasury-companies-dark);
 }
 
-.dark-mode .category-profit-loss.enlarged-tile {
+.dark-mode .category-profit-loss.workbench-item {
   border-color: var(--color-profit-loss-dark);
 }
 
-.dark-mode .category-lifespan.enlarged-tile {
+.dark-mode .category-lifespan.workbench-item {
   border-color: var(--color-lifespan-dark);
 }
 
-.dark-mode .category-network-adoption.enlarged-tile {
+.dark-mode .category-network-adoption.workbench-item {
   border-color: var(--color-network-adoption-dark);
 }
 
-.dark-mode .category-supply-dynamics.enlarged-tile {
+.dark-mode .category-supply-dynamics.workbench-item {
   border-color: var(--color-supply-dynamics-dark);
 }
 
-.dark-mode .category-mining.enlarged-tile {
+.dark-mode .category-mining.workbench-item {
   border-color: var(--color-mining-dark);
 }
 
-.dark-mode .category-ta-and-volatility.enlarged-tile {
+.dark-mode .category-ta-and-volatility.workbench-item {
   border-color: var(--color-ta-and-volatility-dark);
 }
 
-.dark-mode .category-stablecoins.enlarged-tile {
+.dark-mode .category-stablecoins.workbench-item {
   border-color: var(--color-stablecoins-dark);
 }
 
-.dark-mode .category-tradfi.enlarged-tile {
+.dark-mode .category-tradfi.workbench-item {
   border-color: var(--color-tradfi-dark);
 }
 
 .dark-mode .close-button {
-  background: rgba(26, 26, 26, 0.9);
-  border-color: #333333;
-  color: #a0a0a0;
+  color: #ef4444;
 }
 
 .dark-mode .close-button:hover {
-  background: #dc2626;
-  border-color: #dc2626;
-  color: white;
+  color: #f87171;
+  transform: scale(1.2);
+  filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.7));
 }
 
-.dark-mode .enlarged-content {
+.dark-mode .workbench-content {
   background: #0f0f0f;
 }
 

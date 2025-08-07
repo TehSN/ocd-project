@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { categoryConfig } from '../graphData';
+import Icon from './Icon';
+import { GiAnvilImpact } from 'react-icons/gi';
+import { HiX } from 'react-icons/hi';
 import './PreviewModal.css';
 
 // Utility function to convert URLs based on theme and add zoom
@@ -100,12 +103,12 @@ function PreviewModal({
               onClick={() => onAddToWorkbench(graph.id)}
               title="Add to Workbench"
             >
-              <span className="workbench-icon" style={{ fontSize: '1.6rem' }}>⚒</span>
+              <Icon size="medium"><GiAnvilImpact /></Icon>
               <span className="plus-badge">+</span>
             </button>
           </div>
           <button className="preview-modal-close" onClick={onClose}>
-            ✕
+            <Icon size="medium" variant="modal-close"><HiX /></Icon>
           </button>
         </div>
         

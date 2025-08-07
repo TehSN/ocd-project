@@ -1,0 +1,183 @@
+/* Consistent Icon Styling */
+.app-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Icon sizes */
+.icon-tiny {
+  width: 10px;
+  height: 10px;
+}
+
+.icon-small {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+}
+
+.icon-medium {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.icon-large {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+.icon-xl {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+}
+
+/* Icon in buttons should center properly */
+button .app-icon {
+  margin-right: 6px;
+}
+
+button .app-icon:only-child {
+  margin-right: 0;
+}
+
+/* Icon alignment with inline text */
+.app-icon {
+  vertical-align: -0.125em; /* Fine-tune vertical alignment with text */
+}
+
+/* Ensure icons align properly in all contexts */
+p .app-icon,
+span .app-icon,
+div .app-icon {
+  margin: 0 2px;
+  vertical-align: -0.125em;
+}
+
+/* Ensure SVG icons fill the container properly */
+.app-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Special styling for composite icons (like workbench with plus) */
+.composite-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   CENTRALIZED ICON VARIANTS
+   ============================================ */
+
+/* Close button icons */
+.icon-close {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-close:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+/* Navigation icons */
+.icon-nav {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Action button icons */
+.icon-action {
+  margin-right: 4px;
+}
+
+/* Status indicator icons */
+.icon-status {
+  margin-left: 4px;
+  vertical-align: baseline;
+}
+
+/* Overlay badge icons (for composite icons) */
+.icon-overlay-badge {
+  position: absolute;
+  top: -30%;
+  right: -30%;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+}
+
+/* Flat overlay (no circle) */
+.icon-overlay-flat {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+/* Modal close button specific styling */
+.icon-modal-close {
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.icon-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Empty state icons */
+.icon-empty-state {
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+
+/* Bold icons */
+.icon-bold {
+  font-weight: bold;
+  stroke-width: 2px; /* For outline icons */
+}
+
+/* Extra bold icons */
+.icon-extra-bold {
+  font-weight: 900;
+  stroke-width: 3px; /* For outline icons */
+  filter: drop-shadow(0 0 1px currentColor); /* Adds subtle bold effect */
+}
+
+/* ============================================
+   THEME ADJUSTMENTS FOR VARIANTS
+   ============================================ */
+
+.dark-mode .icon-overlay-badge {
+  color: #ffffff;
+}
+
+.dark-mode .icon-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .icon-overlay-badge {
+  color: #000000;
+}
+
+.light-mode .icon-modal-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}

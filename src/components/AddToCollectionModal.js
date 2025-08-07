@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Icon from './Icon';
+import { HiX, HiCollection } from 'react-icons/hi';
 import './AddToCollectionModal.css';
 
 function AddToCollectionModal({ isOpen, onClose, onAddToCollection, onCreateCollection, collections, chartTitle, chartId }) {
@@ -61,7 +63,7 @@ function AddToCollectionModal({ isOpen, onClose, onAddToCollection, onCreateColl
         <div className="add-to-collection-header">
           <h2>Add to Collection</h2>
           <button className="add-to-collection-close" onClick={onClose}>
-            ✕
+            <Icon size="medium" variant="modal-close"><HiX /></Icon>
           </button>
         </div>
 
@@ -101,7 +103,7 @@ function AddToCollectionModal({ isOpen, onClose, onAddToCollection, onCreateColl
                   className="create-new-collection-btn"
                   onClick={startCreatingNew}
                 >
-                  <span className="create-icon">⛉</span>
+                  <Icon size="medium" variant="action"><HiCollection /></Icon>
                   Create New Collection
                 </button>
               </div>

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './EnlargeChoiceModal.css';
 
 function EnlargeChoiceModal({ 
@@ -35,9 +37,9 @@ function EnlargeChoiceModal({
       <div className="enlarge-choice-modal" onClick={e => e.stopPropagation()}>
         <div className="enlarge-choice-header">
           <h2>Add Chart to Workbench</h2>
-          <button className="enlarge-choice-close" onClick={onClose}>
-            ×
-          </button>
+                  <button className="enlarge-choice-close" onClick={onClose}>
+          <Icon size="medium" variant="modal-close"><HiX /></Icon>
+        </button>
         </div>
         
         <div className="enlarge-choice-content">

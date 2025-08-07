@@ -191,6 +191,14 @@ export const graphData = [
     category: "Treasury Companies",
     details: "There are no details about this graph yet!"
   }
+,
+  {
+    id: 25,
+    title: "Strategy BTC Accumulation and Holdings",
+    url: "https://charts.checkonchain.com/btconchain/entities/mstr_accumulation/mstr_accumulation_light.html",
+    category: "Treasury Companies",
+    details: "There are no details about this graph yet!"
+  }
 ];
 
 export const categories = [

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Icon from './Icon';
+import { HiX } from 'react-icons/hi';
 import './EditCollectionModal.css';
 
 function EditCollectionModal({ 
@@ -33,9 +35,9 @@ function EditCollectionModal({
       <div className="edit-collection-modal" onClick={e => e.stopPropagation()}>
         <div className="edit-collection-header">
           <h2>Edit Collection</h2>
-          <button className="edit-collection-close" onClick={onCancel}>
-            ×
-          </button>
+                  <button className="edit-collection-close" onClick={onCancel}>
+          <Icon size="medium" variant="modal-close"><HiX /></Icon>
+        </button>
         </div>
         
         <div className="edit-collection-content">

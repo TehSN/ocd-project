@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { categories, categoryConfig } from '../graphData';
+import Icon from './Icon';
+import { HiChevronRight, HiChevronLeft } from 'react-icons/hi';
 import './CategoryNavigation.css';
 
 function CategoryNavigation({ graphs, isDarkMode }) {
@@ -40,6 +42,21 @@ function CategoryNavigation({ graphs, isDarkMode }) {
       });
     }, observerOptions);
 
+    // Handle scroll to detect when at bottom of page
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      // If we're at the bottom of the page (within 50px), highlight the last category
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        const lastCategory = availableCategories[availableCategories.length - 1];
+        if (lastCategory) {
+          setActiveCategory(lastCategory);
+        }
+      }
+    };
+
     // Observe all category sections
     availableCategories.forEach(category => {
       const element = document.querySelector(`[data-category-section="${category}"]`);
@@ -48,7 +65,13 @@ function CategoryNavigation({ graphs, isDarkMode }) {
       }
     });
 
-    return () => observer.disconnect();
+    // Add scroll listener for bottom detection
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [availableCategories]);
 
   // const toggleCollapse = () => {
@@ -63,7 +86,7 @@ function CategoryNavigation({ graphs, isDarkMode }) {
           onClick={toggleCollapse}
           title={isCollapsed ? 'Expand categories' : 'Collapse categories'}
         >
-          {isCollapsed ? '▶' : '◀'}
+          <Icon size="small">{isCollapsed ? <HiChevronRight /> : <HiChevronLeft />}</Icon>
         </button>
         {!isCollapsed && (
           <h3 className="category-nav-title">Categories</h3>
