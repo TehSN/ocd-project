@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { categories, categoryConfig } from '../graphData';
-import Icon from './Icon';
-import { HiChevronRight, HiChevronLeft } from 'react-icons/hi';
+// import Icon from './Icon';
+// import { HiChevronRight, HiChevronLeft } from 'react-icons/hi';
 import './CategoryNavigation.css';
 
 function CategoryNavigation({ graphs, isDarkMode }) {

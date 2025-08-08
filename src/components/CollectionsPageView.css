@@ -1,9 +1,9 @@
 /* Collections Page View Styles */
 .collections-page-view {
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: calc(100vh - 120px);
+  width: 100vw;
+  left: -200px;
+  min-height: calc(100vh - 10px);
+  background: linear-gradient(to bottom, #ffffff, #ffe6fd);
 }
 
 .collections-page-header {
