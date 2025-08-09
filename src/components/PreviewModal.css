@@ -145,16 +145,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
   z-index: 10;
 }
 
-.zoom-button {
+.preview-zoom-controls .zoom-button {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  border: 1px solid #cccccc;
+  color: #666666;
   border-radius: 4px;
   width: 28px;
   height: 28px;
@@ -167,18 +170,19 @@
   transition: all 0.2s ease;
 }
 
-.zoom-button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
+.preview-zoom-controls .zoom-button:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  color: #3b82f6;
 }
 
-.zoom-button:disabled {
+.preview-zoom-controls .zoom-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.zoom-level {
-  color: white;
+.preview-zoom-controls .zoom-level {
+  color: #666666;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -189,8 +193,35 @@
   text-align: center;
 }
 
-.zoom-level:hover {
-  background: rgba(255, 255, 255, 0.2);
+.preview-zoom-controls .zoom-level:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #5017ac;
+}
+
+/* Dark Mode Preview Zoom Controls */
+.dark-mode .preview-zoom-controls {
+  background: rgba(17, 17, 17, 0.95);
+  border-color: #444444;
+}
+
+.dark-mode .preview-zoom-controls .zoom-button {
+  border-color: #555555;
+  color: #cccccc;
+}
+
+.dark-mode .preview-zoom-controls .zoom-button:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #8540f3;
+  color: #8540f3;
+}
+
+.dark-mode .preview-zoom-controls .zoom-level {
+  color: #cccccc;
+}
+
+.dark-mode .preview-zoom-controls .zoom-level:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: #8540f3;
 }
 
 .iframe-container {

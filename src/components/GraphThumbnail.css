@@ -229,7 +229,7 @@
 /* Navigation mode hover options - horizontal layout for sidebar */
 .graph-thumbnail.is-navigation .hover-options {
   flex-direction: row;
-  top: 50%;
+  top: 35%;
   left: 50%;
   scale: 1;
   width: fit-content;
@@ -239,7 +239,7 @@
 /* Selector mode hover options - horizontal layout for chart selector */
 .graph-thumbnail.is-selector .hover-options {
   flex-direction: row;
-  top: 50%;
+  top: 40%;
   left: 50%;
   scale: 1;
   width: fit-content;
