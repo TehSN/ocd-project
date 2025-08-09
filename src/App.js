@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import './colors.css';
 import Dashboard from './components/Dashboard';
@@ -6,6 +6,9 @@ import EnlargeChoiceModal from './components/EnlargeChoiceModal';
 import AddToCollectionModal from './components/AddToCollectionModal';
 import Icon from './components/Icon';
 import { graphData } from './graphData';
+import { loadAppState, saveAppState, isStorageAvailable } from './utils/storage';
+import { autoMigrate } from './utils/migrations';
+import './utils/debug'; // Enable debug utilities in development
 import { HiHome, HiCollection, HiSun, HiMoon } from 'react-icons/hi';
 import { GiAnvilImpact } from "react-icons/gi";
 
@@ -25,6 +28,9 @@ function App() {
   const [activeCollectionId, setActiveCollectionId] = useState(null);
   const [editingCollectionId, setEditingCollectionId] = useState(null);
   
+  // State for storage availability
+  const [storageAvailable, setStorageAvailable] = useState(true);
+  
   // State for enlarge choice modal
   const [enlargeChoiceModal, setEnlargeChoiceModal] = useState({
     isOpen: false,
@@ -38,9 +44,134 @@ function App() {
     chart: null
   });
 
+  // Load persisted data on app initialization
+  useEffect(() => {
+    console.log('🚀 Initializing OCD Dashboard...');
+    
+    // Check if localStorage is available
+    if (!isStorageAvailable()) {
+      console.warn('⚠️ localStorage not available, app will work without persistence');
+      setStorageAvailable(false);
+      return;
+    }
 
+    try {
+      // Load and auto-migrate data
+      const appState = autoMigrate(loadAppState());
+      
+      // Set global state from persisted data
+      if (appState.globalSettings) {
+        setIsDarkMode(appState.globalSettings.isDarkMode ?? true);
+      }
+      
+      console.log('✅ App initialized successfully');
+    } catch (error) {
+      console.error('❌ Error initializing app:', error);
+      setStorageAvailable(false);
+    }
+  }, []);
 
+  // Save global settings whenever they change
+  useEffect(() => {
+    if (!storageAvailable) return;
+    
+    try {
+      const appState = loadAppState();
+      const updatedState = {
+        ...appState,
+        globalSettings: {
+          ...appState.globalSettings,
+          isDarkMode
+        }
+      };
+      saveAppState(updatedState);
+    } catch (error) {
+      console.error('❌ Error saving global settings:', error);
+    }
+  }, [isDarkMode, storageAvailable]);
 
+  // Save collections whenever they change
+  useEffect(() => {
+    if (!storageAvailable || collections.length === 0) return;
+    
+    try {
+      const appState = loadAppState();
+      const updatedState = {
+        ...appState,
+        tempCollections: collections // Temporary storage until user system is implemented
+      };
+      saveAppState(updatedState);
+      console.log('💾 Collections saved to localStorage');
+    } catch (error) {
+      console.error('❌ Error saving collections:', error);
+    }
+  }, [collections, storageAvailable]);
+
+  // Load collections on app start
+  useEffect(() => {
+    if (!storageAvailable) return;
+    
+    try {
+      const appState = loadAppState();
+      if (appState.tempCollections && Array.isArray(appState.tempCollections)) {
+        setCollections(appState.tempCollections);
+        console.log('📚 Loaded collections from localStorage');
+      }
+    } catch (error) {
+      console.error('❌ Error loading collections:', error);
+    }
+  }, [storageAvailable]);
+
+  // Save workbench state whenever it changes
+  useEffect(() => {
+    if (!storageAvailable) return;
+    
+    try {
+      const appState = loadAppState();
+      const updatedState = {
+        ...appState,
+        tempWorkbench: {
+          items: workbenchItems,
+          currentView,
+          activeCollectionId,
+          editingCollectionId
+        }
+      };
+      saveAppState(updatedState);
+      console.log('🔧 Workbench state saved to localStorage');
+    } catch (error) {
+      console.error('❌ Error saving workbench state:', error);
+    }
+  }, [workbenchItems, currentView, activeCollectionId, editingCollectionId, storageAvailable]);
+
+  // Load workbench state on app start
+  useEffect(() => {
+    if (!storageAvailable) return;
+    
+    try {
+      const appState = loadAppState();
+      if (appState.tempWorkbench) {
+        const { items, currentView: savedView, activeCollectionId: savedActiveId, editingCollectionId: savedEditingId } = appState.tempWorkbench;
+        
+        if (Array.isArray(items)) {
+          setWorkbenchItems(items);
+        }
+        if (savedView && ['home', 'workbench', 'collection', 'collections-page'].includes(savedView)) {
+          setCurrentView(savedView);
+        }
+        if (savedActiveId) {
+          setActiveCollectionId(savedActiveId);
+        }
+        if (savedEditingId) {
+          setEditingCollectionId(savedEditingId);
+        }
+        
+        console.log('🔧 Loaded workbench state from localStorage');
+      }
+    } catch (error) {
+      console.error('❌ Error loading workbench state:', error);
+    }
+  }, [storageAvailable]);
   
   // Function to toggle between light and dark mode
   const toggleTheme = () => {
