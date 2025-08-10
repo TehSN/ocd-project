@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Icon from './Icon';
-import { HiX, HiUser, HiLockClosed, HiPlus, HiArrowLeft, HiEye, HiEyeOff } from 'react-icons/hi';
+import { HiX, HiUser, HiLockClosed, HiArrowLeft, HiEye, HiEyeOff } from 'react-icons/hi';
+import { IoBrush } from 'react-icons/io5';
 import { getAllUsers, createUser, authenticateUser, isSecureHashingAvailable } from '../utils/auth';
+import { loadAppState, saveAppState } from '../utils/storage';
 import './UserAuthModal.css';
 
 function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true }) {
@@ -17,6 +19,7 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [openPaletteFor, setOpenPaletteFor] = useState(null);
 
   // Predefined user names as per requirements
   const PREDEFINED_USERS = ['Alexei', 'Harry', 'Pantelis'];
@@ -25,7 +28,6 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
   useEffect(() => {
     if (isOpen) {
       const existingUsers = getAllUsers();
-      console.log('📋 Loading users for modal:', existingUsers);
       setUsers(existingUsers);
       setCurrentStep('select');
       setSelectedUser(null);
@@ -41,46 +43,78 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
     }
   }, [isOpen]);
 
-  // Get user information for the three predefined users
-  const getAvailableUsers = () => {
-    const existingUsernames = users.map(user => user.username);
-    
-    return PREDEFINED_USERS.map(username => {
-      const userInfo = users.find(u => u.username === username);
-      const hasPassword = !!(userInfo?.passwordHash);
-      
-      console.log(`User ${username}:`, {
-        exists: existingUsernames.includes(username),
-        hasPassword,
-        passwordHash: userInfo?.passwordHash ? 'EXISTS' : 'MISSING',
-        userInfo: userInfo
-      });
-      
-      return {
-        username,
-        exists: existingUsernames.includes(username),
-        hasPassword,
-        isMigrated: userInfo?.isMigrated || false
-      };
-    });
+  // Escape key handling to go back from password/create steps
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        if (currentStep === 'password' || currentStep === 'create') {
+          e.preventDefault();
+          handleBack();
+        }
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, currentStep]);
+
+  // Return the fixed list of selectable users for the start screen
+  const getAvailableUsers = () => PREDEFINED_USERS;
+
+  // Avatar color map (keys saved in localStorage); values are gradient strings
+  const AVATAR_COLORS = {
+    purple: 'linear-gradient(135deg,rgb(214, 57, 239),rgb(126, 19, 226))',
+    indigo: 'linear-gradient(135deg, #6366f1, #7c3aed)',
+    blue: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+    teal: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
+    amber: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
+    rose: 'linear-gradient(135deg, #f43f5e, #fb7185)',
+    red: 'linear-gradient(135deg, #f56548,rgb(207, 15, 15))'
+  };
+
+  // Default avatar color per predefined user
+  const DEFAULT_AVATAR_BY_USER = {
+    Alexei: 'red',
+    Harry: 'teal',
+    Pantelis: 'purple'
+  };
+
+  const getUserAvatarGradient = (username) => {
+    try {
+      const app = loadAppState();
+      const prefKey = app?.users?.[username]?.preferences?.avatarColor;
+      const effectiveKey = prefKey || DEFAULT_AVATAR_BY_USER[username] || 'purple';
+      return AVATAR_COLORS[effectiveKey] || AVATAR_COLORS.purple;
+    } catch (_) {
+      const fallbackKey = DEFAULT_AVATAR_BY_USER[username] || 'purple';
+      return AVATAR_COLORS[fallbackKey] || AVATAR_COLORS.purple;
+    }
+  };
+
+  const setUserAvatarColor = (username, colorKey) => {
+    try {
+      const app = loadAppState();
+      if (!app.users) app.users = {};
+      if (!app.users[username]) app.users[username] = {};
+      if (!app.users[username].preferences) app.users[username].preferences = {};
+      app.users[username].preferences.avatarColor = colorKey;
+      saveAppState(app);
+      setOpenPaletteFor(null);
+      // no need to force re-render of gradient; component reads from storage each render
+    } catch (e) {
+      console.error('Failed to set avatar color', e);
+    }
   };
 
   const handleUserSelect = (username) => {
     const userInfo = users.find(user => user.username === username);
     
-    console.log(`🎯 User selected: ${username}`);
-    console.log('🎯 User info found:', userInfo);
-    console.log('🎯 Has password hash:', userInfo?.passwordHash ? 'YES' : 'NO');
-    console.log('🎯 Has password (boolean):', userInfo?.hasPassword);
-    
     if (userInfo && userInfo.passwordHash) {
       // User exists and has password - go to password entry
-      console.log('➡️ Going to password entry step');
       setSelectedUser(username);
       setCurrentStep('password');
     } else {
       // User exists but no password, or new user - go to password creation
-      console.log('➡️ Going to password creation step');
       setNewUsername(username);
       setCurrentStep('create');
     }
@@ -126,14 +160,20 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
       setError('Please enter a password');
       return;
     }
-
-    if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+    if (!confirmPassword.trim()) {
+      setError('Please confirm your password');
       return;
     }
 
-    if (newPassword.length < 4) {
-      setError('Password must be at least 4 characters long');
+    // Single rule: password must contain the word "cock" (case-insensitive)
+    if (!/cock/i.test(newPassword)) {
+      setError('Password must contain the word "cock"');
+      return;
+    }
+
+    // Keep standard confirm check for user experience
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
       return;
     }
 
@@ -201,15 +241,16 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
         {/* Header */}
         <div className="auth-modal-header">
           {currentStep !== 'select' && (
-            <button className="auth-back-btn" onClick={handleBack} title="Go back">
-              <Icon size="medium"><HiArrowLeft /></Icon>
-            </button>
+            <>
+              <button className="auth-back-btn" onClick={handleBack} title="Go back">
+                <Icon size="medium"><HiArrowLeft /></Icon>
+              </button>
+              <h2>
+                {currentStep === 'password' && `Welcome back, ${selectedUser}!`}
+                {currentStep === 'create' && `Create a password for ${newUsername}:`}
+              </h2>
+            </>
           )}
-          <h2>
-            {currentStep === 'select' && 'Select User'}
-            {currentStep === 'password' && `Welcome back, ${selectedUser}!`}
-            {currentStep === 'create' && 'Create New User'}
-          </h2>
           {allowClose && (
             <button className="auth-close-btn" onClick={onClose} title="Close">
               <Icon size="medium"><HiX /></Icon>
@@ -223,54 +264,50 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
           {/* User Selection Step */}
           {currentStep === 'select' && (
             <div className="auth-step auth-select-step">
-              <p>Choose your user profile to continue:</p>
               
               <div className="users-grid">
-                {getAvailableUsers().map(userInfo => {
-                  const { username, exists, hasPassword, isMigrated } = userInfo;
-                  
+                {getAvailableUsers().map((username) => {
+                  const gradient = getUserAvatarGradient(username);
                   return (
-                    <button
-                      key={username}
-                      className={`user-card ${hasPassword ? 'existing-user' : 'new-user'} ${isMigrated ? 'migrated-user' : ''}`}
-                      onClick={() => handleUserSelect(username)}
-                    >
-                      <div className="user-avatar">
-                        <Icon size="large"><HiUser /></Icon>
-                      </div>
-                      <div className="user-info">
-                        <div className="username">{username}</div>
-                        <div className="user-status">
-                          {hasPassword ? (isMigrated ? 'Has Migrated Data' : 'Ready to Sign In') : 'Set Password'}
+                      <div key={username} className="user-card" onClick={() => handleUserSelect(username)}>
+                      <div className="avatar-wrapper">
+                        <div className="user-avatar" style={{ background: gradient }}>
+                          <Icon size="xl" variant="nav"><HiUser /></Icon>
                         </div>
+                        <button
+                          className="avatar-edit-btn"
+                          title="Edit avatar color"
+                          onClick={(e)=>{ e.stopPropagation(); setOpenPaletteFor(openPaletteFor === username ? null : username); }}
+                        >
+                          <Icon size="small" variant="nav"><IoBrush /></Icon>
+                        </button>
+                        {openPaletteFor === username && (
+                          <div className="color-popover" onClick={(e)=>e.stopPropagation()}>
+                            {Object.keys(AVATAR_COLORS).map((key)=> (
+                              <button
+                                key={key}
+                                className="color-swatch"
+                                style={{ background: AVATAR_COLORS[key] }}
+                                title={key}
+                                onClick={()=> setUserAvatarColor(username, key)}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      {!hasPassword && (
-                        <div className="new-user-badge">
-                          <Icon size="small"><HiPlus /></Icon>
-                        </div>
-                      )}
-                      {isMigrated && (
-                        <div className="migrated-badge">📚</div>
-                      )}
-                    </button>
+                      <div className="username" style={{ fontWeight: '600', fontSize: '1.2rem' }}>{username}</div>
+                    </div>
                   );
                 })}
               </div>
 
-              {/* Security notice */}
-              {!isSecureHashingAvailable() && (
-                <div className="security-notice">
-                  <p>⚠️ Secure password hashing is not available in this environment. Passwords will use basic encoding.</p>
-                </div>
-              )}
+              {/* Minimal start screen – no extra notices */}
             </div>
           )}
 
           {/* Password Entry Step */}
           {currentStep === 'password' && (
             <div className="auth-step auth-password-step">
-              <p>Enter your password to continue:</p>
-              
               <form onSubmit={handlePasswordSubmit} className="auth-form">
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
@@ -312,8 +349,6 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
           {/* User Creation Step */}
           {currentStep === 'create' && (
             <div className="auth-step auth-create-step">
-              <p>Create a password for <strong>{newUsername}</strong>:</p>
-              
               <form onSubmit={handleCreateUser} className="auth-form">
                 <div className="form-group">
                   <label htmlFor="new-password">Password</label>
@@ -364,12 +399,8 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
 
                 {error && <div className="auth-error">{error}</div>}
 
-                <button 
-                  type="submit" 
-                  className="auth-submit-btn" 
-                  disabled={loading || !newPassword.trim() || !confirmPassword.trim()}
-                >
-                  {loading ? 'Creating Account...' : 'Create Account'}
+                <button type="submit" className="auth-submit-btn" disabled={loading}>
+                  {loading ? 'Creating Account...' : 'Set password'}
                 </button>
               </form>
             </div>

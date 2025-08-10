@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCD Dashboard - User Data Debug Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #64b5f6;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section h3 {
+            color: #81c784;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        
+        .user-data {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #64b5f6;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+        
+        .danger:hover {
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .info {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        }
+        
+        .info:hover {
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: #333;
+        }
+        
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            border-left: 4px solid #81c784;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .user-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #81c784;
+            margin-bottom: 8px;
+        }
+        
+        .user-detail {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .status-good { color: #81c784; }
+        .status-bad { color: #e57373; }
+        .status-neutral { color: #64b5f6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ Debug Tool</h1>
+        <p class="subtitle">OCD Dashboard User Data Management</p>
+        
+        <div class="section">
+            <h3>📊 Current Data</h3>
+            <div id="currentData" class="user-data">Loading...</div>
+            <button onclick="refreshData()" class="info">🔄 Refresh Data</button>
+        </div>
+        
+        <div class="section">
+            <h3>🗑️ Clear User Data</h3>
+            <div class="button-grid">
+                <button onclick="clearUser('Alexei')">Clear Alexei</button>
+                <button onclick="clearUser('Harry')">Clear Harry</button>
+                <button onclick="clearUser('Pantelis')">Clear Pantelis</button>
+                <button onclick="clearAllUsers()" class="danger">🚨 Clear ALL Users</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>🔧 Advanced Tools</h3>
+            <div class="button-grid">
+                <button onclick="exportData()" class="info">💾 Export Data</button>
+                <button onclick="showRawData()" class="warning">📄 Show Raw JSON</button>
+                <button onclick="clearCurrentUser()" class="danger">🚪 Clear Current User</button>
+                <button onclick="resetToDefaults()" class="danger">🔄 Reset to Defaults</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>📝 Action Log</h3>
+            <div id="log" class="log">Ready for debugging...</div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'ocd-app-data';
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('log');
+            const colors = {
+                info: '#64b5f6',
+                success: '#81c784',
+                error: '#e57373',
+                warning: '#feca57'
+            };
+            
+            logDiv.innerHTML += `<div style="color: ${colors[type]};">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function loadAppData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (!stored) {
+                    return { users: {}, currentUser: null, globalSettings: { isDarkMode: true } };
+                }
+                return JSON.parse(stored);
+            } catch (error) {
+                log('Error loading data: ' + error.message, 'error');
+                return { users: {}, currentUser: null, globalSettings: { isDarkMode: true } };
+            }
+        }
+        
+        function saveAppData(data) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                log('Data saved successfully', 'success');
+                return true;
+            } catch (error) {
+                log('Error saving data: ' + error.message, 'error');
+                return false;
+            }
+        }
+        
+        function refreshData() {
+            const data = loadAppData();
+            displayData(data);
+            log('Data refreshed', 'info');
+        }
+        
+        function displayData(data) {
+            const container = document.getElementById('currentData');
+            const users = data.users || {};
+            const userCount = Object.keys(users).length;
+            
+            if (userCount === 0) {
+                container.innerHTML = '<div class="status-neutral">No users found</div>';
+                return;
+            }
+            
+            let html = `<div class="user-detail"><strong>Current User:</strong> <span class="status-${data.currentUser ? 'good' : 'bad'}">${data.currentUser || 'None'}</span></div>`;
+            html += `<div class="user-detail"><strong>Total Users:</strong> <span class="status-neutral">${userCount}</span></div><br>`;
+            
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                html += `
+                    <div class="user-card">
+                        <div class="user-name">👤 ${username}</div>
+                        <div class="user-detail">
+                            <span>Password:</span>
+                            <span class="status-${user.passwordHash ? 'good' : 'bad'}">
+                                ${user.passwordHash ? '✅ Set' : '❌ Not Set'}
+                            </span>
+                        </div>
+                        <div class="user-detail">
+                            <span>Collections:</span>
+                            <span class="status-neutral">${user.collections?.length || 0}</span>
+                        </div>
+                        <div class="user-detail">
+                            <span>Workbench Items:</span>
+                            <span class="status-neutral">${user.workbenchItems?.length || 0}</span>
+                        </div>
+                        <div class="user-detail">
+                            <span>Dark Mode:</span>
+                            <span class="status-neutral">${user.isDarkMode ? 'Yes' : 'No'}</span>
+                        </div>
+                        ${user.isMigrated ? '<div class="user-detail"><span>📚 Migrated Data:</span><span class="status-good">Yes</span></div>' : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function clearUser(username) {
+            if (!confirm(`Are you sure you want to clear ALL data for ${username}?\n\nThis will remove:\n- Password\n- Collections\n- Workbench items\n- All settings\n\nThis action cannot be undone!`)) {
+                return;
+            }
+            
+            const data = loadAppData();
+            
+            if (!data.users || !data.users[username]) {
+                log(`User '${username}' not found`, 'warning');
+                return;
+            }
+            
+            delete data.users[username];
+            
+            if (data.currentUser === username) {
+                data.currentUser = null;
+                log(`Cleared current user (was ${username})`, 'warning');
+            }
+            
+            if (saveAppData(data)) {
+                log(`Successfully cleared all data for ${username}`, 'success');
+                refreshData();
+            }
+        }
+        
+        function clearAllUsers() {
+            if (!confirm('⚠️ DANGER ⚠️\n\nThis will clear ALL user data:\n- All passwords\n- All collections\n- All workbench items\n- All settings\n\nThis action cannot be undone!\n\nAre you absolutely sure?')) {
+                return;
+            }
+            
+            if (!confirm('This is your final warning!\n\nClearing ALL user data will reset the app completely.\n\nConfirm by clicking OK:')) {
+                return;
+            }
+            
+            const data = {
+                users: {},
+                currentUser: null,
+                globalSettings: { isDarkMode: true },
+                appVersion: '1.2.0'
+            };
+            
+            if (saveAppData(data)) {
+                log('🚨 Cleared ALL user data', 'error');
+                refreshData();
+            }
+        }
+        
+        function clearCurrentUser() {
+            const data = loadAppData();
+            const oldUser = data.currentUser;
+            data.currentUser = null;
+            
+            if (saveAppData(data)) {
+                log(`Cleared current user${oldUser ? ' (was ' + oldUser + ')' : ''}`, 'success');
+                refreshData();
+            }
+        }
+        
+        function exportData() {
+            const data = loadAppData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ocd-dashboard-data-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            log('Data exported successfully', 'success');
+        }
+        
+        function showRawData() {
+            const data = loadAppData();
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                    <head><title>Raw Data - OCD Dashboard</title></head>
+                    <body style="font-family: monospace; background: #1a1a1a; color: #fff; padding: 20px;">
+                        <h2>Raw localStorage Data</h2>
+                        <pre style="background: #2a2a2a; padding: 20px; border-radius: 8px; overflow: auto;">
+${JSON.stringify(data, null, 2)}
+                        </pre>
+                    </body>
+                </html>
+            `);
+        }
+        
+        function resetToDefaults() {
+            if (!confirm('Reset to default app state?\n\nThis will clear all data and reset the app to initial state.')) {
+                return;
+            }
+            
+            const defaultData = {
+                appVersion: '1.2.0',
+                users: {},
+                currentUser: null,
+                globalSettings: { isDarkMode: true }
+            };
+            
+            if (saveAppData(defaultData)) {
+                log('Reset to default state', 'success');
+                refreshData();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+            log('Debug tool loaded successfully', 'success');
+        });
+    </script>
+</body>
+</html>

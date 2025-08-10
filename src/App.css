@@ -437,9 +437,9 @@ main {
 
 .user-action-btn {
   padding: 4px 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #374151;
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 500;
@@ -448,8 +448,8 @@ main {
 }
 
 .user-action-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
 
@@ -503,13 +503,14 @@ main {
 }
 
 .dark-mode .user-action-btn {
-  background: rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .dark-mode .user-action-btn:hover {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .dark-mode .loading-screen {
@@ -553,22 +554,42 @@ main {
 /* Startup Screen Styles */
 .startup-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  inset: 0;
+  background: linear-gradient(135deg, #121826 0%, #0f172a 45%, #0b1220 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10001;
+  overflow: hidden;
+}
+
+.startup-screen::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(60% 60% at 20% 20%, rgba(133, 64, 243, 0.15) 0%, rgba(133, 64, 243, 0) 60%),
+              radial-gradient(50% 50% at 80% 30%, rgba(59, 130, 246, 0.14) 0%, rgba(59, 130, 246, 0) 60%),
+              radial-gradient(40% 40% at 50% 80%, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 60%);
+  filter: blur(40px);
+  animation: startupGlow 16s ease-in-out infinite alternate;
+}
+
+@keyframes startupGlow {
+  0% { transform: translate3d(-2%, -2%, 0) scale(1); opacity: 0.9; }
+  100% { transform: translate3d(2%, 1%, 0) scale(1.05); opacity: 1; }
 }
 
 .startup-content {
   width: 100%;
-  max-width: 600px;
+  max-width: 980px;
   text-align: center;
-  padding: 40px 20px;
+  padding: 40px 24px;
+  animation: fadeInStartup 500ms ease-out;
+}
+
+@keyframes fadeInStartup {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .startup-header {
@@ -576,23 +597,23 @@ main {
 }
 
 .startup-header h1 {
-  font-size: 3rem;
-  font-weight: 300;
+  font-size: 3.2rem;
+  font-weight: 400;
   color: #ffffff;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
 
 .startup-header p {
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 300;
-  margin: 0;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  margin: 0 0 22px 0;
 }
 
 /* Dark mode startup screen */
 .dark-mode .startup-screen {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #0b0f19 0%, #211616 75%, #0a0d16 100%);
 }
 
 /* Responsive startup screen */

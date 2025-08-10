@@ -5,13 +5,14 @@ import Dashboard from './components/Dashboard';
 import EnlargeChoiceModal from './components/EnlargeChoiceModal';
 import AddToCollectionModal from './components/AddToCollectionModal';
 import UserAuthModal from './components/UserAuthModal';
+import UserControls from './components/UserControls';
 import Icon from './components/Icon';
 import { graphData } from './graphData';
 import { loadAppState, saveAppState, isStorageAvailable } from './utils/storage';
 import { autoMigrate } from './utils/migrations';
-import { getCurrentUser, setCurrentUser, getUserData, saveUserData, logoutUser } from './utils/auth';
+import { setCurrentUser, logoutUser, authenticateUser } from './utils/auth';
 import './utils/debug'; // Enable debug utilities in development
-import { HiHome, HiCollection, HiSun, HiMoon, HiUser } from 'react-icons/hi';
+import { HiHome, HiCollection, HiSun, HiMoon } from 'react-icons/hi';
 import { GiAnvilImpact } from "react-icons/gi";
 
 
@@ -35,7 +36,7 @@ function App() {
   
   // State for user authentication
   const [currentUser, setCurrentUserState] = useState(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  // legacy switch-user modal removed; we navigate to startup instead
   const [isInitialized, setIsInitialized] = useState(false);
   
   // State for enlarge choice modal
@@ -99,16 +100,14 @@ function App() {
         
         console.log(`✅ Auto-logged in user: ${lastUser}`);
       } else {
-        // No users or no valid last user, show auth modal
-        setShowAuthModal(true);
-        console.log('👤 No valid user session, showing auth modal');
+        // No users or no valid last user, go to startup selection
+        console.log('👤 No valid user session, showing startup user select');
       }
       
       console.log('✅ App initialized successfully');
     } catch (error) {
       console.error('❌ Error initializing app:', error);
       setStorageAvailable(false);
-      setShowAuthModal(true); // Fallback to auth modal
     } finally {
       setIsInitialized(true);
     }
@@ -182,10 +181,10 @@ function App() {
         console.log(`👤 User logged in: ${username}`);
       }
       
-      setShowAuthModal(false);
+      // no modal to close anymore
     } catch (error) {
       console.error('❌ Error during login:', error);
-      setShowAuthModal(true); // Keep modal open on error
+      // stay in current state
     }
   };
 
@@ -201,14 +200,14 @@ function App() {
       setEditingCollectionId(null);
       setCurrentView('home');
       
-      setShowAuthModal(true);
       console.log('👋 User logged out');
     }
   };
 
   const handleSwitchUser = () => {
-    // No need to manually save - the useEffect will handle it
-    setShowAuthModal(true);
+    // Navigate to startup screen (user selection)
+    setCurrentUserState(null);
+    setCurrentView('home');
   };
   
   // Function to toggle between light and dark mode
@@ -438,7 +437,7 @@ function App() {
         <div className="startup-screen">
           <div className="startup-content">
             <div className="startup-header">
-              <h1> <span style={{ fontFamily: 'var(--font-family-logo)'}}>On-Chain Dashboard</span></h1>
+              <h1> <span style={{ fontWeight: '1000'}}>On-Chain Dashboard</span></h1>
               <p>Who's using the dashboard?</p>
             </div>
             <UserAuthModal
@@ -498,22 +497,34 @@ function App() {
           {/* User Information */}
           {currentUser && (
             <div className="user-info">
-              <span className="current-user"> <Icon size="small" variant="nav"><HiUser /></Icon> {currentUser}</span>
               <div className="user-actions">
-                <button 
-                  className="user-action-btn" 
-                  onClick={handleSwitchUser}
-                  title="Switch User"
-                >
-                  Switch
-                </button>
-                <button 
-                  className="user-action-btn logout-btn" 
-                  onClick={handleLogout}
-                  title="Logout"
-                >
-                  Logout
-                </button>
+                <UserControls
+                  currentUserName={currentUser}
+                  onSwitchUser={handleSwitchUser}
+                  onChangePassword={async (oldPass, newPass) => {
+                    try {
+                      // verify current password
+                      const res = await authenticateUser(currentUser, oldPass);
+                      if (!res.success) {
+                        alert('Current password is incorrect');
+                        return;
+                      }
+                      // save new password via auth utils
+                      // simple update via createUser path (updates if user exists)
+                      const { createUser } = await import('./utils/auth');
+                      const r = await createUser(currentUser, newPass);
+                      if (r.success) {
+                        alert('Password updated');
+                      } else {
+                        alert(r.error || 'Failed to update password');
+                      }
+                    } catch (e) {
+                      console.error(e);
+                      alert('Failed to update password');
+                    }
+                  }}
+                  isDarkMode={isDarkMode}
+                />
               </div>
             </div>
           )}
@@ -574,16 +585,7 @@ function App() {
         chartId={addToCollectionModal.chart?.id || ''}
       />
       
-      {/* User switching modal - only shown when a user is already logged in */}
-      {currentUser && (
-        <UserAuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-          onLogin={handleLogin}
-          isDarkMode={isDarkMode}
-          allowClose={true} // Can always close when switching users
-        />
-      )}
+      {/* legacy switch-user modal removed */}
     </div>
   );
 }
