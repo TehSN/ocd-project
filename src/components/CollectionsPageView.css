@@ -69,7 +69,7 @@
 .collection-tile {
   border-color: #37175f;
   background: linear-gradient(180deg, #ededed, #fefefe, #ededed);
-  border: 1px solid #e5e5e5;
+  border: transparent;
   border-radius: 6px;
   padding: 20px;
   cursor: pointer;
@@ -544,7 +544,7 @@
 }
 
 .App.dark-mode .collections-page-view {
-  background: linear-gradient(200deg, #000000, #281631); 
+  background: linear-gradient(160deg, #0a0a0a, #281631); 
 }
 
 .App.dark-mode .collections-subtitle {
@@ -564,7 +564,7 @@
 }
 
 .App.dark-mode .collection-tile {
-  background: linear-gradient(180deg, #000000, #121212, #000000);
+  background: linear-gradient(150deg, #00000075, #1212127e, #00000080);
   border-color: #333333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -572,7 +572,7 @@
 .App.dark-mode .collection-tile:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   border-color: #37175f;
-  background: linear-gradient(180deg, #000000, #1c1c1c, #000000);
+  background: linear-gradient(150deg, #00000000, #ffffff08, #00000000);
 }
 
 .App.dark-mode .collection-tile:hover::before {
