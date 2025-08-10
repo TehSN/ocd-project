@@ -23,12 +23,123 @@ const MIGRATIONS = {
 
       return migrated;
     }
+  },
+  '1.1.0': {
+    description: 'Added user system and migrate existing data',
+    migrate: (data) => {
+      console.log('🔄 Migrating to v1.1.0 (user system)');
+      
+      const migrated = {
+        ...data,
+        appVersion: '1.1.0'
+      };
+
+      // Check if we have old-style data to migrate
+      const hasOldCollections = data.tempCollections && Array.isArray(data.tempCollections) && data.tempCollections.length > 0;
+      const hasOldWorkbench = data.tempWorkbench && (
+        (Array.isArray(data.tempWorkbench.items) && data.tempWorkbench.items.length > 0) ||
+        data.tempWorkbench.currentView !== 'home'
+      );
+
+      if (hasOldCollections || hasOldWorkbench) {
+        console.log('📚 Found existing data to migrate to user system');
+        
+        // Migrate to Pantelis (first user alphabetically)
+        const migrateToUser = 'Pantelis';
+        const now = new Date().toISOString();
+        
+        if (!migrated.users) {
+          migrated.users = {};
+        }
+
+        migrated.users[migrateToUser] = {
+          // No password hash - will prompt for password creation on first login
+          collections: data.tempCollections || [],
+          workbenchItems: data.tempWorkbench?.items || [],
+          isDarkMode: data.globalSettings?.isDarkMode ?? true,
+          preferences: {},
+          createdAt: now,
+          lastLogin: now,
+          lastUpdated: now,
+          isMigrated: true // Flag to identify migrated user
+        };
+
+        // Preserve current view and state in migrated user
+        if (data.tempWorkbench) {
+          migrated.users[migrateToUser].savedView = data.tempWorkbench.currentView || 'home';
+          migrated.users[migrateToUser].activeCollectionId = data.tempWorkbench.activeCollectionId;
+          migrated.users[migrateToUser].editingCollectionId = data.tempWorkbench.editingCollectionId;
+        }
+
+        // Clear current user to force user selection on startup
+        migrated.currentUser = null;
+        
+        console.log(`✅ Migrated existing data to user: ${migrateToUser}`);
+        console.log(`   - Collections: ${migrated.users[migrateToUser].collections.length}`);
+        console.log(`   - Workbench items: ${migrated.users[migrateToUser].workbenchItems.length}`);
+      }
+
+      // Clean up old data structure (but keep as backup)
+      if (data.tempCollections || data.tempWorkbench) {
+        migrated.legacyDataBackup = {
+          tempCollections: data.tempCollections,
+          tempWorkbench: data.tempWorkbench,
+          migratedAt: new Date().toISOString()
+        };
+        
+        // Remove from main structure
+        delete migrated.tempCollections;
+        delete migrated.tempWorkbench;
+      }
+
+      return migrated;
+    }
+  },
+  '1.2.0': {
+    description: 'Fixed user system - remove DefaultUser, use predefined users only',
+    migrate: (data) => {
+      console.log('🔄 Migrating to v1.2.0 (fix user system)');
+      
+      const migrated = {
+        ...data,
+        appVersion: '1.2.0'
+      };
+
+      // Remove DefaultUser if it exists and move its data to Pantelis
+      if (migrated.users && migrated.users['DefaultUser']) {
+        console.log('🔄 Moving DefaultUser data to Pantelis');
+        
+        const defaultUserData = migrated.users['DefaultUser'];
+        
+        // If Pantelis doesn't exist, create him with DefaultUser's data
+        if (!migrated.users['Pantelis']) {
+          migrated.users['Pantelis'] = {
+            ...defaultUserData,
+            isMigrated: true
+          };
+        } else {
+          // If Pantelis exists, merge the data (keep existing password if any)
+          migrated.users['Pantelis'] = {
+            ...defaultUserData,
+            ...migrated.users['Pantelis'],
+            collections: defaultUserData.collections || migrated.users['Pantelis'].collections || [],
+            workbenchItems: defaultUserData.workbenchItems || migrated.users['Pantelis'].workbenchItems || [],
+            isMigrated: true
+          };
+        }
+        
+        // Remove DefaultUser
+        delete migrated.users['DefaultUser'];
+        
+        // Clear current user to force selection
+        migrated.currentUser = null;
+        
+        console.log('✅ Moved DefaultUser data to Pantelis and removed DefaultUser');
+      }
+
+      return migrated;
+    }
   }
-  // Future migrations will be added here:
-  // '1.1.0': {
-  //   description: 'Added user preferences',
-  //   migrate: (data) => { ... }
-  // }
 };
 
 /**

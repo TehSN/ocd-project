@@ -2,7 +2,7 @@
 // Handles localStorage operations with error handling and data validation
 
 const STORAGE_KEY = 'ocd-app-data';
-const CURRENT_APP_VERSION = '1.0.0';
+const CURRENT_APP_VERSION = '1.2.0';
 
 // Default application state structure
 const DEFAULT_APP_STATE = {

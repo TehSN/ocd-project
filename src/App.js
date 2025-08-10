@@ -4,12 +4,14 @@ import './colors.css';
 import Dashboard from './components/Dashboard';
 import EnlargeChoiceModal from './components/EnlargeChoiceModal';
 import AddToCollectionModal from './components/AddToCollectionModal';
+import UserAuthModal from './components/UserAuthModal';
 import Icon from './components/Icon';
 import { graphData } from './graphData';
 import { loadAppState, saveAppState, isStorageAvailable } from './utils/storage';
 import { autoMigrate } from './utils/migrations';
+import { getCurrentUser, setCurrentUser, getUserData, saveUserData, logoutUser } from './utils/auth';
 import './utils/debug'; // Enable debug utilities in development
-import { HiHome, HiCollection, HiSun, HiMoon } from 'react-icons/hi';
+import { HiHome, HiCollection, HiSun, HiMoon, HiUser } from 'react-icons/hi';
 import { GiAnvilImpact } from "react-icons/gi";
 
 
@@ -30,6 +32,11 @@ function App() {
   
   // State for storage availability
   const [storageAvailable, setStorageAvailable] = useState(true);
+  
+  // State for user authentication
+  const [currentUser, setCurrentUserState] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   
   // State for enlarge choice modal
   const [enlargeChoiceModal, setEnlargeChoiceModal] = useState({
@@ -52,6 +59,7 @@ function App() {
     if (!isStorageAvailable()) {
       console.warn('⚠️ localStorage not available, app will work without persistence');
       setStorageAvailable(false);
+      setIsInitialized(true);
       return;
     }
 
@@ -64,114 +72,144 @@ function App() {
         setIsDarkMode(appState.globalSettings.isDarkMode ?? true);
       }
       
+      // Check for existing users and auto-login logic
+      const hasUsers = appState.users && Object.keys(appState.users).length > 0;
+      const lastUser = appState.currentUser;
+      
+      if (hasUsers && lastUser && appState.users[lastUser]) {
+        // Auto-login the last user
+        setCurrentUserState(lastUser);
+        const userData = appState.users[lastUser];
+        
+        // Load user's data into app state
+        setCollections(userData.collections || []);
+        setWorkbenchItems(userData.workbenchItems || []);
+        setIsDarkMode(userData.isDarkMode ?? true);
+        
+        // Restore saved view state if available
+        if (userData.savedView) {
+          setCurrentView(userData.savedView);
+        }
+        if (userData.activeCollectionId) {
+          setActiveCollectionId(userData.activeCollectionId);
+        }
+        if (userData.editingCollectionId) {
+          setEditingCollectionId(userData.editingCollectionId);
+        }
+        
+        console.log(`✅ Auto-logged in user: ${lastUser}`);
+      } else {
+        // No users or no valid last user, show auth modal
+        setShowAuthModal(true);
+        console.log('👤 No valid user session, showing auth modal');
+      }
+      
       console.log('✅ App initialized successfully');
     } catch (error) {
       console.error('❌ Error initializing app:', error);
       setStorageAvailable(false);
+      setShowAuthModal(true); // Fallback to auth modal
+    } finally {
+      setIsInitialized(true);
     }
   }, []);
 
-  // Save global settings whenever they change
+  // Save user data whenever it changes (debounced to prevent excessive saves)
   useEffect(() => {
-    if (!storageAvailable) return;
+    if (!storageAvailable || !currentUser || !isInitialized) return;
     
-    try {
-      const appState = loadAppState();
-      const updatedState = {
-        ...appState,
-        globalSettings: {
-          ...appState.globalSettings,
-          isDarkMode
-        }
-      };
-      saveAppState(updatedState);
-    } catch (error) {
-      console.error('❌ Error saving global settings:', error);
-    }
-  }, [isDarkMode, storageAvailable]);
-
-  // Save collections whenever they change
-  useEffect(() => {
-    if (!storageAvailable || collections.length === 0) return;
-    
-    try {
-      const appState = loadAppState();
-      const updatedState = {
-        ...appState,
-        tempCollections: collections // Temporary storage until user system is implemented
-      };
-      saveAppState(updatedState);
-      console.log('💾 Collections saved to localStorage');
-    } catch (error) {
-      console.error('❌ Error saving collections:', error);
-    }
-  }, [collections, storageAvailable]);
-
-  // Load collections on app start
-  useEffect(() => {
-    if (!storageAvailable) return;
-    
-    try {
-      const appState = loadAppState();
-      if (appState.tempCollections && Array.isArray(appState.tempCollections)) {
-        setCollections(appState.tempCollections);
-        console.log('📚 Loaded collections from localStorage');
-      }
-    } catch (error) {
-      console.error('❌ Error loading collections:', error);
-    }
-  }, [storageAvailable]);
-
-  // Save workbench state whenever it changes
-  useEffect(() => {
-    if (!storageAvailable) return;
-    
-    try {
-      const appState = loadAppState();
-      const updatedState = {
-        ...appState,
-        tempWorkbench: {
-          items: workbenchItems,
-          currentView,
-          activeCollectionId,
-          editingCollectionId
-        }
-      };
-      saveAppState(updatedState);
-      console.log('🔧 Workbench state saved to localStorage');
-    } catch (error) {
-      console.error('❌ Error saving workbench state:', error);
-    }
-  }, [workbenchItems, currentView, activeCollectionId, editingCollectionId, storageAvailable]);
-
-  // Load workbench state on app start
-  useEffect(() => {
-    if (!storageAvailable) return;
-    
-    try {
-      const appState = loadAppState();
-      if (appState.tempWorkbench) {
-        const { items, currentView: savedView, activeCollectionId: savedActiveId, editingCollectionId: savedEditingId } = appState.tempWorkbench;
+    const timeoutId = setTimeout(() => {
+      try {
+        const appState = loadAppState();
         
-        if (Array.isArray(items)) {
-          setWorkbenchItems(items);
+        // Update user's data (preserve critical fields like passwordHash)
+        if (appState.users && appState.users[currentUser]) {
+          const existingUser = appState.users[currentUser];
+          appState.users[currentUser] = {
+            ...existingUser, // Preserve all existing fields including passwordHash
+            collections,
+            workbenchItems,
+            isDarkMode,
+            savedView: currentView,
+            activeCollectionId,
+            editingCollectionId,
+            lastUpdated: new Date().toISOString()
+            // passwordHash and other critical fields are preserved by the spread
+          };
+          
+          saveAppState(appState);
+          console.log(`💾 Saved data for user: ${currentUser}`);
+          console.log(`🔒 Password hash preserved:`, existingUser.passwordHash ? 'YES' : 'NO');
         }
-        if (savedView && ['home', 'workbench', 'collection', 'collections-page'].includes(savedView)) {
-          setCurrentView(savedView);
+      } catch (error) {
+        console.error('❌ Error saving user data:', error);
+      }
+    }, 500); // Debounce saves by 500ms
+    
+    return () => clearTimeout(timeoutId);
+  }, [collections, workbenchItems, isDarkMode, currentView, activeCollectionId, editingCollectionId, currentUser, isInitialized, storageAvailable]);
+
+
+  
+  // User authentication functions
+  const handleLogin = (username) => {
+    try {
+      // Set user session
+      setCurrentUser(username);
+      setCurrentUserState(username);
+      
+      // Load user data
+      const appState = loadAppState();
+      if (appState.users && appState.users[username]) {
+        const userData = appState.users[username];
+        
+        // Load user's data into app state
+        setCollections(userData.collections || []);
+        setWorkbenchItems(userData.workbenchItems || []);
+        setIsDarkMode(userData.isDarkMode ?? true);
+        
+        // Restore saved view state if available
+        if (userData.savedView) {
+          setCurrentView(userData.savedView);
         }
-        if (savedActiveId) {
-          setActiveCollectionId(savedActiveId);
+        if (userData.activeCollectionId) {
+          setActiveCollectionId(userData.activeCollectionId);
         }
-        if (savedEditingId) {
-          setEditingCollectionId(savedEditingId);
+        if (userData.editingCollectionId) {
+          setEditingCollectionId(userData.editingCollectionId);
         }
         
-        console.log('🔧 Loaded workbench state from localStorage');
+        console.log(`👤 User logged in: ${username}`);
       }
+      
+      setShowAuthModal(false);
     } catch (error) {
-      console.error('❌ Error loading workbench state:', error);
+      console.error('❌ Error during login:', error);
+      setShowAuthModal(true); // Keep modal open on error
     }
-  }, [storageAvailable]);
+  };
+
+  const handleLogout = () => {
+    if (currentUser) {
+      logoutUser();
+      setCurrentUserState(null);
+      
+      // Reset app state
+      setCollections([]);
+      setWorkbenchItems([]);
+      setActiveCollectionId(null);
+      setEditingCollectionId(null);
+      setCurrentView('home');
+      
+      setShowAuthModal(true);
+      console.log('👋 User logged out');
+    }
+  };
+
+  const handleSwitchUser = () => {
+    // No need to manually save - the useEffect will handle it
+    setShowAuthModal(true);
+  };
   
   // Function to toggle between light and dark mode
   const toggleTheme = () => {
@@ -379,9 +417,46 @@ function App() {
     setWorkbenchItems(newOrder);
   };
 
+    // Show loading screen while initializing
+  if (!isInitialized) {
+    return (
+      <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+        <div className="loading-screen">
+          <div className="loading-content">
+            <h1>🔗 OCD Dashboard</h1>
+            <p>Initializing...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show startup page if no user is logged in
+  if (!currentUser) {
+    return (
+      <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+        <div className="startup-screen">
+          <div className="startup-content">
+            <div className="startup-header">
+              <h1> <span style={{ fontFamily: 'var(--font-family-logo)'}}>On-Chain Dashboard</span></h1>
+              <p>Who's using the dashboard?</p>
+            </div>
+            <UserAuthModal
+              isOpen={true}
+              onClose={() => {}} // Cannot close on startup screen
+              onLogin={handleLogin}
+              isDarkMode={isDarkMode}
+              allowClose={false} // Never allow closing on startup
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-            <header className="App-header">
+      <header className="App-header">
         <div className="header-left">
           <h1>On-Chain Dashboard</h1>
           <div className="navigation-buttons">
@@ -420,6 +495,29 @@ function App() {
           </div>
         </div>
         <div className="header-right">
+          {/* User Information */}
+          {currentUser && (
+            <div className="user-info">
+              <span className="current-user"> <Icon size="small" variant="nav"><HiUser /></Icon> {currentUser}</span>
+              <div className="user-actions">
+                <button 
+                  className="user-action-btn" 
+                  onClick={handleSwitchUser}
+                  title="Switch User"
+                >
+                  Switch
+                </button>
+                <button 
+                  className="user-action-btn logout-btn" 
+                  onClick={handleLogout}
+                  title="Logout"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+          
           <button
             className="theme-toggle"
             onClick={toggleTheme}
@@ -475,6 +573,17 @@ function App() {
         chartTitle={addToCollectionModal.chart?.title || ''}
         chartId={addToCollectionModal.chart?.id || ''}
       />
+      
+      {/* User switching modal - only shown when a user is already logged in */}
+      {currentUser && (
+        <UserAuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onLogin={handleLogin}
+          isDarkMode={isDarkMode}
+          allowClose={true} // Can always close when switching users
+        />
+      )}
     </div>
   );
 }

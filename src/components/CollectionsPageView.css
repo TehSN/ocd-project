@@ -67,7 +67,8 @@
 
 /* Collection tile */
 .collection-tile {
-  background: white;
+  border-color: #37175f;
+  background: linear-gradient(180deg, #ededed, #fefefe, #ededed);
   border: 1px solid #e5e5e5;
   border-radius: 6px;
   padding: 20px;
@@ -542,6 +543,10 @@
   color: #e5e5e5;
 }
 
+.App.dark-mode .collections-page-view {
+  background: linear-gradient(200deg, #000000, #281631); 
+}
+
 .App.dark-mode .collections-subtitle {
   color: #888888;
 }
@@ -559,14 +564,15 @@
 }
 
 .App.dark-mode .collection-tile {
-  background: #1f1f1f;
+  background: linear-gradient(180deg, #000000, #121212, #000000);
   border-color: #333333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .App.dark-mode .collection-tile:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  border-color: #8f3bf6;
+  border-color: #37175f;
+  background: linear-gradient(180deg, #000000, #1c1c1c, #000000);
 }
 
 .App.dark-mode .collection-tile:hover::before {
@@ -578,6 +584,7 @@
     var(--color-profit-loss-dark),
     var(--color-lifespan-dark)
   );
+
 }
 
 .App.dark-mode .collection-title {
