@@ -10,7 +10,8 @@ import Icon from './components/Icon';
 import { graphData } from './graphData';
 import { loadAppState, saveAppState, isStorageAvailable } from './utils/storage';
 import { autoMigrate } from './utils/migrations';
-import { setCurrentUser, logoutUser, authenticateUser } from './utils/auth';
+import { setCurrentUser, authenticateUser } from './utils/auth';
+// import { logoutUser } from './utils/auth';
 import './utils/debug'; // Enable debug utilities in development
 import { HiHome, HiCollection, HiSun, HiMoon } from 'react-icons/hi';
 import { GiAnvilImpact } from "react-icons/gi";
@@ -188,21 +189,21 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    if (currentUser) {
-      logoutUser();
-      setCurrentUserState(null);
-      
-      // Reset app state
-      setCollections([]);
-      setWorkbenchItems([]);
-      setActiveCollectionId(null);
-      setEditingCollectionId(null);
-      setCurrentView('home');
-      
-      console.log('👋 User logged out');
-    }
-  };
+  // const handleLogout = () => {
+  //   if (currentUser) {
+  //     logoutUser();
+  //     setCurrentUserState(null);
+  //     
+  //     // Reset app state
+  //     setCollections([]);
+  //     setWorkbenchItems([]);
+  //     setActiveCollectionId(null);
+  //     setEditingCollectionId(null);
+  //     setCurrentView('home');
+  //     
+  //     console.log('👋 User logged out');
+  //   }
+  // };
 
   const handleSwitchUser = () => {
     // Navigate to startup screen (user selection)

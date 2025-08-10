@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Icon from './Icon';
 import { HiX, HiUser, HiLockClosed, HiArrowLeft, HiEye, HiEyeOff } from 'react-icons/hi';
 import { IoBrush } from 'react-icons/io5';
-import { getAllUsers, createUser, authenticateUser, isSecureHashingAvailable } from '../utils/auth';
+import { getAllUsers, createUser, authenticateUser } from '../utils/auth';
+// import { isSecureHashingAvailable } from '../utils/auth';
 import { loadAppState, saveAppState } from '../utils/storage';
 import './UserAuthModal.css';
 
@@ -23,6 +24,21 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
 
   // Predefined user names as per requirements
   const PREDEFINED_USERS = ['Alexei', 'Harry', 'Pantelis'];
+
+  // Handle back navigation
+  const handleBack = useCallback(() => {
+    if (currentStep === 'password') {
+      setCurrentStep('select');
+      setSelectedUser(null);
+      setPassword('');
+    } else if (currentStep === 'create') {
+      setCurrentStep('select');
+      setNewUsername('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+    setError('');
+  }, [currentStep]);
 
   // Load users when modal opens
   useEffect(() => {
@@ -56,7 +72,7 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isOpen, currentStep]);
+  }, [isOpen, currentStep, handleBack]);
 
   // Return the fixed list of selectable users for the start screen
   const getAvailableUsers = () => PREDEFINED_USERS;
@@ -213,24 +229,10 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
     }
   };
 
-  const handleBack = () => {
-    if (currentStep === 'password') {
-      setCurrentStep('select');
-      setSelectedUser(null);
-      setPassword('');
-    } else if (currentStep === 'create') {
-      setCurrentStep('select');
-      setNewUsername('');
-      setNewPassword('');
-      setConfirmPassword('');
-    }
-    setError('');
-  };
-
-  const handleCreateNewUser = () => {
-    setCurrentStep('create');
-    setError('');
-  };
+  // const handleCreateNewUser = () => {
+  //   setCurrentStep('create');
+  //   setError('');
+  // };
 
   if (!isOpen) return null;
 
