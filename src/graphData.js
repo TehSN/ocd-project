@@ -199,6 +199,38 @@ export const graphData = [
     category: "Treasury Companies",
     details: "There are no details about this graph yet!"
   }
+,
+  {
+    id: 26,
+    title: "Topping Cloud Price Models",
+    url: "https://charts.checkonchain.com/btconchain/pricing/topmodels/topmodels_light.html",
+    category: "Pricing Models",
+    details: "There are no details about this graph yet!"
+  }
+,
+  {
+    id: 27,
+    title: "Bitcoin Price",
+    url: "https://charts.checkonchain.com/btconchain/pricing/price/price_light.html",
+    category: "Pricing Models",
+    details: "There are no details about this graph yet!"
+  }
+,
+  {
+    id: 28,
+    title: "MVRV Ratio Z-Score Histogram",
+    url: "https://charts.checkonchain.com/btconchain/unrealised/histogram_bullbear_mvrv_zscore/histogram_bullbear_mvrv_zscore_light.html",
+    category: "Pricing Models",
+    details: "There are no details about this graph yet!"
+  }
+,
+  {
+    id: 29,
+    title: "Bitcoin Value Days Destroyed Multiple",
+    url: "https://charts.checkonchain.com/btconchain/lifespan/vddmultiple/vddmultiple_light.html",
+    category: "Lifespan",
+    details: "There are no details about this graph yet!"
+  }
 ];
 
 export const categories = [
