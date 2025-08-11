@@ -127,8 +127,9 @@
 }
 
 .startup-screen .users-grid {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 20px auto;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .user-card {

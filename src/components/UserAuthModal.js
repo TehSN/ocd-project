@@ -23,7 +23,7 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
   const [openPaletteFor, setOpenPaletteFor] = useState(null);
 
   // Predefined user names as per requirements
-  const PREDEFINED_USERS = ['Alexei', 'Harry', 'Pantelis'];
+  const PREDEFINED_USERS = ['Alexei', 'Harry', 'Milan', 'Pantelis'];
 
   // Handle back navigation
   const handleBack = useCallback(() => {
@@ -83,6 +83,7 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
     indigo: 'linear-gradient(135deg, #6366f1, #7c3aed)',
     blue: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
     teal: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
+    green: 'linear-gradient(135deg, #22c55e, #16a34a)',
     amber: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
     rose: 'linear-gradient(135deg, #f43f5e, #fb7185)',
     red: 'linear-gradient(135deg, #f56548,rgb(207, 15, 15))'
@@ -92,7 +93,8 @@ function UserAuthModal({ isOpen, onClose, onLogin, isDarkMode, allowClose = true
   const DEFAULT_AVATAR_BY_USER = {
     Alexei: 'red',
     Harry: 'teal',
-    Pantelis: 'purple'
+    Pantelis: 'purple',
+    Milan: 'green'
   };
 
   const getUserAvatarGradient = (username) => {
